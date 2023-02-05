@@ -1,0 +1,161 @@
+-- Database: OrganizationControl
+
+-- DROP DATABASE "OrganizationControl";
+
+CREATE DATABASE "OrganizationControl"
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Russian_Russia.1251'
+    LC_CTYPE = 'Russian_Russia.1251'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+	
+CREATE TABLE Organization
+(
+ ID_Organization int NOT NULL,
+ Name            varchar(250) NOT NULL,
+ Addres          varchar(250) NOT NULL,
+ INN             varchar(13) NOT NULL,
+ Budget          decimal(36,2) NOT NULL,
+ Date_Foundation date NOT NULL,
+ CONSTRAINT PK_1 PRIMARY KEY ( ID_Organization )
+);
+
+CREATE TABLE Department
+(
+ ID_Department   int NOT NULL,
+ Name            varchar(50) NOT NULL,
+ Description     varchar(250) NOT NULL,
+ Organization_ID int NOT NULL,
+ CONSTRAINT PK_2 PRIMARY KEY ( ID_Department ),
+ CONSTRAINT FK_3 FOREIGN KEY ( Organization_ID ) REFERENCES Organization ( ID_Organization )
+);
+
+CREATE INDEX FK_10 ON Department
+(
+ Organization_ID
+);
+
+
+CREATE TABLE Employee
+(
+ ID_Employee int NOT NULL,
+ Surname     varchar(50) NOT NULL,
+ Name        varchar(50) NOT NULL,
+ SecondName  varchar(50) NOT NULL,
+ Date_Birth  date NOT NULL,
+ SeriaPasp   varchar(4) NOT NULL,
+ NumberPasp  varchar(6) NOT NULL,
+ CONSTRAINT PK_3 PRIMARY KEY ( ID_Employee )
+);
+
+
+CREATE TABLE Employee_Post
+(
+ ID_Employee_Post int NOT NULL,
+ Post_ID          int NOT NULL,
+ Employee_ID      int NOT NULL,
+ CONSTRAINT PK_4 PRIMARY KEY ( ID_Employee_Post ),
+ CONSTRAINT FK_6 FOREIGN KEY ( Post_ID ) REFERENCES Post ( ID_Post ),
+ CONSTRAINT FK_7 FOREIGN KEY ( Employee_ID ) REFERENCES Employee ( ID_Employee )
+);
+
+CREATE INDEX FK_9 ON Employee_Post
+(
+ Post_ID
+);
+
+CREATE INDEX FK_8 ON Employee_Post
+(
+ Employee_ID
+);
+
+CREATE TABLE Finances_Operations
+(
+ ID_Operations   int NOT NULL,
+ Summ            decimal(36,2) NOT NULL,
+ Date_Operation  date NOT NULL,
+ Description     varchar(250) NOT NULL,
+ Organization_ID int NOT NULL,
+ CONSTRAINT PK_5 PRIMARY KEY ( ID_Operations ),
+ CONSTRAINT FK_2 FOREIGN KEY ( Organization_ID ) REFERENCES Organization ( ID_Organization )
+);
+
+CREATE INDEX FK_7 ON Finances_Operations
+(
+ Organization_ID
+);
+
+
+CREATE TABLE Goal
+(
+ ID_Goal       int NOT NULL,
+ Name          varchar(50) NOT NULL,
+ Description   varchar(250) NOT NULL,
+ Date_Start    date NOT NULL,
+ Date_End      date NOT NULL,
+ Done          bit (1) NOT NULL,
+ Department_ID int NOT NULL,
+ CONSTRAINT PK_6 PRIMARY KEY ( ID_Goal ),
+ CONSTRAINT FK_4 FOREIGN KEY ( Department_ID ) REFERENCES Department ( ID_Department )
+);
+
+CREATE INDEX FK_6 ON Goal
+(
+ Department_ID
+);
+
+CREATE TABLE Post
+(
+ ID_Post       int NOT NULL,
+ Name          varchar(250) NOT NULL,
+ Salary        decimal(36,2) NOT NULL,
+ Department_ID int NOT NULL,
+ CONSTRAINT PK_7 PRIMARY KEY ( ID_Post ),
+ CONSTRAINT FK_5 FOREIGN KEY ( Department_ID ) REFERENCES Department ( ID_Department )
+);
+
+CREATE INDEX FK_5 ON Post
+(
+ Department_ID
+);
+
+
+CREATE TABLE Strategy
+(
+ ID_Strategy     int NOT NULL,
+ Name            varchar(50) NOT NULL,
+ Description     varchar(250) NOT NULL,
+ Date_start      date NOT NULL,
+ Date_end        date NOT NULL,
+ Done            bit (1) NOT NULL,
+ Organization_ID int NOT NULL,
+ CONSTRAINT PK_8 PRIMARY KEY ( ID_Strategy ),
+ CONSTRAINT FK_1 FOREIGN KEY ( Organization_ID ) REFERENCES Organization ( ID_Organization )
+);
+
+CREATE INDEX FK_4 ON Strategy
+(
+ Organization_ID
+);
+
+
+CREATE TABLE Task
+(
+ ID_Task     int NOT NULL,
+ Name        varchar(50) NOT NULL,
+ Description varchar(250) NOT NULL,
+ Date_Start  date NOT NULL,
+ Date_End    date NOT NULL,
+ Done        bit (1) NOT NULL,
+ Employee_ID int NOT NULL,
+ CONSTRAINT PK_9 PRIMARY KEY ( ID_Task ),
+ CONSTRAINT FK_8 FOREIGN KEY ( Employee_ID ) REFERENCES Employee ( ID_Employee )
+);
+
+CREATE INDEX FK_3 ON Task
+(
+ Employee_ID
+);
+
