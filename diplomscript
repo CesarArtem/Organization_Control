@@ -37,6 +37,14 @@ CREATE INDEX FK_10 ON Department
  Organization_ID
 );
 
+ALTER TABLE Employee
+ADD COLUMN User_ID int,
+ADD COLUMN Email varchar(50) NOT NULL,
+ADD CONSTRAINT FK_9 FOREIGN KEY ( User_ID ) REFERENCES "User" ( ID_User )
+CREATE INDEX FK_11 ON Employee
+(
+ User_ID
+);
 
 CREATE TABLE Employee
 (
@@ -47,8 +55,26 @@ CREATE TABLE Employee
  Date_Birth  date NOT NULL,
  SeriaPasp   varchar(4) NOT NULL,
  NumberPasp  varchar(6) NOT NULL,
- CONSTRAINT PK_3 PRIMARY KEY ( ID_Employee )
+ Email       varchar(50) NOT NULL,
+ User_ID     int,
+ CONSTRAINT PK_1 PRIMARY KEY ( ID_Employee ),
+ CONSTRAINT FK_9 FOREIGN KEY ( User_ID ) REFERENCES "User" ( ID_User )
 );
+
+CREATE INDEX FK_2 ON Employee
+(
+ User_ID
+);
+
+
+CREATE TABLE "User"
+(
+ ID_User  int NOT NULL,
+ Login    varchar(50) NOT NULL,
+ Password varchar(50) NOT NULL,
+ CONSTRAINT PK_10 PRIMARY KEY ( ID_User )
+);
+
 
 
 CREATE TABLE Employee_Post
