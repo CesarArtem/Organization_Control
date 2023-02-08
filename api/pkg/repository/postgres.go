@@ -1,8 +1,15 @@
 package repository
 
 import (
+	_ "database/sql"
 	"fmt"
 	"github.com/jmoiron/sqlx"
+)
+
+const (
+	usersTable           = "users"
+	apiOrganizationTable = "organization"
+	apiStrategyTable     = "strategy"
 )
 
 type Config struct {

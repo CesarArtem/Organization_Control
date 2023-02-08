@@ -13,7 +13,7 @@ CREATE DATABASE "OrganizationControl"
 	
 CREATE TABLE Organization
 (
- ID_Organization int NOT NULL,
+ ID_Organization SERIAL NOT NULL,
  Name            varchar(250) NOT NULL,
  Addres          varchar(250) NOT NULL,
  INN             varchar(13) NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE Organization
 
 CREATE TABLE Department
 (
- ID_Department   int NOT NULL,
+ ID_Department   SERIAL NOT NULL,
  Name            varchar(50) NOT NULL,
  Description     varchar(250) NOT NULL,
  Organization_ID int NOT NULL,
@@ -37,18 +37,18 @@ CREATE INDEX FK_10 ON Department
  Organization_ID
 );
 
-ALTER TABLE Employee
-ADD COLUMN User_ID int,
-ADD COLUMN Email varchar(50) NOT NULL,
-ADD CONSTRAINT FK_9 FOREIGN KEY ( User_ID ) REFERENCES "User" ( ID_User )
-CREATE INDEX FK_11 ON Employee
-(
- User_ID
-);
+-- ALTER TABLE Employee
+-- ADD COLUMN User_ID int,
+-- ADD COLUMN Email varchar(50) NOT NULL,
+-- ADD CONSTRAINT FK_9 FOREIGN KEY ( User_ID ) REFERENCES "User" ( ID_User )
+-- CREATE INDEX FK_11 ON Employee
+-- (
+--  User_ID
+-- );
 
 CREATE TABLE Employee
 (
- ID_Employee int NOT NULL,
+ ID_Employee SERIAL NOT NULL,
  Surname     varchar(50) NOT NULL,
  Name        varchar(50) NOT NULL,
  SecondName  varchar(50) NOT NULL,
@@ -69,7 +69,7 @@ CREATE INDEX FK_2 ON Employee
 
 CREATE TABLE "User"
 (
- ID_User  int NOT NULL,
+ ID_User  SERIAL NOT NULL,
  Login    varchar(50) NOT NULL,
  Password varchar(50) NOT NULL,
  CONSTRAINT PK_10 PRIMARY KEY ( ID_User )
@@ -79,7 +79,7 @@ CREATE TABLE "User"
 
 CREATE TABLE Employee_Post
 (
- ID_Employee_Post int NOT NULL,
+ ID_Employee_Post SERIAL NOT NULL,
  Post_ID          int NOT NULL,
  Employee_ID      int NOT NULL,
  CONSTRAINT PK_4 PRIMARY KEY ( ID_Employee_Post ),
@@ -99,7 +99,7 @@ CREATE INDEX FK_8 ON Employee_Post
 
 CREATE TABLE Finances_Operations
 (
- ID_Operations   int NOT NULL,
+ ID_Operations   SERIAL NOT NULL,
  Summ            decimal(36,2) NOT NULL,
  Date_Operation  date NOT NULL,
  Description     varchar(250) NOT NULL,
@@ -116,7 +116,7 @@ CREATE INDEX FK_7 ON Finances_Operations
 
 CREATE TABLE Goal
 (
- ID_Goal       int NOT NULL,
+ ID_Goal       SERIAL NOT NULL,
  Name          varchar(50) NOT NULL,
  Description   varchar(250) NOT NULL,
  Date_Start    date NOT NULL,
@@ -134,7 +134,7 @@ CREATE INDEX FK_6 ON Goal
 
 CREATE TABLE Post
 (
- ID_Post       int NOT NULL,
+ ID_Post       SERIAL NOT NULL,
  Name          varchar(250) NOT NULL,
  Salary        decimal(36,2) NOT NULL,
  Department_ID int NOT NULL,
@@ -150,7 +150,7 @@ CREATE INDEX FK_5 ON Post
 
 CREATE TABLE Strategy
 (
- ID_Strategy     int NOT NULL,
+ ID_Strategy     SERIAL NOT NULL,
  Name            varchar(50) NOT NULL,
  Description     varchar(250) NOT NULL,
  Date_start      date NOT NULL,
@@ -166,10 +166,9 @@ CREATE INDEX FK_4 ON Strategy
  Organization_ID
 );
 
-
 CREATE TABLE Task
 (
- ID_Task     int NOT NULL,
+ ID_Task     SERIAL NOT NULL,
  Name        varchar(50) NOT NULL,
  Description varchar(250) NOT NULL,
  Date_Start  date NOT NULL,
