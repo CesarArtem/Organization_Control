@@ -1,18 +1,21 @@
 package service
 
 import (
-	"api"
+	"api/models"
 	"api/pkg/repository"
 )
 
 type Authorization interface {
-	CreateUser(user api.User) (int, error)
-	Authorize(login, password string) (api.User, error)
+	CreateUser(user models.User) (int, error)
+	Authorize(login, password string) (models.User, error)
 }
 
 type Organization interface {
-	Create(organization api.Organization) (int, error)
-	//GetAll() ([]api.Organization, error)
+	Create(organization models.Organization) (models.Organization, error)
+	GetAll() ([]models.Organization, error)
+	GetById(id int) (models.Organization, error)
+	Delete(id int) error
+	Update(id int, organization models.Organization) (models.Organization, error)
 }
 
 type Strategy interface {

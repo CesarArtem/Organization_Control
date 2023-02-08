@@ -1,38 +1,115 @@
 package handler
 
 import (
-	"api"
+	"api/models"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func (h *Handler) createOrganization(c *gin.Context) {
 
-	var input api.Organization
+	var input models.Organization
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	id, err := h.services.Organization.Create(input)
+	org, err := h.services.Organization.Create(input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"id": id,
+	c.JSON(http.StatusOK, org)
+}
+
+type getAllOrgsResponse struct {
+	Data []models.Organization `json:"data"`
+}
+
+type getDataAndmessage struct {
+	Message string              `json:"message"`
+	Data    models.Organization `json:"data"`
+}
+
+func (h *Handler) getAllOrganization(c *gin.Context) {
+	list, err := h.services.Organization.GetAll()
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getAllOrgsResponse{
+		Data: list,
 	})
 }
 
 func (h *Handler) getOrganization(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
+	}
 
+	org, err := h.services.Organization.GetById(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, org)
 }
 
 func (h *Handler) updateOrganization(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
+	}
 
+	_, err = h.services.Organization.GetById(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	var input models.Organization
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	org, err := h.services.Organization.Update(id, input)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getDataAndmessage{
+		Message: "Успешное изменение данных",
+		Data:    org,
+	})
 }
 
 func (h *Handler) deleteOrganization(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
+	}
 
+	org, err := h.services.Organization.GetById(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = h.services.Organization.Delete(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, getDataAndmessage{
+		Message: "Успешное удаление данных",
+		Data:    org,
+	})
 }

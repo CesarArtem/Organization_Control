@@ -1,7 +1,7 @@
 package service
 
 import (
-	"api"
+	"api/models"
 	"api/pkg/repository"
 	"crypto/sha1"
 	"fmt"
@@ -17,17 +17,17 @@ func NewAuthService(repo repository.Authorization) *AuthService {
 	return &AuthService{repo: repo}
 }
 
-func (s *AuthService) CreateUser(user api.User) (int, error) {
+func (s *AuthService) CreateUser(user models.User) (int, error) {
 	user.Password = generatePasswordHash(user.Password)
 
 	return s.repo.CreateUser(user)
 }
 
-func (s *AuthService) Authorize(login, password string) (api.User, error) {
+func (s *AuthService) Authorize(login, password string) (models.User, error) {
 	user, err := s.repo.GetUser(login, generatePasswordHash(password))
 
 	if err != nil {
-		return api.User{}, err
+		return models.User{}, err
 	}
 
 	return user, nil

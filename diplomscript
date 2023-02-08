@@ -11,6 +11,20 @@ CREATE DATABASE "OrganizationControl"
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
 	
+	
+-- Database: OrganizationControl
+
+-- DROP DATABASE "OrganizationControl";
+
+CREATE DATABASE "OrganizationControl"
+    WITH 
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LC_COLLATE = 'Russian_Russia.1251'
+    LC_CTYPE = 'Russian_Russia.1251'
+    TABLESPACE = pg_default
+    CONNECTION LIMIT = -1;
+	
 CREATE TABLE Organization
 (
  ID_Organization SERIAL NOT NULL,
@@ -57,7 +71,7 @@ CREATE TABLE Employee
  NumberPasp  varchar(6) NOT NULL,
  Email       varchar(50) NOT NULL,
  User_ID     int,
- CONSTRAINT PK_1 PRIMARY KEY ( ID_Employee ),
+ CONSTRAINT PK_11 PRIMARY KEY ( ID_Employee ),
  CONSTRAINT FK_9 FOREIGN KEY ( User_ID ) REFERENCES "User" ( ID_User )
 );
 
@@ -183,4 +197,437 @@ CREATE INDEX FK_3 ON Task
 (
  Employee_ID
 );
+
+
+INSERT INTO users (login, password) VALUES ('admin', '123') RETURNING id_user
+
+DROP FUNCTION update_organization
+
+CREATE OR REPLACE FUNCTION public.update_organization(
+	p_id int,
+	p_name varchar(250),
+	p_addres varchar(250),
+	p_inn varchar(13),
+	p_budget decimal(36,2),
+	p_date_foundation date)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+AS $BODY$
+begin
+	update organization
+	set
+	name = $2,
+	addres = $3,
+	inn = $4,
+	budget = $5,
+	date_foundation = $6
+	where id_organization = $1;
+	return true;
+end;
+$BODY$;
+
+
+CREATE OR REPLACE FUNCTION public.insert_organization(
+	p_name varchar(250),
+	p_addres varchar(250),
+	p_inn varchar(13),
+	p_budget decimal(36,2),
+	p_date_foundation date)
+    RETURNS character
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+begin
+	insert into organization(name,addres,inn,budget,date_foundation) 
+	values (p_name,p_addres,p_inn,p_budget, p_date_foundation);
+	return 'saved';
+end;
+$BODY$;
+
+ALTER FUNCTION public.update_organization(int, varchar(250), varchar(250), varchar(13), decimal(36,2), date)
+    OWNER TO postgres;
+
+
+SELECT update_organization(1, 'new', 'testnew', '84972', 30000.21, '2023/07/02')
+
+
+CREATE OR REPLACE FUNCTION public.update_strategy(
+	p_id int,
+	p_name varchar(50),
+	p_descr varchar(250),
+	p_datetstart date,
+	p_dateend date,
+	p_done bit,
+	p_org_id int)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+AS $BODY$
+begin
+	update strategy
+	set
+	name = $2,
+	Description = $3,
+	Date_start = $4,
+	Date_end = $5,
+	Done = $6,
+	Organization_ID=$7
+	where ID_Strategy = $1;
+	return true;
+end;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION public.insert_strategy(
+	p_name varchar(50),
+	p_Description varchar(250),
+	p_Date_Start date,
+	p_Date_End date,
+	p_done bit,
+	p_Organization_ID int)
+    RETURNS character
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+begin
+	insert into strategy(name,Description,Date_Start,Date_End, done, p_Organization_ID) 
+	values (p_name,p_Description,p_Date_Start,p_Date_End, p_done, p_Organization_ID);
+	return 'saved';
+end;
+$BODY$;
+
+
+CREATE OR REPLACE FUNCTION public.update_Goal(
+	p_id int,
+	p_name varchar(50),
+	p_descr varchar(250),
+	p_datetstart date,
+	p_dateend date,
+	p_done bit,
+	p_Department_ID int)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+AS $BODY$
+begin
+	update Goal
+	set
+	name = $2,
+	Description = $3,
+	Date_start = $4,
+	Date_end = $5,
+	Done = $6,
+	Organization_ID=$7
+	where ID_Goal = $1;
+	return true;
+end;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION public.insert_Goal(
+	p_name varchar(50),
+	p_Description varchar(250),
+	p_Date_Start date,
+	p_Date_End date,
+	p_done bit,
+	p_Department_ID int)
+    RETURNS character
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+begin
+	insert into Goal(name,Description,Date_Start,Date_End, done, Department_ID) 
+	values (p_name,p_Description,p_Date_Start,p_Date_End, p_done, p_Department_ID);
+	return 'saved';
+end;
+$BODY$;
+
+
+CREATE OR REPLACE FUNCTION public.update_Task(
+	p_id int,
+	p_name varchar(50),
+	p_descr varchar(250),
+	p_datetstart date,
+	p_dateend date,
+	p_done bit,
+	p_Employee_ID int)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+AS $BODY$
+begin
+	update Task
+	set
+	name = $2,
+	Description = $3,
+	Date_start = $4,
+	Date_end = $5,
+	Done = $6,
+	Employee_ID=$7
+	where ID_Task = $1;
+	return true;
+end;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION public.insert_Task(
+	p_name varchar(50),
+	p_Description varchar(250),
+	p_Date_Start date,
+	p_Date_End date,
+	p_done bit,
+	p_Employee_ID int)
+    RETURNS character
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+begin
+	insert into Task(name,Description,Date_Start,Date_End, done, Employee_ID) 
+	values (p_name,p_Description,p_Date_Start,p_Date_End, p_done, p_Employee_ID);
+	return 'saved';
+end;
+$BODY$;
+
+
+CREATE OR REPLACE FUNCTION public.update_Finances_Operations(
+	p_id int,
+	p_Summ decimal(36,2),
+	p_Date_Operation date,
+	p_Description varchar(250),
+	p_Organization_ID int)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+AS $BODY$
+begin
+	update Finances_Operations
+	set
+	Summ = $2,
+	Date_Operation = $3,
+	Description = $4,
+	Organization_ID=$5
+	where ID_Operations = $1;
+	return true;
+end;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION public.insert_Finances_Operations(
+	p_Summ decimal(36,2),
+	p_Date_Operation date,
+	p_Description varchar(250),
+	p_Organization_ID int)
+    RETURNS character
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+begin
+	insert into Finances_Operations(Summ,Date_Operation,Description,Organization_ID) 
+	values (p_Summ,p_Date_Operation,p_Description,p_Organization_ID);
+	return 'saved';
+end;
+$BODY$;
+
+
+CREATE OR REPLACE FUNCTION public.update_Employee(
+	p_id int,
+	p_Surname varchar(50),
+	p_Name varchar(50),
+	p_SecondName varchar(50),
+	p_Date_Birth date,
+	p_SeriaPasp varchar(4),
+	p_NumberPasp varchar(6),
+	p_Email varchar(50),
+	p_User_ID int)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+AS $BODY$
+begin
+	update Employee
+	set
+	Surname = $2,
+	Name = $3,
+	SecondName = $4,
+	Date_Birth=$5,
+	SeriaPasp=$6,
+	NumberPasp=$7,
+	Email=$8,
+	User_ID=$9
+	where ID_Employee = $1;
+	return true;
+end;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION public.insert_Employee(
+	p_Surname varchar(50),
+	p_Name varchar(50),
+	p_SecondName varchar(50),
+	p_Date_Birth date,
+	p_SeriaPasp varchar(4),
+	p_NumberPasp varchar(6),
+	p_Email varchar(50),
+	p_User_ID int)
+    RETURNS character
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+begin
+	insert into Employee(Surname,Name,SecondName,Date_Birth,SeriaPasp, NumberPasp, Email, User_ID) 
+	values (p_Surname,p_Name,p_SecondName,p_Date_Birth,p_SeriaPasp, p_NumberPasp, p_Email, p_User_ID);
+	return 'saved';
+end;
+$BODY$;
+
+
+CREATE OR REPLACE FUNCTION public.update_User(
+	p_id int,
+	p_Login varchar(50),
+	p_Password varchar(50))
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+AS $BODY$
+begin
+	update Users
+	set
+	Login = $2,
+	Password = $3
+	where ID_User = $1;
+	return true;
+end;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION public.insert_User(
+	p_Login varchar(50),
+	p_Password varchar(50))
+    RETURNS character
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+begin
+	insert into Users(Login,Password) 
+	values (p_Login,p_Password);
+	return 'saved';
+end;
+$BODY$;
+
+
+CREATE OR REPLACE FUNCTION public.update_Employee_Post(
+	p_id int,
+	p_Post_ID int,
+	p_Employee_ID int)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+AS $BODY$
+begin
+	update Employee_Post
+	set
+	Post_ID = $2,
+	Employee_ID = $3
+	where ID_Employee_Post = $1;
+	return true;
+end;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION public.insert_Employee_Post(
+	p_Post_ID int,
+	p_Employee_ID int)
+    RETURNS character
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+begin
+	insert into Employee_Post(Post_ID,Employee_ID) 
+	values (p_Post_ID,p_Employee_ID);
+	return 'saved';
+end;
+$BODY$;
+
+
+CREATE OR REPLACE FUNCTION public.update_Post(
+	p_id int,
+	p_Name varchar(250),
+	p_Salary decimal(36,2),
+	p_Department_ID int)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+AS $BODY$
+begin
+	update Post
+	set
+	Name = $2,
+	Salary = $3,
+	Department_ID=$4
+	where ID_Post = $1;
+	return true;
+end;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION public.insert_Post(
+	p_Name varchar(250),
+	p_Salary decimal(36,2),
+	p_Department_ID int)
+    RETURNS character
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+begin
+	insert into Post(Name,Salary,Department_ID) 
+	values (p_Name,p_Salary,p_Department_ID);
+	return 'saved';
+end;
+$BODY$;
+
+
+CREATE OR REPLACE FUNCTION public.update_Department(
+	p_id int,
+	p_Name varchar(50),
+	p_Description varchar(250),
+	p_Organization_ID int)
+    RETURNS boolean
+    LANGUAGE 'plpgsql'
+AS $BODY$
+begin
+	update Department
+	set
+	Name=$2,
+	Description = $3,
+	Organization_ID=$4
+	where ID_Department = $1;
+	return true;
+end;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION public.insert_Department(
+	p_Name varchar(50),
+	p_Description varchar(250),
+	p_Organization_ID int)
+    RETURNS character
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+begin
+	insert into Department(Name,Description,Organization_ID) 
+	values (p_Name,p_Description,p_Organization_ID);
+	return 'saved';
+end;
+$BODY$;
+
+
+CREATE OR REPLACE FUNCTION public.delete_row(
+	tablename character varying,
+	table_colname character varying,
+	col_value integer)
+    RETURNS character
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+begin
+	execute format('delete from %s where %I = $1', tablename, table_colname)
+	using col_value;
+	return 'deleted';
+end;
+$BODY$;
 

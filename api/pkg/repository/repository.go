@@ -1,17 +1,21 @@
 package repository
 
 import (
-	"api"
+	"api/models"
 	"github.com/jmoiron/sqlx"
 )
 
 type Authorization interface {
-	CreateUser(user api.User) (int, error)
-	GetUser(login, password string) (api.User, error)
+	CreateUser(user models.User) (int, error)
+	GetUser(login, password string) (models.User, error)
 }
 
 type Organization interface {
-	Create(organization api.Organization) (int, error)
+	Create(organization models.Organization) (models.Organization, error)
+	GetAll() ([]models.Organization, error)
+	GetById(id int) (models.Organization, error)
+	Delete(id int) error
+	Update(id int, organization models.Organization) (models.Organization, error)
 }
 
 type Strategy interface {
