@@ -7,19 +7,19 @@ import (
 	"strconv"
 )
 
-func (h *Handler) createStrategy(c *gin.Context) {
+func (h *Handler) createOperation(c *gin.Context) {
 	idorg, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	var input models.Strategy
+	var input models.Finances_Operations
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	org, err := h.services.Strategy.Create(input, idorg)
+	org, err := h.services.Finances_Operations.Create(input, idorg)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -28,44 +28,44 @@ func (h *Handler) createStrategy(c *gin.Context) {
 	c.JSON(http.StatusOK, org)
 }
 
-type getAllStrategysResponse struct {
-	Data []models.Strategy `json:"data"`
+type getAllOperationsResponse struct {
+	Data []models.Finances_Operations `json:"data"`
 }
 
-type getStratAndmessage struct {
-	Message string          `json:"message"`
-	Data    models.Strategy `json:"data"`
+type getOperAndmessage struct {
+	Message string                     `json:"message"`
+	Data    models.Finances_Operations `json:"data"`
 }
 
-func (h *Handler) getAllStrategies(c *gin.Context) {
+func (h *Handler) getAllOperation(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	list, err := h.services.Strategy.GetAll(id)
+	list, err := h.services.Finances_Operations.GetAll(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllStrategysResponse{
+	c.JSON(http.StatusOK, getAllOperationsResponse{
 		Data: list,
 	})
 }
 
-func (h *Handler) getStrategyById(c *gin.Context) {
+func (h *Handler) getOperation(c *gin.Context) {
 	idorg, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	id, err := strconv.Atoi(c.Param("strategy_id"))
+	id, err := strconv.Atoi(c.Param("operation_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	org, err := h.services.Strategy.GetById(id, idorg)
+	org, err := h.services.Finances_Operations.GetById(id, idorg)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -74,65 +74,65 @@ func (h *Handler) getStrategyById(c *gin.Context) {
 	c.JSON(http.StatusOK, org)
 }
 
-func (h *Handler) updateStrategy(c *gin.Context) {
+func (h *Handler) updateOperation(c *gin.Context) {
 	idorg, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	id, err := strconv.Atoi(c.Param("strategy_id"))
+	id, err := strconv.Atoi(c.Param("operation_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	_, err = h.services.Strategy.GetById(id, idorg)
+	_, err = h.services.Finances_Operations.GetById(id, idorg)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	var input models.Strategy
+	var input models.Finances_Operations
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	org, err := h.services.Strategy.Update(id, input, idorg)
+	org, err := h.services.Finances_Operations.Update(id, input, idorg)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, getStratAndmessage{
+	c.JSON(http.StatusOK, getOperAndmessage{
 		Message: "Успешное изменение данных",
 		Data:    org,
 	})
 }
 
-func (h *Handler) deleteStrategy(c *gin.Context) {
+func (h *Handler) deleteOperation(c *gin.Context) {
 	idorg, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	id, err := strconv.Atoi(c.Param("strategy_id"))
+	id, err := strconv.Atoi(c.Param("operation_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	org, err := h.services.Strategy.GetById(id, idorg)
+	org, err := h.services.Finances_Operations.GetById(id, idorg)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	err = h.services.Strategy.Delete(id, idorg)
+	err = h.services.Finances_Operations.Delete(id, idorg)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, getStratAndmessage{
+	c.JSON(http.StatusOK, getOperAndmessage{
 		Message: "Успешное удаление данных",
 		Data:    org,
 	})

@@ -127,6 +127,8 @@ CREATE INDEX FK_7 ON Finances_Operations
  Organization_ID
 );
 
+ALTER TABLE Task
+ADD COLUMN Done boolean DEFAULT FALSE;
 
 CREATE TABLE Goal
 (
@@ -135,7 +137,7 @@ CREATE TABLE Goal
  Description   varchar(250) NOT NULL,
  Date_Start    date NOT NULL,
  Date_End      date NOT NULL,
- Done          bit (1) NOT NULL,
+ Done          boolean DEFAULT FALSE,
  Department_ID int NOT NULL,
  CONSTRAINT PK_6 PRIMARY KEY ( ID_Goal ),
  CONSTRAINT FK_4 FOREIGN KEY ( Department_ID ) REFERENCES Department ( ID_Department )
@@ -169,7 +171,7 @@ CREATE TABLE Strategy
  Description     varchar(250) NOT NULL,
  Date_start      date NOT NULL,
  Date_end        date NOT NULL,
- Done            bit (1) NOT NULL,
+ Done            boolean DEFAULT FALSE,
  Organization_ID int NOT NULL,
  CONSTRAINT PK_8 PRIMARY KEY ( ID_Strategy ),
  CONSTRAINT FK_1 FOREIGN KEY ( Organization_ID ) REFERENCES Organization ( ID_Organization )
@@ -187,7 +189,7 @@ CREATE TABLE Task
  Description varchar(250) NOT NULL,
  Date_Start  date NOT NULL,
  Date_End    date NOT NULL,
- Done        bit (1) NOT NULL,
+ Done        boolean DEFAULT FALSE,
  Employee_ID int NOT NULL,
  CONSTRAINT PK_9 PRIMARY KEY ( ID_Task ),
  CONSTRAINT FK_8 FOREIGN KEY ( Employee_ID ) REFERENCES Employee ( ID_Employee )
@@ -201,7 +203,7 @@ CREATE INDEX FK_3 ON Task
 
 INSERT INTO users (login, password) VALUES ('admin', '123') RETURNING id_user
 
-DROP FUNCTION update_organization
+DROP FUNCTION insert_organization
 
 CREATE OR REPLACE FUNCTION public.update_organization(
 	p_id int,
@@ -233,15 +235,16 @@ CREATE OR REPLACE FUNCTION public.insert_organization(
 	p_inn varchar(13),
 	p_budget decimal(36,2),
 	p_date_foundation date)
-    RETURNS character
+    RETURNS int
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
 AS $BODY$
+DECLARE tempid int;
 begin
 	insert into organization(name,addres,inn,budget,date_foundation) 
-	values (p_name,p_addres,p_inn,p_budget, p_date_foundation);
-	return 'saved';
+	values (p_name,p_addres,p_inn,p_budget, p_date_foundation) returning id_organization into tempid;
+	RETURN tempid;
 end;
 $BODY$;
 
@@ -249,142 +252,148 @@ ALTER FUNCTION public.update_organization(int, varchar(250), varchar(250), varch
     OWNER TO postgres;
 
 
-SELECT update_organization(1, 'new', 'testnew', '84972', 30000.21, '2023/07/02')
+SELECT insert_organization('new', 'testnew', '84972', 30000.21, '2023/07/02');
 
 
-CREATE OR REPLACE FUNCTION public.update_strategy(
-	p_id int,
-	p_name varchar(50),
-	p_descr varchar(250),
-	p_datetstart date,
-	p_dateend date,
-	p_done bit,
-	p_org_id int)
-    RETURNS boolean
-    LANGUAGE 'plpgsql'
-AS $BODY$
-begin
-	update strategy
-	set
-	name = $2,
-	Description = $3,
-	Date_start = $4,
-	Date_end = $5,
-	Done = $6,
-	Organization_ID=$7
-	where ID_Strategy = $1;
-	return true;
-end;
-$BODY$;
+-- CREATE OR REPLACE FUNCTION public.update_strategy(
+-- 	p_id int,
+-- 	p_name varchar(50),
+-- 	p_descr varchar(250),
+-- 	p_datetstart date,
+-- 	p_dateend date,
+-- 	p_done boolean,
+-- 	p_org_id int)
+--     RETURNS boolean
+--     LANGUAGE 'plpgsql'
+-- AS $BODY$
+-- begin
+-- 	update strategy
+-- 	set
+-- 	name = $2,
+-- 	Description = $3,
+-- 	Date_start = $4,
+-- 	Date_end = $5,
+-- 	Done = $6,
+-- 	Organization_ID=$7
+-- 	where ID_Strategy = $1;
+-- 	return true;
+-- end;
+-- $BODY$;
 
-CREATE OR REPLACE FUNCTION public.insert_strategy(
-	p_name varchar(50),
-	p_Description varchar(250),
-	p_Date_Start date,
-	p_Date_End date,
-	p_done bit,
-	p_Organization_ID int)
-    RETURNS character
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-AS $BODY$
-begin
-	insert into strategy(name,Description,Date_Start,Date_End, done, p_Organization_ID) 
-	values (p_name,p_Description,p_Date_Start,p_Date_End, p_done, p_Organization_ID);
-	return 'saved';
-end;
-$BODY$;
-
-
-CREATE OR REPLACE FUNCTION public.update_Goal(
-	p_id int,
-	p_name varchar(50),
-	p_descr varchar(250),
-	p_datetstart date,
-	p_dateend date,
-	p_done bit,
-	p_Department_ID int)
-    RETURNS boolean
-    LANGUAGE 'plpgsql'
-AS $BODY$
-begin
-	update Goal
-	set
-	name = $2,
-	Description = $3,
-	Date_start = $4,
-	Date_end = $5,
-	Done = $6,
-	Organization_ID=$7
-	where ID_Goal = $1;
-	return true;
-end;
-$BODY$;
-
-CREATE OR REPLACE FUNCTION public.insert_Goal(
-	p_name varchar(50),
-	p_Description varchar(250),
-	p_Date_Start date,
-	p_Date_End date,
-	p_done bit,
-	p_Department_ID int)
-    RETURNS character
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-AS $BODY$
-begin
-	insert into Goal(name,Description,Date_Start,Date_End, done, Department_ID) 
-	values (p_name,p_Description,p_Date_Start,p_Date_End, p_done, p_Department_ID);
-	return 'saved';
-end;
-$BODY$;
+-- CREATE OR REPLACE FUNCTION public.insert_strategy(
+-- 	p_name varchar(50),
+-- 	p_Description varchar(250),
+-- 	p_Date_Start date,
+-- 	p_Date_End date,
+-- 	p_done boolean,
+-- 	p_Organization_ID int)
+--    	RETURNS int
+--     LANGUAGE 'plpgsql'
+--     COST 100
+--     VOLATILE PARALLEL UNSAFE
+-- AS $BODY$
+-- DECLARE tempid int;
+-- begin
+-- 	insert into strategy(name,Description,Date_Start,Date_End, done, Organization_ID) 
+-- 	values (p_name,p_Description,p_Date_Start,p_Date_End, p_done, p_Organization_ID) returning id_strategy into tempid;
+-- 	return tempid;
+-- end;
+-- $BODY$;
 
 
-CREATE OR REPLACE FUNCTION public.update_Task(
-	p_id int,
-	p_name varchar(50),
-	p_descr varchar(250),
-	p_datetstart date,
-	p_dateend date,
-	p_done bit,
-	p_Employee_ID int)
-    RETURNS boolean
-    LANGUAGE 'plpgsql'
-AS $BODY$
-begin
-	update Task
-	set
-	name = $2,
-	Description = $3,
-	Date_start = $4,
-	Date_end = $5,
-	Done = $6,
-	Employee_ID=$7
-	where ID_Task = $1;
-	return true;
-end;
-$BODY$;
+-- CREATE OR REPLACE FUNCTION public.update_Goal(
+-- 	p_id int,
+-- 	p_name varchar(50),
+-- 	p_descr varchar(250),
+-- 	p_datetstart date,
+-- 	p_dateend date,
+-- 	p_done boolean,
+-- 	p_Department_ID int)
+--     RETURNS int
+--     LANGUAGE 'plpgsql'
+--     COST 100
+--     VOLATILE PARALLEL UNSAFE
+-- AS $BODY$
+-- DECLARE tempid int;
+-- begin
+-- 	update Goal
+-- 	set
+-- 	name = $2,
+-- 	Description = $3,
+-- 	Date_start = $4,
+-- 	Date_end = $5,
+-- 	Done = $6,
+-- 	Organization_ID=$7
+-- 	where ID_Goal = $1;
+-- 	return tempid;
+-- end;
+-- $BODY$;
 
-CREATE OR REPLACE FUNCTION public.insert_Task(
-	p_name varchar(50),
-	p_Description varchar(250),
-	p_Date_Start date,
-	p_Date_End date,
-	p_done bit,
-	p_Employee_ID int)
-    RETURNS character
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-AS $BODY$
-begin
-	insert into Task(name,Description,Date_Start,Date_End, done, Employee_ID) 
-	values (p_name,p_Description,p_Date_Start,p_Date_End, p_done, p_Employee_ID);
-	return 'saved';
-end;
-$BODY$;
+-- CREATE OR REPLACE FUNCTION public.insert_Goal(
+-- 	p_name varchar(50),
+-- 	p_Description varchar(250),
+-- 	p_Date_Start date,
+-- 	p_Date_End date,
+-- 	p_done boolean,
+-- 	p_Department_ID int)
+--     RETURNS int
+--     LANGUAGE 'plpgsql'
+--     COST 100
+--     VOLATILE PARALLEL UNSAFE
+-- AS $BODY$
+-- DECLARE tempid int;
+-- begin
+-- 	insert into Goal(name,Description,Date_Start,Date_End, done, Department_ID) 
+-- 	values (p_name,p_Description,p_Date_Start,p_Date_End, p_done, p_Department_ID) returning id_goal into tempid;
+-- 	return tempid;
+-- end;
+-- $BODY$;
+
+
+-- CREATE OR REPLACE FUNCTION public.update_Task(
+-- 	p_id int,
+-- 	p_name varchar(50),
+-- 	p_descr varchar(250),
+-- 	p_datetstart date,
+-- 	p_dateend date,
+-- 	p_done boolean,
+-- 	p_Employee_ID int)
+--     RETURNS boolean
+--     LANGUAGE 'plpgsql'
+-- AS $BODY$
+-- begin
+-- 	update Task
+-- 	set
+-- 	name = $2,
+-- 	Description = $3,
+-- 	Date_start = $4,
+-- 	Date_end = $5,
+-- 	Done = $6,
+-- 	Employee_ID=$7
+-- 	where ID_Task = $1;
+-- 	return true;
+-- end;
+-- $BODY$;
+
+-- CREATE OR REPLACE FUNCTION public.insert_Task(
+-- 	p_name varchar(50),
+-- 	p_Description varchar(250),
+-- 	p_Date_Start date,
+-- 	p_Date_End date,
+-- 	p_done boolean,
+-- 	p_Employee_ID int)
+--     RETURNS int
+--     LANGUAGE 'plpgsql'
+--     COST 100
+--     VOLATILE PARALLEL UNSAFE
+-- AS $BODY$
+-- DECLARE tempid int;
+-- begin
+-- 	insert into Task(name,Description,Date_Start,Date_End, done, Employee_ID) 
+-- 	values (p_name,p_Description,p_Date_Start,p_Date_End, p_done, p_Employee_ID) returning id_task into tempid;
+-- 	return tempid;
+-- end;
+-- $BODY$;
 
 
 CREATE OR REPLACE FUNCTION public.update_Finances_Operations(
@@ -413,15 +422,16 @@ CREATE OR REPLACE FUNCTION public.insert_Finances_Operations(
 	p_Date_Operation date,
 	p_Description varchar(250),
 	p_Organization_ID int)
-    RETURNS character
+    RETURNS int
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
 AS $BODY$
+DECLARE tempid int;
 begin
 	insert into Finances_Operations(Summ,Date_Operation,Description,Organization_ID) 
-	values (p_Summ,p_Date_Operation,p_Description,p_Organization_ID);
-	return 'saved';
+	values (p_Summ,p_Date_Operation,p_Description,p_Organization_ID) returning id_operations into tempid;
+	return tempid;
 end;
 $BODY$;
 
@@ -464,15 +474,16 @@ CREATE OR REPLACE FUNCTION public.insert_Employee(
 	p_NumberPasp varchar(6),
 	p_Email varchar(50),
 	p_User_ID int)
-    RETURNS character
+   	RETURNS int
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
 AS $BODY$
+DECLARE tempid int;
 begin
 	insert into Employee(Surname,Name,SecondName,Date_Birth,SeriaPasp, NumberPasp, Email, User_ID) 
-	values (p_Surname,p_Name,p_SecondName,p_Date_Birth,p_SeriaPasp, p_NumberPasp, p_Email, p_User_ID);
-	return 'saved';
+	values (p_Surname,p_Name,p_SecondName,p_Date_Birth,p_SeriaPasp, p_NumberPasp, p_Email, p_User_ID) returning id_employee into tempid;
+	return tempid;
 end;
 $BODY$;
 
@@ -497,15 +508,16 @@ $BODY$;
 CREATE OR REPLACE FUNCTION public.insert_User(
 	p_Login varchar(50),
 	p_Password varchar(50))
-    RETURNS character
+    RETURNS int
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
 AS $BODY$
+DECLARE tempid int;
 begin
 	insert into Users(Login,Password) 
-	values (p_Login,p_Password);
-	return 'saved';
+	values (p_Login,p_Password) returning id_user into tempid;
+	return tempid;
 end;
 $BODY$;
 
@@ -530,15 +542,16 @@ $BODY$;
 CREATE OR REPLACE FUNCTION public.insert_Employee_Post(
 	p_Post_ID int,
 	p_Employee_ID int)
-    RETURNS character
+    RETURNS int
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
 AS $BODY$
+DECLARE tempid int;
 begin
 	insert into Employee_Post(Post_ID,Employee_ID) 
-	values (p_Post_ID,p_Employee_ID);
-	return 'saved';
+	values (p_Post_ID,p_Employee_ID) returning id_employee_post into tempid;
+	return tempid;
 end;
 $BODY$;
 
@@ -566,15 +579,16 @@ CREATE OR REPLACE FUNCTION public.insert_Post(
 	p_Name varchar(250),
 	p_Salary decimal(36,2),
 	p_Department_ID int)
-    RETURNS character
+    RETURNS int
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
 AS $BODY$
+DECLARE tempid int;
 begin
 	insert into Post(Name,Salary,Department_ID) 
-	values (p_Name,p_Salary,p_Department_ID);
-	return 'saved';
+	values (p_Name,p_Salary,p_Department_ID) returning id_post into tempid;
+	return tempid;
 end;
 $BODY$;
 
@@ -602,15 +616,16 @@ CREATE OR REPLACE FUNCTION public.insert_Department(
 	p_Name varchar(50),
 	p_Description varchar(250),
 	p_Organization_ID int)
-    RETURNS character
+    RETURNS int
     LANGUAGE 'plpgsql'
     COST 100
     VOLATILE PARALLEL UNSAFE
 AS $BODY$
+DECLARE tempid int;
 begin
 	insert into Department(Name,Description,Organization_ID) 
-	values (p_Name,p_Description,p_Organization_ID);
-	return 'saved';
+	values (p_Name,p_Description,p_Organization_ID) returning id_department into tempid;
+	return tempid;
 end;
 $BODY$;
 
@@ -625,9 +640,75 @@ CREATE OR REPLACE FUNCTION public.delete_row(
     VOLATILE PARALLEL UNSAFE
 AS $BODY$
 begin
-	execute format('delete from %s where %I = $1', tablename, table_colname)
+	execute format('delete from %s where %s = $1', tablename, table_colname)
 	using col_value;
 	return 'deleted';
 end;
 $BODY$;
 
+
+SELECT delete_row('organization', 'id_organization', 20)
+
+SELECT insert_strategy('test','dasd', '20/01/1233', '21/01/2999', true, 2)
+
+SELECT update_SGT(1,'testttttt','desc', '20/01/1233', '21/01/2999', false, 2, 'organization_id', 'Strategy', 'id_Strategy')
+
+SELECT insert_SGT('testttttt','desc', '20/01/1233', '21/01/2999', false, 2, 'organization_id', 'Strategy', 'id_Strategy')
+
+CREATE OR REPLACE FUNCTION public.update_SGT(
+	p_id int,
+	p_name varchar(50),
+	p_descr varchar(250),
+	p_datetstart date,
+	p_dateend date,
+	p_done boolean,
+	p_foreignkey int,
+	foreignkeyname character varying,
+	tablename character varying,
+	prkeyname character varying)
+    RETURNS int
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+DECLARE tempid int;
+begin
+execute format('
+	update %s
+	set
+	name = $2,
+	Description = $3,
+	Date_start = $4,
+	Date_end = $5,
+	Done = $6,
+	%s=$7
+	where %s = $1;', tablename, foreignkeyname, prkeyname)
+	using $1, $2, $3, $4, $5, $6, $7;
+	return tempid;
+end;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION public.insert_SGT(
+	p_name varchar(50),
+	p_descr varchar(250),
+	p_datetstart date,
+	p_dateend date,
+	p_done boolean,
+	p_foreignkey int,
+	foreignkeyname character varying,
+	tablename character varying,
+	prkeyname character varying)
+    RETURNS int
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+DECLARE tempid int;
+begin
+	execute format('insert into %s(name,Description,Date_Start,Date_End, done, %s) 
+	values ($1,$2,$3,$4, $5, $6) 
+				   returning %s', tablename, foreignkeyname, prkeyname) into tempid
+	using $1,$2,$3,$4, $5, $6;
+	return tempid;
+end;
+$BODY$;

@@ -28,7 +28,7 @@ type getAllOrgsResponse struct {
 	Data []models.Organization `json:"data"`
 }
 
-type getDataAndmessage struct {
+type getOrgAndmessage struct {
 	Message string              `json:"message"`
 	Data    models.Organization `json:"data"`
 }
@@ -84,7 +84,7 @@ func (h *Handler) updateOrganization(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, getDataAndmessage{
+	c.JSON(http.StatusOK, getOrgAndmessage{
 		Message: "Успешное изменение данных",
 		Data:    org,
 	})
@@ -108,7 +108,7 @@ func (h *Handler) deleteOrganization(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, getDataAndmessage{
+	c.JSON(http.StatusOK, getOrgAndmessage{
 		Message: "Успешное удаление данных",
 		Data:    org,
 	})

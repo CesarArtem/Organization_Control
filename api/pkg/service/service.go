@@ -18,18 +18,104 @@ type Organization interface {
 	Update(id int, organization models.Organization) (models.Organization, error)
 }
 
+type Finances_Operations interface {
+	Create(operation models.Finances_Operations, idorg int) (models.Finances_Operations, error)
+	GetAll(idorg int) ([]models.Finances_Operations, error)
+	GetById(id int, idorg int) (models.Finances_Operations, error)
+	Delete(id int, idorg int) error
+	Update(id int, operation models.Finances_Operations, idorg int) (models.Finances_Operations, error)
+}
+
 type Strategy interface {
+	Create(strategy models.Strategy, idorg int) (models.Strategy, error)
+	GetAll(idorg int) ([]models.Strategy, error)
+	GetById(id int, idorg int) (models.Strategy, error)
+	Delete(id int, idorg int) error
+	Update(id int, strategy models.Strategy, idorg int) (models.Strategy, error)
+}
+
+type Department interface {
+	Create(department models.Department, idorg int) (models.Department, error)
+	GetAll(idorg int) ([]models.Department, error)
+	GetById(id int, idorg int) (models.Department, error)
+	Delete(id int, idorg int) error
+	Update(id int, department models.Department, idorg int) (models.Department, error)
+}
+
+type Post interface {
+	Create(post models.Post, iddep int) (models.Post, error)
+	GetAll(iddep int) ([]models.Post, error)
+	GetById(id int, iddep int) (models.Post, error)
+	Delete(id int, iddep int) error
+	Update(id int, post models.Post, iddep int) (models.Post, error)
+}
+
+type Goal interface {
+	Create(goal models.Goal, iddep int) (models.Goal, error)
+	GetAll(iddep int) ([]models.Goal, error)
+	GetById(id int, iddep int) (models.Goal, error)
+	Delete(id int, iddep int) error
+	Update(id int, goal models.Goal, iddep int) (models.Goal, error)
+}
+
+type empl_post interface {
+	Create(emplpost models.Employee_Post, idpost int) (models.Employee_Post, error)
+	GetAll(idpost int) ([]models.Employee_Post, error)
+	GetById(id int, idpost int) (models.Employee_Post, error)
+	Delete(id int, idpost int) error
+	Update(id int, emplpost models.Employee_Post, idpost int) (models.Employee_Post, error)
+}
+
+type Employee interface {
+	Create(employee models.Employee, iddep int) (models.Employee, error)
+	GetAll(iddep int) ([]models.Employee, error)
+	GetById(id int, iddep int) (models.Employee, error)
+	Delete(id int, iddep int) error
+	Update(id int, employee models.Employee, iddep int) (models.Employee, error)
+}
+
+type Task interface {
+	Create(task models.Task, idempl int) (models.Task, error)
+	GetAll(idempl int) ([]models.Task, error)
+	GetById(id int, idempl int) (models.Task, error)
+	Delete(id int, idempl int) error
+	Update(id int, task models.Task, idempl int) (models.Task, error)
+}
+
+type User interface {
+	Create(user models.User, idempl int) (models.User, error)
+	GetAll(idempl int) ([]models.User, error)
+	GetById(id int, idempl int) (models.User, error)
+	Delete(id int, idempl int) error
+	Update(id int, user models.User, idempl int) (models.User, error)
 }
 
 type Service struct {
 	Authorization
 	Organization
 	Strategy
+	Finances_Operations
+	User
+	Task
+	Employee
+	Post
+	empl_post
+	Department
+	Goal
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Authorization: NewAuthService(repos.Authorization),
-		Organization:  NewOrganizationService(repos.Organization),
+		Authorization:       NewAuthService(repos.Authorization),
+		Organization:        NewOrganizationService(repos.Organization),
+		Strategy:            NewStrategyService(repos.Strategy, repos.Organization),
+		Finances_Operations: NewOperationService(repos.Finances_Operations, repos.Organization),
+		Department:          NewDepartmentService(repos.Department, repos.Organization),
+		Post:                NewPostService(repos.Post, repos.Department),
+		Employee:            NewEmployeeService(repos.Employee, repos.Department),
+		empl_post:           NewEmpl_postService(repos.Empl_post, repos.Employee),
+		Goal:                NewGoalService(repos.Goal, repos.Department),
+		Task:                NewTaskService(repos.Task, repos.Employee),
+		User:                NewUserService(repos.User, repos.Employee),
 	}
 }

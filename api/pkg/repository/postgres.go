@@ -10,6 +10,13 @@ const (
 	usersTable           = "users"
 	apiOrganizationTable = "organization"
 	apiStrategyTable     = "strategy"
+	apiOperationTable    = "finances_Operations"
+	apiDepartmentTable   = "department"
+	apiGoalTable         = "goal"
+	apiPostTable         = "post"
+	apiEmplPostTable     = "Employee_Post"
+	apiEmployeeTable     = "employee"
+	apiTaskTable         = "task"
 )
 
 type Config struct {
