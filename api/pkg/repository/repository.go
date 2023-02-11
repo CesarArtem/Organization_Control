@@ -110,5 +110,12 @@ func NewRepository(db *sqlx.DB) *Repository {
 		Organization:        NewOrganizationPostgres(db),
 		Strategy:            NewStrategyPostgres(db),
 		Finances_Operations: NewOperationPostgres(db),
+		User:                NewUserPostgres(db),
+		Task:                NewTaskPostgres(db),
+		Employee:            NewEmployeePostgres(db),
+		Post:                NewPostPostgres(db),
+		Empl_post:           NewEmployee_PostPostgres(db),
+		Department:          NewDepartmentPostgres(db),
+		Goal:                NewGoalPostgres(db),
 	}
 }

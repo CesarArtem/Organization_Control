@@ -23,15 +23,15 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	api := router.Group("/api")
 	{
-		lists := api.Group("/organization")
+		orgs := api.Group("/organization")
 		{
-			lists.POST("/", h.createOrganization)
-			lists.GET("/", h.getAllOrganization)
-			lists.GET("/:id", h.getOrganization)
-			lists.PUT("/:id", h.updateOrganization)
-			lists.DELETE("/:id", h.deleteOrganization)
+			orgs.POST("/", h.createOrganization)
+			orgs.GET("/", h.getAllOrganization)
+			orgs.GET("/:id", h.getOrganization)
+			orgs.PUT("/:id", h.updateOrganization)
+			orgs.DELETE("/:id", h.deleteOrganization)
 
-			strategy := lists.Group(":id/strategy")
+			strategy := orgs.Group(":id/strategy")
 			{
 				strategy.POST("/", h.createStrategy)
 				strategy.GET("/", h.getAllStrategies)
@@ -40,7 +40,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 				strategy.DELETE("/:strategy_id", h.deleteStrategy)
 			}
 
-			operations := lists.Group(":id/operation")
+			operations := orgs.Group(":id/operation")
 			{
 				operations.POST("/", h.createOperation)
 				operations.GET("/", h.getAllOperation)
@@ -49,65 +49,65 @@ func (h *Handler) InitRoutes() *gin.Engine {
 				operations.DELETE("/:operation_id", h.deleteOperation)
 			}
 
-			department := lists.Group(":id/department")
+			department := orgs.Group(":id/department")
 			{
-				department.POST("/", h.createStrategy)
-				department.GET("/", h.getAllStrategies)
-				department.GET("/:department_id", h.getStrategyById)
-				department.PUT("/:department_id", h.updateStrategy)
-				department.DELETE("/:department_id", h.deleteStrategy)
+				department.POST("/", h.createDepartment)
+				department.GET("/", h.getAllDepartment)
+				department.GET("/:department_id", h.getDepartment)
+				department.PUT("/:department_id", h.updateDepartment)
+				department.DELETE("/:department_id", h.deleteDepartment)
 
-				goals := lists.Group(":department_id/goal")
+				goals := department.Group(":department_id/goal")
 				{
-					goals.POST("/", h.createStrategy)
-					goals.GET("/", h.getAllStrategies)
-					goals.GET("/:goal_id", h.getStrategyById)
-					goals.PUT("/:goal_id", h.updateStrategy)
-					goals.DELETE("/:goal_id", h.deleteStrategy)
+					goals.POST("/", h.createGoal)
+					goals.GET("/", h.getAllGoal)
+					goals.GET("/:goal_id", h.getGoal)
+					goals.PUT("/:goal_id", h.updateGoal)
+					goals.DELETE("/:goal_id", h.deleteGoal)
 				}
 
-				post := lists.Group(":department_id/post")
+				post := department.Group(":department_id/post")
 				{
-					post.POST("/", h.createStrategy)
-					post.GET("/", h.getAllStrategies)
-					post.GET("/:post_id", h.getStrategyById)
-					post.PUT("/:post_id", h.updateStrategy)
-					post.DELETE("/:post_id", h.deleteStrategy)
+					post.POST("/", h.createPost)
+					post.GET("/", h.getAllPost)
+					post.GET("/:post_id", h.getPost)
+					post.PUT("/:post_id", h.updatePost)
+					post.DELETE("/:post_id", h.deletePost)
 				}
 
-				employee := lists.Group(":department_id/employee")
+				employee := department.Group(":department_id/employee")
 				{
-					employee.POST("/", h.createStrategy)
-					employee.GET("/", h.getAllStrategies)
-					employee.GET("/:employee_id", h.getStrategyById)
-					employee.PUT("/:employee_id", h.updateStrategy)
-					employee.DELETE("/:employee_id", h.deleteStrategy)
+					employee.POST("/", h.createEmployee)
+					employee.GET("/", h.getAllEmployee)
+					employee.GET("/:employee_id", h.getEmployee)
+					employee.PUT("/:employee_id", h.updateEmployee)
+					employee.DELETE("/:employee_id", h.deleteEmployee)
 
-					task := lists.Group(":employee_id/task")
+					task := employee.Group(":employee_id/task")
 					{
-						task.POST("/", h.createStrategy)
-						task.GET("/", h.getAllStrategies)
-						task.GET("/:task_id", h.getStrategyById)
-						task.PUT("/:task_id", h.updateStrategy)
-						task.DELETE("/:task_id", h.deleteStrategy)
+						task.POST("/", h.createTask)
+						task.GET("/", h.getAllTask)
+						task.GET("/:task_id", h.getTask)
+						task.PUT("/:task_id", h.updateTask)
+						task.DELETE("/:task_id", h.deleteTask)
 					}
 
-					user := lists.Group(":employee_id/user")
+					user := employee.Group(":employee_id/user")
 					{
-						user.POST("/", h.createStrategy)
-						user.GET("/", h.getAllStrategies)
-						user.GET("/:user_id", h.getStrategyById)
-						user.PUT("/:user_id", h.updateStrategy)
-						user.DELETE("/:user_id", h.deleteStrategy)
+						user.POST("/", h.createUser)
+						user.GET("/", h.getAllUser)
+						user.GET("/:user_id", h.getUser)
+						user.PUT("/:user_id", h.updateUser)
+						user.DELETE("/:user_id", h.deleteUser)
 					}
 
-					empl_post := lists.Group(":employee_id/emplpost")
+					empl_post := employee.Group(":employee_id/emplpost")
 					{
-						empl_post.POST("/", h.createStrategy)
-						empl_post.GET("/", h.getAllStrategies)
-						empl_post.GET("/:emplpost_id", h.getStrategyById)
-						empl_post.PUT("/:emplpost_id", h.updateStrategy)
-						empl_post.DELETE("/:emplpost_id", h.deleteStrategy)
+						empl_post.POST("/", h.createEmployee_Post)
+						empl_post.GET("/", h.getAllEmployee_Post)
+						empl_post.GET("/:emplpost_id", h.getEmployee_Post)
+						empl_post.PUT("/:emplpost_id", h.updateEmployee_Post)
+						empl_post.DELETE("/:emplpost_id", h.deleteEmployee_Post)
 					}
 				}
 			}

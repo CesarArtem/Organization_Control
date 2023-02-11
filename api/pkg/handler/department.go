@@ -7,19 +7,19 @@ import (
 	"strconv"
 )
 
-func (h *Handler) createOperation(c *gin.Context) {
+func (h *Handler) createDepartment(c *gin.Context) {
 	idorg, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	var input models.Finances_Operations
+	var input models.Department
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	org, err := h.services.Finances_Operations.Create(input, idorg)
+	org, err := h.services.Department.Create(input, idorg)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -28,35 +28,35 @@ func (h *Handler) createOperation(c *gin.Context) {
 	c.JSON(http.StatusOK, org)
 }
 
-func (h *Handler) getAllOperation(c *gin.Context) {
+func (h *Handler) getAllDepartment(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	list, err := h.services.Finances_Operations.GetAll(id)
+	list, err := h.services.Department.GetAll(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllOperationsResponse{
+	c.JSON(http.StatusOK, getAllDepartmentsResponse{
 		Data: list,
 	})
 }
 
-func (h *Handler) getOperation(c *gin.Context) {
+func (h *Handler) getDepartment(c *gin.Context) {
 	idorg, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	id, err := strconv.Atoi(c.Param("operation_id"))
+	id, err := strconv.Atoi(c.Param("department_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	org, err := h.services.Finances_Operations.GetById(id, idorg)
+	org, err := h.services.Department.GetById(id, idorg)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -65,65 +65,65 @@ func (h *Handler) getOperation(c *gin.Context) {
 	c.JSON(http.StatusOK, org)
 }
 
-func (h *Handler) updateOperation(c *gin.Context) {
+func (h *Handler) updateDepartment(c *gin.Context) {
 	idorg, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	id, err := strconv.Atoi(c.Param("operation_id"))
+	id, err := strconv.Atoi(c.Param("department_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	_, err = h.services.Finances_Operations.GetById(id, idorg)
+	_, err = h.services.Department.GetById(id, idorg)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	var input models.Finances_Operations
+	var input models.Department
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	org, err := h.services.Finances_Operations.Update(id, input, idorg)
+	org, err := h.services.Department.Update(id, input, idorg)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, getOperAndmessage{
+	c.JSON(http.StatusOK, getDepAndmessage{
 		Message: "Успешное изменение данных",
 		Data:    org,
 	})
 }
 
-func (h *Handler) deleteOperation(c *gin.Context) {
+func (h *Handler) deleteDepartment(c *gin.Context) {
 	idorg, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	id, err := strconv.Atoi(c.Param("operation_id"))
+	id, err := strconv.Atoi(c.Param("department_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	org, err := h.services.Finances_Operations.GetById(id, idorg)
+	org, err := h.services.Department.GetById(id, idorg)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	err = h.services.Finances_Operations.Delete(id, idorg)
+	err = h.services.Department.Delete(id, idorg)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, getOperAndmessage{
+	c.JSON(http.StatusOK, getDepAndmessage{
 		Message: "Успешное удаление данных",
 		Data:    org,
 	})

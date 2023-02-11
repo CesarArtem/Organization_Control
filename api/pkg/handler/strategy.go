@@ -28,15 +28,6 @@ func (h *Handler) createStrategy(c *gin.Context) {
 	c.JSON(http.StatusOK, org)
 }
 
-type getAllStrategysResponse struct {
-	Data []models.Strategy `json:"data"`
-}
-
-type getStratAndmessage struct {
-	Message string          `json:"message"`
-	Data    models.Strategy `json:"data"`
-}
-
 func (h *Handler) getAllStrategies(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

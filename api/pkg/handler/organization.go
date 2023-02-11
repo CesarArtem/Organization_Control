@@ -24,15 +24,6 @@ func (h *Handler) createOrganization(c *gin.Context) {
 	c.JSON(http.StatusOK, org)
 }
 
-type getAllOrgsResponse struct {
-	Data []models.Organization `json:"data"`
-}
-
-type getOrgAndmessage struct {
-	Message string              `json:"message"`
-	Data    models.Organization `json:"data"`
-}
-
 func (h *Handler) getAllOrganization(c *gin.Context) {
 	list, err := h.services.Organization.GetAll()
 	if err != nil {

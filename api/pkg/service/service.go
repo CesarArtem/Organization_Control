@@ -43,51 +43,51 @@ type Department interface {
 }
 
 type Post interface {
-	Create(post models.Post, iddep int) (models.Post, error)
-	GetAll(iddep int) ([]models.Post, error)
-	GetById(id int, iddep int) (models.Post, error)
-	Delete(id int, iddep int) error
-	Update(id int, post models.Post, iddep int) (models.Post, error)
+	Create(post models.Post, iddep int, idorg int) (models.Post, error)
+	GetAll(iddep int, idorg int) ([]models.Post, error)
+	GetById(id int, iddep int, idorg int) (models.Post, error)
+	Delete(id int, iddep int, idorg int) error
+	Update(id int, post models.Post, iddep int, idorg int) (models.Post, error)
 }
 
 type Goal interface {
-	Create(goal models.Goal, iddep int) (models.Goal, error)
-	GetAll(iddep int) ([]models.Goal, error)
-	GetById(id int, iddep int) (models.Goal, error)
-	Delete(id int, iddep int) error
-	Update(id int, goal models.Goal, iddep int) (models.Goal, error)
+	Create(goal models.Goal, iddep int, idorg int) (models.Goal, error)
+	GetAll(iddep int, idorg int) ([]models.Goal, error)
+	GetById(id int, iddep int, idorg int) (models.Goal, error)
+	Delete(id int, iddep int, idorg int) error
+	Update(id int, goal models.Goal, iddep int, idorg int) (models.Goal, error)
 }
 
-type empl_post interface {
-	Create(emplpost models.Employee_Post, idpost int) (models.Employee_Post, error)
-	GetAll(idpost int) ([]models.Employee_Post, error)
-	GetById(id int, idpost int) (models.Employee_Post, error)
-	Delete(id int, idpost int) error
-	Update(id int, emplpost models.Employee_Post, idpost int) (models.Employee_Post, error)
+type EmplPost interface {
+	Create(emplpost models.Employee_Post, idpost int, iddep int) (models.Employee_Post, error)
+	GetAll(idpost int, iddep int) ([]models.Employee_Post, error)
+	GetById(id int, idpost int, iddep int) (models.Employee_Post, error)
+	Delete(id int, idpost int, iddep int) error
+	Update(id int, emplpost models.Employee_Post, idpost int, iddep int) (models.Employee_Post, error)
 }
 
 type Employee interface {
-	Create(employee models.Employee, iddep int) (models.Employee, error)
-	GetAll(iddep int) ([]models.Employee, error)
-	GetById(id int, iddep int) (models.Employee, error)
-	Delete(id int, iddep int) error
-	Update(id int, employee models.Employee, iddep int) (models.Employee, error)
+	Create(employee models.Employee, iddep int, idorg int) (models.Employee, error)
+	GetAll(iddep int, idorg int) ([]models.Employee, error)
+	GetById(id int, iddep int, idorg int) (models.Employee, error)
+	Delete(id int, iddep int, idorg int) error
+	Update(id int, employee models.Employee, iddep int, idorg int) (models.Employee, error)
 }
 
 type Task interface {
-	Create(task models.Task, idempl int) (models.Task, error)
-	GetAll(idempl int) ([]models.Task, error)
-	GetById(id int, idempl int) (models.Task, error)
-	Delete(id int, idempl int) error
-	Update(id int, task models.Task, idempl int) (models.Task, error)
+	Create(task models.Task, idempl int, iddep int) (models.Task, error)
+	GetAll(idempl int, iddep int) ([]models.Task, error)
+	GetById(id int, idempl int, iddep int) (models.Task, error)
+	Delete(id int, idempl int, iddep int) error
+	Update(id int, task models.Task, idempl int, iddep int) (models.Task, error)
 }
 
 type User interface {
-	Create(user models.User, idempl int) (models.User, error)
-	GetAll(idempl int) ([]models.User, error)
-	GetById(id int, idempl int) (models.User, error)
-	Delete(id int, idempl int) error
-	Update(id int, user models.User, idempl int) (models.User, error)
+	Create(user models.User, idempl int, iddep int) (models.User, error)
+	GetAll(idempl int, iddep int) ([]models.User, error)
+	GetById(id int, idempl int, iddep int) (models.User, error)
+	Delete(id int, idempl int, iddep int) error
+	Update(id int, user models.User, idempl int, iddep int) (models.User, error)
 }
 
 type Service struct {
@@ -99,7 +99,7 @@ type Service struct {
 	Task
 	Employee
 	Post
-	empl_post
+	EmplPost
 	Department
 	Goal
 }
@@ -113,7 +113,7 @@ func NewService(repos *repository.Repository) *Service {
 		Department:          NewDepartmentService(repos.Department, repos.Organization),
 		Post:                NewPostService(repos.Post, repos.Department),
 		Employee:            NewEmployeeService(repos.Employee, repos.Department),
-		empl_post:           NewEmpl_postService(repos.Empl_post, repos.Employee),
+		EmplPost:            NewEmpl_postService(repos.Empl_post, repos.Employee),
 		Goal:                NewGoalService(repos.Goal, repos.Department),
 		Task:                NewTaskService(repos.Task, repos.Employee),
 		User:                NewUserService(repos.User, repos.Employee),

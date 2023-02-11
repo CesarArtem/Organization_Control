@@ -66,7 +66,7 @@ func (r *StrategyPostgres) Delete(id int, idorg int) error {
 	idstr := "id_strategy"
 	query := fmt.Sprintf("SELECT delete_row($1, $2, $3)")
 
-	_, err := r.db.Exec(query, apiOrganizationTable, idstr, id)
+	_, err := r.db.Exec(query, apiStrategyTable, idstr, id)
 
 	return err
 }

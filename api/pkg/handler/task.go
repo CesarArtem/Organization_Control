@@ -7,19 +7,24 @@ import (
 	"strconv"
 )
 
-func (h *Handler) createOperation(c *gin.Context) {
-	idorg, err := strconv.Atoi(c.Param("id"))
+func (h *Handler) createTask(c *gin.Context) {
+	iddep, err := strconv.Atoi(c.Param("department_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	var input models.Finances_Operations
+	idempl, err := strconv.Atoi(c.Param("employee_id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
+	}
+
+	var input models.Task
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	org, err := h.services.Finances_Operations.Create(input, idorg)
+	org, err := h.services.Task.Create(input, idempl, iddep)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -28,35 +33,45 @@ func (h *Handler) createOperation(c *gin.Context) {
 	c.JSON(http.StatusOK, org)
 }
 
-func (h *Handler) getAllOperation(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+func (h *Handler) getAllTask(c *gin.Context) {
+	iddep, err := strconv.Atoi(c.Param("department_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	list, err := h.services.Finances_Operations.GetAll(id)
+	id, err := strconv.Atoi(c.Param("employee_id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
+	}
+
+	list, err := h.services.Task.GetAll(id, iddep)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllOperationsResponse{
+	c.JSON(http.StatusOK, getAllTasksResponse{
 		Data: list,
 	})
 }
 
-func (h *Handler) getOperation(c *gin.Context) {
-	idorg, err := strconv.Atoi(c.Param("id"))
+func (h *Handler) getTask(c *gin.Context) {
+	iddep, err := strconv.Atoi(c.Param("department_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	id, err := strconv.Atoi(c.Param("operation_id"))
+	idempl, err := strconv.Atoi(c.Param("employee_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	org, err := h.services.Finances_Operations.GetById(id, idorg)
+	id, err := strconv.Atoi(c.Param("task_id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
+	}
+
+	org, err := h.services.Task.GetById(id, idempl, iddep)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -65,65 +80,75 @@ func (h *Handler) getOperation(c *gin.Context) {
 	c.JSON(http.StatusOK, org)
 }
 
-func (h *Handler) updateOperation(c *gin.Context) {
-	idorg, err := strconv.Atoi(c.Param("id"))
+func (h *Handler) updateTask(c *gin.Context) {
+	iddep, err := strconv.Atoi(c.Param("department_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	id, err := strconv.Atoi(c.Param("operation_id"))
+	idempl, err := strconv.Atoi(c.Param("employee_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	_, err = h.services.Finances_Operations.GetById(id, idorg)
+	id, err := strconv.Atoi(c.Param("Task_id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
+	}
+
+	_, err = h.services.Goal.GetById(id, idempl, iddep)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	var input models.Finances_Operations
+	var input models.Task
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	org, err := h.services.Finances_Operations.Update(id, input, idorg)
+	org, err := h.services.Task.Update(id, input, idempl, iddep)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, getOperAndmessage{
+	c.JSON(http.StatusOK, getTaskAndmessage{
 		Message: "Успешное изменение данных",
 		Data:    org,
 	})
 }
 
-func (h *Handler) deleteOperation(c *gin.Context) {
-	idorg, err := strconv.Atoi(c.Param("id"))
+func (h *Handler) deleteTask(c *gin.Context) {
+	iddep, err := strconv.Atoi(c.Param("department_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	id, err := strconv.Atoi(c.Param("operation_id"))
+	idempl, err := strconv.Atoi(c.Param("employee_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	org, err := h.services.Finances_Operations.GetById(id, idorg)
+	id, err := strconv.Atoi(c.Param("task_id"))
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
+	}
+
+	org, err := h.services.Task.GetById(id, idempl, iddep)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	err = h.services.Finances_Operations.Delete(id, idorg)
+	err = h.services.Task.Delete(id, idempl, iddep)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	c.JSON(http.StatusOK, getOperAndmessage{
+	c.JSON(http.StatusOK, getTaskAndmessage{
 		Message: "Успешное удаление данных",
 		Data:    org,
 	})

@@ -127,9 +127,6 @@ CREATE INDEX FK_7 ON Finances_Operations
  Organization_ID
 );
 
-ALTER TABLE Task
-ADD COLUMN Done boolean DEFAULT FALSE;
-
 CREATE TABLE Goal
 (
  ID_Goal       SERIAL NOT NULL,
@@ -445,7 +442,7 @@ CREATE OR REPLACE FUNCTION public.update_Employee(
 	p_SeriaPasp varchar(4),
 	p_NumberPasp varchar(6),
 	p_Email varchar(50),
-	p_User_ID int)
+	p_Department_ID int)
     RETURNS boolean
     LANGUAGE 'plpgsql'
 AS $BODY$
@@ -459,7 +456,7 @@ begin
 	SeriaPasp=$6,
 	NumberPasp=$7,
 	Email=$8,
-	User_ID=$9
+	Department_ID=$9
 	where ID_Employee = $1;
 	return true;
 end;
@@ -473,7 +470,7 @@ CREATE OR REPLACE FUNCTION public.insert_Employee(
 	p_SeriaPasp varchar(4),
 	p_NumberPasp varchar(6),
 	p_Email varchar(50),
-	p_User_ID int)
+	p_Department_ID int)
    	RETURNS int
     LANGUAGE 'plpgsql'
     COST 100
@@ -481,8 +478,8 @@ CREATE OR REPLACE FUNCTION public.insert_Employee(
 AS $BODY$
 DECLARE tempid int;
 begin
-	insert into Employee(Surname,Name,SecondName,Date_Birth,SeriaPasp, NumberPasp, Email, User_ID) 
-	values (p_Surname,p_Name,p_SecondName,p_Date_Birth,p_SeriaPasp, p_NumberPasp, p_Email, p_User_ID) returning id_employee into tempid;
+	insert into Employee(Surname,Name,SecondName,Date_Birth,SeriaPasp, NumberPasp, Email, Department_ID) 
+	values (p_Surname,p_Name,p_SecondName,p_Date_Birth,p_SeriaPasp, p_NumberPasp, p_Email, p_Department_ID) returning id_employee into tempid;
 	return tempid;
 end;
 $BODY$;
@@ -491,7 +488,8 @@ $BODY$;
 CREATE OR REPLACE FUNCTION public.update_User(
 	p_id int,
 	p_Login varchar(50),
-	p_Password varchar(50))
+	p_Password varchar(50),
+	p_Employee_ID int)
     RETURNS boolean
     LANGUAGE 'plpgsql'
 AS $BODY$
@@ -499,7 +497,8 @@ begin
 	update Users
 	set
 	Login = $2,
-	Password = $3
+	Password = $3,
+	Employee_ID =$4
 	where ID_User = $1;
 	return true;
 end;
@@ -507,7 +506,8 @@ $BODY$;
 
 CREATE OR REPLACE FUNCTION public.insert_User(
 	p_Login varchar(50),
-	p_Password varchar(50))
+	p_Password varchar(50),
+	p_Employee_ID int)
     RETURNS int
     LANGUAGE 'plpgsql'
     COST 100
@@ -515,8 +515,8 @@ CREATE OR REPLACE FUNCTION public.insert_User(
 AS $BODY$
 DECLARE tempid int;
 begin
-	insert into Users(Login,Password) 
-	values (p_Login,p_Password) returning id_user into tempid;
+	insert into Users(Login,Password,Employee_ID) 
+	values (p_Login,p_Password,p_Employee_ID) returning id_user into tempid;
 	return tempid;
 end;
 $BODY$;
@@ -646,15 +646,6 @@ begin
 end;
 $BODY$;
 
-
-SELECT delete_row('organization', 'id_organization', 20)
-
-SELECT insert_strategy('test','dasd', '20/01/1233', '21/01/2999', true, 2)
-
-SELECT update_SGT(1,'testttttt','desc', '20/01/1233', '21/01/2999', false, 2, 'organization_id', 'Strategy', 'id_Strategy')
-
-SELECT insert_SGT('testttttt','desc', '20/01/1233', '21/01/2999', false, 2, 'organization_id', 'Strategy', 'id_Strategy')
-
 CREATE OR REPLACE FUNCTION public.update_SGT(
 	p_id int,
 	p_name varchar(50),
@@ -712,3 +703,54 @@ begin
 	return tempid;
 end;
 $BODY$;
+
+
+
+
+
+
+
+
+
+
+
+ALTER TABLE Task
+ADD COLUMN Done boolean DEFAULT FALSE;
+
+ALTER TABLE Employee
+ADD COLUMN Department_ID int NOT NULL;
+
+DELETE FROM Users *
+
+ALTER TABLE Users
+ADD COLUMN Employee_ID int NOT NULL;
+
+alter table Users 
+    add constraint fk_13
+    foreign key (Employee_ID) 
+    REFERENCES Employee (ID_Employee);
+
+alter table Employee 
+    add constraint fk_12
+    foreign key (Department_ID) 
+    REFERENCES Department (ID_Department);
+	
+CREATE INDEX FK_13 ON Employee
+(
+ Department_ID
+);
+
+
+
+SELECT delete_row('organization', 'id_organization', 20)
+
+SELECT insert_strategy('test','dasd', '20/01/1233', '21/01/2999', true, 2)
+
+SELECT update_SGT(1,'testttttt','desc', '20/01/1233', '21/01/2999', false, 2, 'organization_id', 'Strategy', 'id_Strategy')
+
+SELECT insert_SGT('testttttt','desc', '20/01/1233', '21/01/2999', false, 2, 'organization_id', 'Strategy', 'id_Strategy')
+
+
+DROP FUNCTION insert_Employee(character varying,character varying,character varying,date,character varying,character varying,character varying,integer)
+
+DROP FUNCTION update_employee(integer,character varying,character varying,character varying,date,character varying,character varying,character varying,integer)
