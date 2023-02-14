@@ -5,5 +5,5 @@ function ShowNavigation() {
 
 function HideNavigation() {
     element=document.getElementById("nav")
-    element.style.transform="translateX(-70%)"
+    element.style.transform="translateX(-80%)"
 }
