@@ -70,7 +70,7 @@ section {
     margin-right:10px;
     alignment: center;
     margin-bottom: 10px;
-    transform: translateY(-9px);
+    transform: translateY(-58px);
 }
 
 .menu-div{
@@ -81,7 +81,7 @@ section {
 }
 
 
-a {
+.menu-a {
     position: relative;
     background: #444;
     color: #39393a;
@@ -90,38 +90,53 @@ a {
     border: none;
     letter-spacing: 0.1rem;
     font-size: 1rem;
-    padding: 1rem 2rem;
+    display: flex;
     transition: 0.2s;
     margin-left: 5px;
+    width: 228px;
+    min-width: 228px;
+    max-width: 228px;
+    padding: 1rem 2rem;
 }
 
-a:hover {
+.menu-a:hover {
     letter-spacing: 0.2rem;
     padding: 1.1rem 2.1rem;
     background: var(--clr);
     color: var(--clr);
     /* box-shadow: 0 0 35px var(--clr); */
     animation: box 3s infinite;
+    width: 228px;
+    min-width: 228px;
+    max-width: 228px;
 }
 
-a::before {
+.menu-a::before {
     content: "";
     position: absolute;
     inset: 2px;
     background: #399E5A;
+    width: 223px;
+    min-width: 223px;
+    max-width: 223px;
 }
 
-a span {
-    position: relative;
+.menu-a span {
+    /*position: relative;*/
     z-index: 1;
+    width:100%;
+    text-align: center;
 }
-a i {
+.menu-a i {
     position: absolute;
     inset: 0;
     display: block;
+    width: 228px;
+    min-width: 228px;
+    max-width: 228px;
 }
 
-a i::before {
+.menu-a i::before {
     content: "";
     position: absolute;
     width: 10px;
@@ -133,13 +148,13 @@ a i::before {
     transition: 0.2s;
 }
 
-a:hover i::before {
+.menu-a:hover i::before {
     width: 15px;
     left: 20%;
     animation: move 3s infinite;
 }
 
-a i::after {
+.menu-a i::after {
     content: "";
     position: absolute;
     width: 10px;
@@ -151,7 +166,7 @@ a i::after {
     transition: 0.2s;
 }
 
-a:hover i::after {
+.menu-a:hover i::after {
     width: 15px;
     left: 80%;
     animation: move 3s infinite;

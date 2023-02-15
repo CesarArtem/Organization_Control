@@ -1,0 +1,21 @@
+.page-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+.left-panel-wrapper {
+    width: 200px;
+    background-color: orange;
+}
+.right-panel-wrapper {
+    width: 200px;
+    background-color: green;
+}
+.content-wrapper {
+    /*width: 250px;*/
+    width: calc(100% - 400px);
+    padding: 0 30px;
+}
+.content {
+    margin-left: 20%;
+
+}
