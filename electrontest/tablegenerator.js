@@ -35,20 +35,39 @@ function generateTableHead(table, data) {
         th.appendChild(text);
         row.appendChild(th);
     }
+    let th = document.createElement("th");
+    let text = document.createTextNode("");
+    th.appendChild(text);
+    row.appendChild(th);
 }
 
 function generateTable(table, data) {
     let thead = table.createTBody();
+    index=0;
     for (let element of data) {
+        index++;
         let row = thead.insertRow();
+        row.id=index;
         for (key in element) {
             let cell = row.insertCell();
             let text = document.createTextNode(element[key]);
             cell.appendChild(text);
         }
+        let cell = row.insertCell();
+        let text = '<button type="submit" class="deletebtns" onclick="DeleteRow(index)" style="background-color: #e5383b">Удалить</button>'
+        var temp = document.createElement('div');
+        temp.innerHTML = text;
+        cell.appendChild(temp);
     }
     table.insertRow(thead);
 }
+
+function DeleteRow(no){
+    // alert(no);
+    // document.getElementById(no).outerHTML="";
+    // mountains.remove(no);
+}
+
 var prevcolor;
 var selectedindex=0;
 
