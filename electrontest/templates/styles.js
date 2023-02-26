@@ -1,19 +1,19 @@
 function ShowNavigation() {
-    element=document.getElementById("nav")
-    element.style.transform="translateX(0px)"
+    element = document.getElementById("nav")
+    element.style.transform = "translateX(0px)"
 }
 
 function HideNavigation() {
-    element=document.getElementById("nav")
-    element.style.transform="translateX(-80%)"
+    element = document.getElementById("nav")
+    element.style.transform = "translateX(-80%)"
 }
 
-function PaintItemCombobox(element){
-    element.style.backgroundColor="#cccccc";
+function PaintItemCombobox(element) {
+    element.style.backgroundColor = "#cccccc";
 }
 
-function UnPaintItemCombobox(element){
-    element.style.backgroundColor="#ddd";
+function UnPaintItemCombobox(element) {
+    element.style.backgroundColor = "#ddd";
 }
 
 function HideScrollForNumber() {
@@ -25,23 +25,27 @@ function HideScrollForNumber() {
     });
 }
 
-function CheckBoxClick(check) {
+function CheckBoxClick(check, form) {
     if (check.checked) {
-        element=document.getElementsByClassName("form-control")
-        for(var i = 0; i < element.length; i++){
-            element[i].disabled=false;
+        element = form.getElementsByClassName("form-control")
+        for (var i = 0; i < element.length; i++) {
+            element[i].disabled = false;
         }
     } else {
-        element=document.getElementsByClassName("form-control")
-        for(var i = 0; i < element.length; i++){
-            element[i].disabled=true;
+        element = form.getElementsByClassName("form-control")
+        for (var i = 0; i < element.length; i++) {
+            element[i].disabled = true;
         }
     }
 };
 
-element=document.getElementsByClassName("form-control")
-for(var i = 0; i < element.length; i++){
-    element[i].disabled=true;
+function HideFromStart() {
+    form=document.getElementById("form1")
+    element = form.getElementsByClassName("form-control")
+    for (var i = 0; i < element.length; i++) {
+        element[i].disabled = true;
+    }
 }
 
+HideFromStart();
 HideScrollForNumber();

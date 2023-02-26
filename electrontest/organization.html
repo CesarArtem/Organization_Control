@@ -6,58 +6,144 @@
     <link rel="stylesheet" href="styles/menu.css">
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/lte/adminlte.min.css">
-    <link rel="stylesheet" href="styles/combobox.css">
+    <!--    <link rel="stylesheet" href="styles/combobox.css">-->
     <link rel="stylesheet" href="styles/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="styles/select2-bootstrap4-theme/select2-bootstrap4.min.css">
     <link rel="stylesheet" href="styles/bootstrap/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+    <link rel="stylesheet" href="styles/bootstrap/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="styles/bootstrap/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="styles/bootstrap/datatables-buttons/css/buttons.bootstrap4.min.css">
 </head>
 <body>
 <div class="content">
-<div class="cardforcontent">
+    <div class="cardforcontent">
+        <div class="fullcard">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Организация</h3>
+                </div>
+                <form style="display: flex" id="form1">
+                    <div class="card-body" style="width: 50%">
+                        <div class="form-group">
+                            <label for="OrgName">Название</label>
+                            <input type="text" maxlength="250" minlength="5" class="form-control" id="OrgName"
+                                   placeholder="Название">
+                        </div>
+                        <div class="form-group">
+                            <label for="INNOrg">ИНН</label>
+                            <input type="number" min="0" minlength="10" maxlength="10" class="form-control"
+                                   style="list-style-type: none; overflow-scrolling: touch;" id="INNOrg"
+                                   placeholder="ИНН">
+                        </div>
+                        <div class="form-group">
+                            <label for="AddressOrg">Адрес</label>
+                            <input type="password" maxlength="250" minlength="5" class="form-control" id="AddressOrg"
+                                   placeholder="Адрес">
+                        </div>
+                    </div>
+                    <div class="card-body" style="width: 50%">
+                        <div class="form-group">
+                            <label for="BudgetOrg">Начальный бюджет</label>
+                            <input type="number" min="0" minlength="1" maxlength="9" class="form-control" id="BudgetOrg"
+                                   placeholder="Бюджет">
+                        </div>
+                        <div class="form-group">
+                            <label>Дата основания:</label>
+                            <input type="date" class="form-control" id="DateOrg" placeholder="Дата"/>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" name="checkbox" class="form-check-input" id="CheckChange"
+                                   onclick="CheckBoxClick(this, form1)">
+                            <label class="form-check-label" for="CheckChange">Изменить</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="fullcard">
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Организация</h3>
+                <h3 class="card-title">Стратегия</h3>
             </div>
-            <form style="display: flex">
+            <form style="display: flex" id="form2">
                 <div class="card-body" style="width: 50%">
                     <div class="form-group">
-                        <label for="InputName">Название</label>
-                        <input type="text" maxlength="250" minlength="5" class="form-control" id="InputName" placeholder="Название">
+                        <label for="NameStrategy">Название</label>
+                        <input type="text" maxlength="250" minlength="5" class="form-control" id="NameStrategy"
+                               placeholder="Название">
                     </div>
                     <div class="form-group">
-                        <label for="INNInput">ИНН</label>
-                        <input type="number" min="0" minlength="10" maxlength="10" class="form-control" style="list-style-type: none; overflow-scrolling: touch;" id="INNInput" placeholder="ИНН">
+                        <label for="DescriptionStrategy">Описание</label>
+                        <input type="text" maxlength="250" minlength="5" style="text-wrap: normal" class="form-control" id="DescriptionStrategy"
+                               placeholder="Описание">
                     </div>
-                    <div class="form-group">
-                        <label for="AddressInput">Адрес</label>
-                        <input type="password" maxlength="250" minlength="5" class="form-control" id="AddressInput" placeholder="Адрес">
+                    <div class="card-footer" style="padding: 0; background: transparent;">
+                        <button type="submit" class="btn btn-primary" style="background-color: #399E5A">Добавить</button>
                     </div>
                 </div>
                 <div class="card-body" style="width: 50%">
                     <div class="form-group">
-                        <label for="BudgetInput">Начальный бюджет</label>
-                        <input type="number" min="0" minlength="1" maxlength="9" class="form-control" id="BudgetInput" placeholder="Бюджет">
+                        <label>Дата начала:</label>
+                        <input type="date" class="form-control" id="DateStartStrategy" placeholder="Дата начала"/>
                     </div>
                     <div class="form-group">
-                        <label>Дата основания:</label>
-                        <input type="date" class="form-control" id="DateInput" placeholder="Дата"/>
+                        <label>Дата конца:</label>
+                        <input type="date" class="form-control" id="DateEndStrategy" placeholder="Дата конца"/>
                     </div>
-                    <div class="form-check">
-                        <input type="checkbox" name="checkbox" class="form-check-input" id="CheckChange" onclick="CheckBoxClick(this)">
-                        <label class="form-check-label" for="CheckChange">Изменить</label>
+                    <div class="card-footer" style="padding: 0; background: transparent;">
+                        <button type="submit" class="btn btn-primary" style="background-color: #399E5A">Изменить</button>
                     </div>
                 </div>
-                <!-- /.card-body -->
             </form>
         </div>
     </div>
-</div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Стратегии</h3>
+        </div>
+
+        <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped">
+
+            </table>
+        </div>
+
+    </div>
 </div>
 
-<script type="text/javascript" src="templates/styles.js">HideScrollForNumber()</script>
-<script type="text/javascript" src="templates/combobox.js"></script>
+<script type="text/javascript" src="tablegenerator.js"></script>
+<script src="styles/bootstrap/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="templates/styles.js"></script>
+<!--<script type="text/javascript" src="templates/combobox.js"></script>-->
 <script type="text/javascript" src="templates/menu.js"></script>
+<script src="styles/bootstrap/datatables/jquery.dataTables.min.js"></script>
+<script src="styles/bootstrap/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="styles/bootstrap/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="styles/bootstrap/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="styles/bootstrap/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="styles/bootstrap/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="styles/bootstrap/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="styles/bootstrap/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="styles/bootstrap/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
