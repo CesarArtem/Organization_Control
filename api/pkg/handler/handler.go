@@ -2,6 +2,7 @@ package handler
 
 import (
 	"api/pkg/service"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,14 +16,17 @@ func NewHandler(services *service.Service) *Handler {
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
+	router.Use(cors.Default())
+
 	auth := router.Group("/auth")
 	{
 		auth.POST("sign-up", h.signUp)
 		auth.POST("sign-in", h.signIn)
 	}
 
-	api := router.Group("/api")
+	api := router.Group("/api", cors.Default())
 	{
+		api.Use(cors.Default())
 		orgs := api.Group("/organization")
 		{
 			orgs.POST("/", h.createOrganization)

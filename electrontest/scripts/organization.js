@@ -1,31 +1,61 @@
-// let mountains = [
-//     { name: "Monte Falco", height: 1658, place: "Parco Foreste Casentinesi" },
-//     { name: "Monte Falterona", height: 1654, place: "Parco Foreste Casentinesi" },
-//     { name: "Poggio Scali", height: 1520, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
-//     { name: "Monte Amiata", height: 1738, place: "Siena" }
-// ];
-//
+
+const orgurl='http://localhost:8000/api/organization';
+const strategyurl='http://localhost:8000/api/organization/2/strategy/1';
+
+function getOrganization(){
+    fetch(orgurl, {
+        method: 'GET',
+        // mode: 'no-cors',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': '*'
+        },
+    })
+        .then(res=>
+        {
+            return res.json()
+        })
+        .then(data=>{
+            // let org=Object.assign(new Organization(), data);
+            //
+            // document.getElementById("OrgName").value=org.name;
+            // document.getElementById("AddressOrg").value=org.addres;
+            // document.getElementById("BudgetOrg").value=org.budget;
+            // document.getElementById("INNOrg").value=org.inn;
+            // document.getElementById("DateOrg").value=org.date_foundation.toString().substring(0, org.date_foundation.toString().length-10);
+
+            console.log(data)
+            // console.log(org)
+        })
+        .catch(error=>console.log(error))
+}
+
+function getStrategys(){
+    fetch(strategyurl, {
+        method: 'GET',
+        // mode: 'no-cors'
+    })
+        .then(res=>
+        {
+            return res.json()
+        })
+        .then(data=>{
+            // var strategy=[];
+            // for(var i in data)
+            //     strategy.push([i, data [i]]);
+            //
+            // let table = document.querySelector("table");
+            // generateTableHead(table, strategy);
+            // generateTable(table, strategy);
+            // addRowHandlers();
+            console.log(data)
+            // console.log(strategy)
+        })
+        .catch(error=>console.log(error))
+}
+
+
 // function generateTableHead(table, data) {
 //     let thead = table.createTHead();
 //     let row = thead.insertRow();
@@ -108,9 +138,37 @@
 //         currentRow.onclick = createClickHandler(currentRow);
 //     }
 // }
-//
-// let table = document.querySelector("table");
-// let data = Object.keys(mountains[0]);
-// generateTableHead(table, data);
-// generateTable(table, mountains);
-// addRowHandlers();
+
+getOrganization()
+getStrategys()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function Organization(name, id_organization, budget, date_foundation, addres, inn){
+    this.name = name;
+    this.id_organization = id_organization;
+    this.budget = budget;
+    this.date_foundation = date_foundation;
+    this.addres = addres;
+    this.inn = inn;
+}
+
+function Strategy(name, id_strategy, description, date_start, date_end, done){
+    this.name = name;
+    this.id_strategy = id_strategy;
+    this.description = description;
+    this.date_start = date_start;
+    this.date_end = date_end;
+    this.done = done;
+}

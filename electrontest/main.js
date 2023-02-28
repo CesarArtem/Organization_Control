@@ -1,3 +1,6 @@
+const cors = require("cors");
+app.use(cors());
+
 const path = require('path')
 const url=require('url')
 const {app, BrowserWindow}=require('electron')

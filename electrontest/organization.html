@@ -37,7 +37,7 @@
                         </div>
                         <div class="form-group">
                             <label for="AddressOrg">Адрес</label>
-                            <input type="password" maxlength="250" minlength="5" class="form-control" id="AddressOrg"
+                            <input type="text" maxlength="250" minlength="5" class="form-control" id="AddressOrg"
                                    placeholder="Адрес">
                         </div>
                     </div>
@@ -95,6 +95,12 @@
                         <button type="submit" class="btn btn-primary" style="background-color: #399E5A">Изменить</button>
                     </div>
                 </div>
+                <div class="card-body" style="width: 50%">
+                    <div class="form-group">
+                        <label>Выполнено:</label>
+                        <input type="checkbox" class="form-control" id="DoneStrategy" placeholder="Дата начала"/>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -115,6 +121,7 @@
 <script type="text/javascript" src="tablegenerator.js"></script>
 <script src="styles/bootstrap/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="templates/styles.js"></script>
+<script type="text/javascript" src="scripts/organization.js"></script>
 <!--<script type="text/javascript" src="templates/combobox.js"></script>-->
 <script type="text/javascript" src="templates/menu.js"></script>
 <script src="styles/bootstrap/datatables/jquery.dataTables.min.js"></script>
