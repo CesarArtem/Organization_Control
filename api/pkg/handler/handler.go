@@ -16,7 +16,20 @@ func NewHandler(services *service.Service) *Handler {
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
-	router.Use(cors.Default())
+
+	c := cors.New(cors.Config{
+		AllowMethods:           []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:           []string{"*"},
+		AllowCredentials:       true,
+		ExposeHeaders:          []string{"*"},
+		MaxAge:                 6000,
+		AllowWildcard:          true,
+		AllowBrowserExtensions: true,
+		AllowWebSockets:        true,
+		AllowFiles:             true,
+		AllowOrigins:           []string{"*"},
+	})
+	router.Use(c)
 
 	auth := router.Group("/auth")
 	{
@@ -24,13 +37,12 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		auth.POST("sign-in", h.signIn)
 	}
 
-	api := router.Group("/api", cors.Default())
+	api := router.Group("/api")
 	{
-		api.Use(cors.Default())
 		orgs := api.Group("/organization")
 		{
 			orgs.POST("/", h.createOrganization)
-			orgs.GET("/", h.getAllOrganization)
+			orgs.GET("/", h.getAllOrganization, c)
 			orgs.GET("/:id", h.getOrganization)
 			orgs.PUT("/:id", h.updateOrganization)
 			orgs.DELETE("/:id", h.deleteOrganization)

@@ -26,6 +26,7 @@ func (h *Handler) createOrganization(c *gin.Context) {
 
 func (h *Handler) getAllOrganization(c *gin.Context) {
 	list, err := h.services.Organization.GetAll()
+
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
