@@ -2,7 +2,7 @@
   "name": "app",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "electron/main.js",
   "scripts": {
     "start": "electron ."
   },
@@ -11,6 +11,7 @@
   "dependencies": {
     "bootstrap": "^5.3.0-alpha1",
     "cors": "^2.8.5",
+    "electron-store": "^8.1.0",
     "os-utils": "^0.0.14"
   },
   "devDependencies": {

@@ -65,7 +65,8 @@
 // function DeleteRow(no){
 //     // alert(no);
 //     // document.getElementById(no).outerHTML="";
-//     // mountains.remove(no);
+//     // mountains.remove(n
+//     o);
 // }
 //
 // var prevcolor;
