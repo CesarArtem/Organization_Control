@@ -11,11 +11,6 @@ CREATE DATABASE "OrganizationControl"
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1;
 	
-	
-Database: OrganizationControl
-
--- DROP DATABASE "OrganizationControl";
-	
 CREATE TABLE Organization
 (
  ID_Organization SERIAL NOT NULL,
@@ -70,14 +65,14 @@ CREATE TABLE Employee
  User_ID     int,
  CONSTRAINT PK_11 PRIMARY KEY ( ID_Employee ),
  CONSTRAINT FK_9 FOREIGN KEY ( User_ID ) REFERENCES "User" ( ID_User ),
- CONSTRAINT FK_12 FOREIGN KEY ( Department_ID ) REFERENCES "Department" ( ID_Department )
+ CONSTRAINT FK_25 FOREIGN KEY ( Department_ID ) REFERENCES Department ( ID_Department )
 );
 
 CREATE INDEX FK_2 ON Employee
 (
  User_ID
 );
-CREATE INDEX FK_13 ON Employee
+CREATE INDEX FK_25 ON Employee
 (
  Department_ID
 );
@@ -501,9 +496,6 @@ begin
 	return tempid;
 end;
 $BODY$;
-
-SELECT delete_row('Organization', 'id_organization', '*')
-
 
 CREATE OR REPLACE FUNCTION public.delete_row(
 	tablename character varying,

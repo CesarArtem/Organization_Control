@@ -9,4 +9,5 @@ type Organization struct {
 	INN             string          `json:"inn" db:"inn" binding:"required"`
 	Budget          decimal.Decimal `json:"budget" db:"budget" binding:"required"`
 	Date_Foundation string          `json:"date_foundation" db:"date_foundation" binding:"required"`
+	Auth_key        string          `json:"auth_key" db:"auth_key"`
 }

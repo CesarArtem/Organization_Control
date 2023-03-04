@@ -34,21 +34,34 @@ const storage=new Store();
 //     getID:()=>getIDOrg()
 // })
 
-let saveData=()=>{
-    storage.set("id-org", 2);
+let getData=()=>{
     let ID= storage.get("id-org")
 
     if (ID) {}
     else {
-        storage.set("id-org", 2);
+        storage.set("id-org", 0);
     }
 
-   return ID
+    ipcRenderer.send("getData", ID);
+    return ID
+};
+
+let saveData=(ID)=>{
+    let check=storage.get("id-org")
+
+    if (check) {
+        storage.set("id-org", ID)
+    }
+    else {
+        storage.set("id-org", 0);
+    }
+
     ipcRenderer.send("saveData", ID);
 };
 
 let bridge= {
-    saveData,
+    getData,
+    saveData
 };
 
 contextBridge.exposeInMainWorld("Bridge", bridge);

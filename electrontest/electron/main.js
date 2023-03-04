@@ -26,7 +26,7 @@ function createWindow() {
         }
     })
 
-    win.loadFile('./organization.html')
+    win.loadFile('./auth.html')
     win.webContents.openDevTools();
 
     win.on('closed', ()=> {
@@ -55,9 +55,12 @@ function getIDOrg() {
     // console.log("ID: "+ ID)
 }
 
-ipcMain.on("saveData", (sender)=>{
+ipcMain.on("saveData", (sender, ID)=>{
+    // storage.set("id-org", ID)
+})
+
+ipcMain.on("getData", (sender)=>{
     ID=getIDOrg()
-    console.log(ID);
     // storage.set("id-org", ID)
 })
 

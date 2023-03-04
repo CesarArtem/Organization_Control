@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <link rel="stylesheet" href="styles/menu.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/lte/adminlte.min.css">
+    <!--    <link rel="stylesheet" href="styles/combobox.css">-->
+    <link rel="stylesheet" href="styles/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="styles/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="styles/bootstrap/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+    <link rel="stylesheet" href="styles/bootstrap/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="styles/bootstrap/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="styles/bootstrap/datatables-buttons/css/buttons.bootstrap4.min.css">
+</head>
+<body>
+<div class="cardforcontent">
+    <div class="fullcard">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Организация</h3>
+            </div>
+            <form style="display: flex; height: 100%" id="form1">
+                <div class="card-body" style="width: 50%">
+                    <div class="form-group" id="mainform">
+                        <label for="OrgName">Название</label>
+                        <input type="text" maxlength="250" minlength="5" class="form-control" id="OrgName"
+                               placeholder="Название">
+                    </div>
+                    <div class="form-group">
+                        <label for="INNOrg">ИНН</label>
+                        <input type="number" min="0" minlength="10" maxlength="10" class="form-control"
+                               style="list-style-type: none; overflow-scrolling: touch;" id="INNOrg"
+                               placeholder="ИНН">
+                    </div>
+                    <div class="form-group">
+                        <label for="AddressOrg">Адрес</label>
+                        <input type="text" maxlength="250" minlength="5" class="form-control" id="AddressOrg"
+                               placeholder="Адрес">
+                    </div>
+                    <div class="form-group">
+                        <label for="BudgetOrg">Начальный бюджет</label>
+                        <input type="number" min="0" minlength="1" maxlength="9" class="form-control" id="BudgetOrg"
+                               placeholder="Бюджет">
+                    </div>
+                    <div class="form-group">
+                        <label>Дата основания:</label>
+                        <input type="date" class="form-control" id="DateOrg" placeholder="Дата"/>
+                    </div>
+                    <div class="card-footer" style="padding: 0; background: transparent; display: flex">
+                        <button type="button" onclick="Create()" class="btn btn-primary"
+                                style="background-color: #399E5A">Создать
+                        </button>
+                        <button type="button" onclick="ChangeForm()" class="btn btn-primary" style="margin-left: auto">
+                            Уже есть созданная организация
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <form style="display: none; height: 100%" id="form2">
+                <div class="card-body" style="width: 50%">
+                    <div class="form-group" id="keyform">
+                        <label for="OrgName">Ключ</label>
+                        <input type="text" maxlength="250" minlength="5" class="form-control" id="OrgKey"
+                               placeholder="Название">
+                    </div>
+                    <div class="card-footer" style="padding: 0; background: transparent; display: flex">
+                        <button type="button" onclick="GetOrg()" class="btn btn-primary"
+                                style="background-color: #399E5A">Войти
+                        </button>
+                        <button type="button" onclick="ChangeForm()" class="btn btn-primary" style="margin-left: auto">Вернуться</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </form>
+    </div>
+</div>
+</div>
+
+<script defer src="scripts/auth.js"></script>
+</body>
+</html>

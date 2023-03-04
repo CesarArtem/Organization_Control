@@ -4,7 +4,6 @@ const {contextBridge} = require("electron");
 const storage=new Store();
 
 function getIDOrg() {
-    // storage.set("id-org", 2);
     const ID= storage.get("id-org")
 
     if (ID) {}

@@ -14,6 +14,7 @@ type Organization interface {
 	Create(organization models.Organization) (models.Organization, error)
 	GetAll() ([]models.Organization, error)
 	GetById(id int) (models.Organization, error)
+	GetByKey(key string) (models.Organization, error)
 	Delete(id int) error
 	Update(id int, organization models.Organization) (models.Organization, error)
 }

@@ -105,3 +105,15 @@ func (h *Handler) deleteOrganization(c *gin.Context) {
 		Data:    org,
 	})
 }
+
+func (h *Handler) getOrganizationByKey(c *gin.Context) {
+	key := c.Param("id")
+
+	org, err := h.services.Organization.GetByKey(key)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, org)
+}

@@ -4,6 +4,14 @@ import (
 	"api/models"
 	"fmt"
 	"github.com/jmoiron/sqlx"
+	"golang.org/x/crypto/bcrypt"
+	"log"
+	"strings"
+)
+
+const (
+	PW_SALT_BYTES = 32
+	PW_HASH_BYTES = 32
 )
 
 type OrganizationPostgres struct {
@@ -22,15 +30,26 @@ func (r *OrganizationPostgres) Create(organization models.Organization) (models.
 	}
 
 	var organizationId int
-	query := fmt.Sprintf("SELECT insert_organization($1, $2, $3, $4, $5)")
+	info := []byte(organization.INN + organization.Name)
+	key, err := bcrypt.GenerateFromPassword(info, bcrypt.DefaultCost)
+	if err != nil {
+		log.Fatal(err)
+	}
+	keystring := string(key)
+	keystring = strings.Replace(keystring, "/", "", -1)
 
-	row := tx.QueryRow(query, organization.Name, organization.Addres, organization.INN, organization.Budget, organization.Date_Foundation)
+	query := fmt.Sprintf("SELECT insert_organization($1, $2, $3, $4, $5, $6)")
+
+	row := tx.QueryRow(query, organization.Name, organization.Addres, organization.INN, organization.Budget, organization.Date_Foundation, keystring)
 
 	err = row.Scan(&organizationId)
+	log.Print(err)
+
 	if err != nil {
 		tx.Rollback()
 		return models.Organization{}, err
 	}
+
 	tx.Commit()
 
 	org, err = r.GetById(organizationId)
@@ -55,6 +74,15 @@ func (r *OrganizationPostgres) GetById(id int) (models.Organization, error) {
 	query := fmt.Sprintf("SELECT * FROM %s WHERE id_organization=$1", apiOrganizationTable)
 
 	err := r.db.Get(&org, query, id)
+
+	return org, err
+}
+
+func (r *OrganizationPostgres) GetByKey(key string) (models.Organization, error) {
+	var org models.Organization
+	query := fmt.Sprintf("SELECT * FROM %s WHERE Auth_Key=$1", apiOrganizationTable)
+
+	err := r.db.Get(&org, query, key)
 
 	return org, err
 }

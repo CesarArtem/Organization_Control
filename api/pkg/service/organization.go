@@ -25,6 +25,10 @@ func (s *OrganizationService) GetById(id int) (models.Organization, error) {
 	return s.repo.GetById(id)
 }
 
+func (s *OrganizationService) GetByKey(key string) (models.Organization, error) {
+	return s.repo.GetByKey(key)
+}
+
 func (s *OrganizationService) Delete(id int) error {
 	return s.repo.Delete(id)
 }
