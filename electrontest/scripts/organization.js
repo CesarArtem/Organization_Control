@@ -1,11 +1,29 @@
-
 const orgurl='http://localhost:8000/api/organization';
 const strategyurl='http://localhost:8000/api/organization/2/strategy/1';
 
+// let IDorg;
+//
+// // window.orgBridge.value((event, value)=>{
+// //     ID=value
+// // })
+// API.on((event, idinfo)=>{
+//     IDorg=idinfo;
+// })
+//
+// console.log(IDorg);
+
 var headers = {}
 
-function getOrganization(){
-    fetch(`${orgurl}`, {
+function GetData() {
+    let ID;
+
+    ID=window.Bridge.saveData();
+
+    console.log(ID)
+}
+
+function getOrganization(idorg){
+    fetch('http://localhost:8000/api/organization/'+idorg, {
         method: "GET",
         mode: 'cors',
         headers: headers
