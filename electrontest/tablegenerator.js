@@ -69,7 +69,7 @@ function DeleteRow(no){
 }
 
 var prevcolor;
-var selectedindex=0;
+let selectedindex=0;
 
 function addRowHandlers() {
     var table = document.getElementById("example1");
@@ -78,33 +78,33 @@ function addRowHandlers() {
         var currentRow = table.rows[i];
         var createClickHandler = function(row) {
             return function() {
-                row.style.backgroundColor="#399E5A";
-                var name = row.getElementsByTagName("td")[0];
-                var desc = row.getElementsByTagName("td")[1];
-                var datestart = row.getElementsByTagName("td")[2];
-                var dateend = row.getElementsByTagName("td")[3];
-                document.getElementById("NameStrategy").value=name.innerHTML;
-                document.getElementById("DescriptionStrategy").value=desc.innerHTML;
-                document.getElementById("DateStartStrategy").value=datestart.innerHTML;
-                document.getElementById("DateEndStrategy").value=dateend.innerHTML;
-            };
-        };
-        var createonMouseInHandler = function(row) {
-            return function() {
-                prevcolor=row.style.backgroundColor;
-                row.style.transition='0.5s';
-                row.style.backgroundColor="#cccccc";
-            };
-        };
-        var createonMouseOutHandler = function(row) {
-            return function() {
-                if (row.style.backgroundColor!==prevcolor) {
-                    row.style.backgroundColor = prevcolor;
+                const parentWithClass = row.closest('tbody');
+                if (parentWithClass!==null) {
+                    if (selectedindex === row.id) {
+                        selectedindex = 0
+                        row.style.backgroundColor = ""
+                    } else {
+                        if (selectedindex !== 0) {
+                            prevrow = document.getElementById(selectedindex)
+                            selectedindex = row.id
+                            prevrow.style.backgroundColor = ""
+                        }
+                        row.style.backgroundColor = "#399E5A";
+                        selectedindex = row.id;
+                        console.log(row.id)
+                        var name = row.getElementsByTagName("td")[0];
+                        var desc = row.getElementsByTagName("td")[1];
+                        var datestart = row.getElementsByTagName("td")[2];
+                        var dateend = row.getElementsByTagName("td")[3];
+                        document.getElementById("NameStrategy").value = name.innerHTML;
+                        document.getElementById("DescriptionStrategy").value = desc.innerHTML;
+                        document.getElementById("DateStartStrategy").value = datestart.innerHTML;
+                        document.getElementById("DateEndStrategy").value = dateend.innerHTML;
+                    }
                 }
+
             };
         };
-        currentRow.onmouseleave=createonMouseOutHandler(currentRow);
-        currentRow.onmouseenter=createonMouseInHandler(currentRow);
         currentRow.onclick = createClickHandler(currentRow);
     }
 }
