@@ -1,16 +1,38 @@
+const url='http://127.0.0.1:8000/api/'
+
 function Create(){
     //API создания организации
-    let ID=1;
+}
 
-    window.Bridge.saveData(ID);
+function SaveData(ID){
+    window.Bridge.saveData(ID)
     window.location="./index.html"
 }
 
 function GetOrg(){
-    //API нахождения ID по ключу
-    let ID=2;
-    window.Bridge.saveData(ID)
-    window.location="./index.html"
+    keyorg=document.getElementById("OrgKey").value
+    let status
+    fetch(url+'organization/'+keyorg, {
+        method: "PATCH",
+        mode: 'cors'
+    })
+        .then(res=>
+        {
+            status=res.status
+            if (res.status===200)
+                return res.json()
+            else if (res.status===500)
+                alert("Неверный код!")
+            else
+                alert("Ошибка!")
+        })
+        .then(data=>{
+            if (status===200) {
+                SaveData(data)
+                console.log(data)
+            }
+        })
+        .catch(error=>alert(error))
 }
 
 function ChangeForm(){

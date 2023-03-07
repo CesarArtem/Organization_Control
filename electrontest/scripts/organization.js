@@ -1,5 +1,3 @@
-const orgurl='http://localhost:8000/api/organization';
-const strategyurl='http://localhost:8000/api/organization/2/strategy/1';
 
 // let IDorg;
 //
@@ -23,7 +21,7 @@ function GetData() {
 }
 
 function getOrganization(idorg){
-    fetch('http://localhost:8000/api/organization/'+idorg, {
+    fetch(url+'organization', {
         method: "GET",
         mode: 'cors',
         headers: headers
@@ -42,7 +40,6 @@ function getOrganization(idorg){
             // document.getElementById("DateOrg").value=org.date_foundation.toString().substring(0, org.date_foundation.toString().length-10);
 
             console.log(data)
-            alert(data)
             // console.log(org)
         })
         .catch(error=>console.log(error))

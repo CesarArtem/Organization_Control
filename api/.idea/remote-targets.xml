@@ -2,7 +2,7 @@
 <project version="4">
   <component name="RemoteTargetsManager">
     <targets>
-      <target name="golang:1.16.3" type="docker" uuid="fe746a37-374a-4ac9-aa01-426474c263e0">
+      <target name="golang:latest" type="docker" uuid="c235834c-276d-4009-aae5-ba5dc41dfe83">
         <config>
           <option name="targetPlatform">
             <TargetPlatform />
@@ -10,12 +10,12 @@
           <option name="buildNotPull" value="false" />
           <option name="containerConfig">
             <ContainerConfig>
-              <option name="runCliOptions" value="-p 38000:38000" />
+              <option name="runCliOptions" value="-p 3211:3211" />
             </ContainerConfig>
           </option>
           <option name="pullImageConfig">
             <PullImageConfig>
-              <option name="tagToPull" value="golang:1.16.3" />
+              <option name="tagToPull" value="golang:latest" />
             </PullImageConfig>
           </option>
         </config>
@@ -32,7 +32,7 @@
             </option>
             <option name="goPath" value="/go" />
             <option name="goRoot" value="/usr/local/go/bin/go" />
-            <option name="goVersion" value="go1.16.3 linux/amd64" />
+            <option name="goVersion" value="go1.20.1 linux/amd64" />
             <option name="projectSourcesVolume">
               <VolumeState>
                 <option name="targetSpecificBits">

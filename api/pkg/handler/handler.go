@@ -18,7 +18,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
 	c := cors.New(cors.Config{
-		AllowMethods:           []string{"GET", "POST", "PUT", "DELETE"},
+		AllowMethods:           []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
 		AllowHeaders:           []string{"*"},
 		AllowCredentials:       true,
 		ExposeHeaders:          []string{"*"},
