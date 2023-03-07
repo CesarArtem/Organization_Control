@@ -37,8 +37,7 @@ const storage=new Store();
 let getData=()=>{
     let ID= storage.get("id-org")
 
-    if (ID) {}
-    else {
+    if (ID===null) {
         storage.set("id-org", 0);
     }
 
@@ -49,7 +48,7 @@ let getData=()=>{
 let saveData=(ID)=>{
     let check=storage.get("id-org")
 
-    if (check) {
+    if (check!==null) {
         storage.set("id-org", ID)
     }
     else {

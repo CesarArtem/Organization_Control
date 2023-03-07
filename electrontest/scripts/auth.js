@@ -1,11 +1,60 @@
-const url='http://127.0.0.1:8000/api/'
+function CheckID() {
+    let statusID
+    let ID=window.Bridge.getData()
+    console.log(ID)
+    fetch(url + 'organization/' + ID, {
+        method: "GET",
+        mode: 'cors'
+    })
+        .then(res => {
+            statusID = res.status
+            console.log(statusID)
+            console.log(res)
+        })
+        .then(data => {
+            console.log(data)
+            if (statusID===200)
+            {
+                SaveData(ID)
+            }
+        })
+        .catch(error => alert(error))
+}
 
 function Create(){
-    //API создания организации
+    nameorg=document.getElementById("OrgName").value
+    addresorg=document.getElementById("AddressOrg").value
+    dateorg=document.getElementById("DateOrg").value
+    budgetorg=document.getElementById("BudgetOrg").value
+    innorg=document.getElementById("INNOrg").value
+
+    org=new Organization(nameorg, null, budgetorg, dateorg, addresorg, innorg)
+    body=JSON.stringify(org)
+    fetch(url+'organization', {
+        method: "POST",
+        mode: 'cors',
+        body:body
+    })
+        .then(res=>
+        {
+            statusfetch=res.status
+            if (res.status===200)
+                return res.json()
+            else
+                alert("Ошибка!")
+        })
+        .then(data=>{
+            if (statusfetch===200) {
+                SaveData(data.id_organization)
+                console.log(data.id_organization)
+            }
+        })
+        .catch(error=>alert(error))
 }
 
 function SaveData(ID){
     window.Bridge.saveData(ID)
+    console.log(window.Bridge.getData())
     window.location="./index.html"
 }
 
@@ -28,8 +77,8 @@ function GetOrg(){
         })
         .then(data=>{
             if (status===200) {
-                SaveData(data)
-                console.log(data)
+                SaveData(data.id_organization)
+                console.log(data.id_organization)
             }
         })
         .catch(error=>alert(error))

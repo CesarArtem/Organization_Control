@@ -38,30 +38,26 @@ function createWindow() {
 
     let res=storage.get("id-org")
     console.log(res)
-    if (res) {
+    if (!res) {
         storage.set("id-org", 0)
     }
 }
 
 function getIDOrg() {
-    storage.set("id-org", 2);
+
     let ID= storage.get("id-org")
 
     if (ID) {}
     else {
-        storage.set("id-org", 2);
+        storage.set("id-org", 0);
     }
-
-    // console.log("ID: "+ ID)
 }
 
 ipcMain.on("saveData", (sender, ID)=>{
-    // storage.set("id-org", ID)
 })
 
 ipcMain.on("getData", (sender)=>{
-    ID=getIDOrg()
-    // storage.set("id-org", ID)
+    let ID=getIDOrg()
 })
 
 app.on('ready', ()=>{
