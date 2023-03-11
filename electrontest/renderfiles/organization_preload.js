@@ -3,18 +3,5 @@ const {contextBridge} = require("electron");
 
 const storage=new Store();
 
-function getIDOrg() {
-    const ID= storage.get("id-org")
+let btn=document.getElementById("")
 
-    if (ID) {}
-    else {
-        storage.set("id-org", 0);
-    }
-
-    return ID
-}
-
-// module.exports.getIds=getIDOrg()
-contextBridge.exposeInMainWorld('Export', {
-    getID:()=>getIDOrg()
-})

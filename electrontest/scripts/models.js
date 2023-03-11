@@ -17,3 +17,11 @@ function Strategy(name, id_strategy, description, date_start, date_end, done){
     this.date_end = date_end;
     this.done = done;
 }
+
+function StrategyForList(name, description, date_start, date_end, done, actions){
+    this.name = name;
+    this.description = description;
+    this.date_start = date_start;
+    this.date_end = date_end;
+    this.done = done;
+}

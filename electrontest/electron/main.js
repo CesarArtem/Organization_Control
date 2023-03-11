@@ -1,7 +1,8 @@
 const path = require('path')
 const url=require('url')
-const {app, BrowserWindow, ipcMain, contextBridge, ipcRenderer, session}=require('electron')
+const {app, BrowserWindow, ipcMain, contextBridge, ipcRenderer, session, dialog}=require('electron')
 const Store=require("electron-store")
+var tools = require('./messagebox');
 
 const storage=new Store();
 
@@ -26,7 +27,6 @@ function createWindow() {
         }
     })
 
-    win.loadFile('./auth.html')
     win.webContents.openDevTools();
 
     win.on('closed', ()=> {
@@ -40,7 +40,11 @@ function createWindow() {
     console.log(res)
     if (!res) {
         storage.set("id-org", 0)
+        win.loadFile('./auth.html')
     }
+    else
+        win.loadFile('./index.html')
+    return win
 }
 
 function getIDOrg() {
@@ -60,9 +64,18 @@ ipcMain.on("getData", (sender)=>{
     let ID=getIDOrg()
 })
 
+ipcMain.on('openDialog', (sender, event, url) => {
+    switch (event)
+    {
+        case "DeleteStrat":
+            tools.DeleteStr(url,"Вы действительно хотите удалить эту стратегию?", win)
+            break;
+    }
+    console.log("dasdwd")
+})
+
 app.on('ready', ()=>{
     createWindow();
-    // getIDOrg()
 })
 
 app.on('window-all-closed', ()=>{

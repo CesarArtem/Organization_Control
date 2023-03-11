@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ff6537ef-6fa2-419b-b704-7ba3284fdb12" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../electron/messagebox.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../datatablescript.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../electron/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../electron/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../electron/preload.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../electron/preload.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../organization.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../organization.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../renderfiles/organization_preload.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../renderfiles/organization_preload.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../scripts/models.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/models.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../scripts/organization.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../scripts/organization.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jquery/jquery.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/jquery/jquery.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/../styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../tablegenerator.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../tablegenerator.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectId" id="2MrguRTIaleZGyercsRHLPfRZ6Q" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/artem/Downloads/test",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ff6537ef-6fa2-419b-b704-7ba3284fdb12" name="Changes" comment="" />
+      <created>1678531337217</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1678531337217</updated>
+      <workItem from="1678531338531" duration="53000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
