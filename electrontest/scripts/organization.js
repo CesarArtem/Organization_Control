@@ -8,6 +8,7 @@ function GetData() {
 
 GetData()
 getOrganization(ID)
+HideFromStart()
 getStratygies(ID).then(function () {
     loadScript("styles/bootstrap/datatables/jquery.dataTables.min.js")
         .then(data => {
@@ -145,6 +146,7 @@ function SaveOrg() {
 }
 
 let strategy = [];
+let strategyIDS=[];
 
 async function getStratygies() {
     return new Promise((resolve) => {
@@ -158,6 +160,7 @@ async function getStratygies() {
             .then(data => {
                 var strat
                 for (var i in data.data) {
+                    strategyIDS.push(data.data[i].id_strategy)
                     delete data.data[i].id_strategy
                     delete data.data[i].organization_id
                     strat = Object.assign(data.data[i]);
@@ -169,7 +172,7 @@ async function getStratygies() {
                 let table = document.querySelector("table");
                 let header = Object.keys(strategy[0]);
                 generateTableHead(table, header);
-                generateTable(table, strategy);
+                generateTable(table, strategy, strategyIDS);
                 addRowHandlers();
                 resolve();
             })

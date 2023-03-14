@@ -38,14 +38,13 @@ CREATE INDEX FK_21 ON Department
  Organization_ID
 );
 
--- ALTER TABLE Employee
--- ADD COLUMN User_ID int,
--- ADD COLUMN Email varchar(50) NOT NULL,
--- ADD CONSTRAINT FK_9 FOREIGN KEY ( User_ID ) REFERENCES "User" ( ID_User )
--- CREATE INDEX FK_11 ON Employee
--- (
---  User_ID
--- );
+ALTER TABLE "User"
+-- ADD COLUMN Employee_ID int,
+ADD CONSTRAINT FK_23 FOREIGN KEY ( Employee_ID ) REFERENCES Employee ( ID_Employee );
+CREATE INDEX FK_27 ON "User"
+(
+ Employee_ID
+);
 
 -- ALTER TABLE Organization
 -- ADD COLUMN Auth_Key varchar(255)
@@ -366,7 +365,7 @@ begin
 	set
 	Login = $2,
 	Password = $3,
-	Employee_ID =$4
+	Employee_ID=$4
 	where ID_User = $1;
 	return true;
 end;
@@ -383,7 +382,7 @@ CREATE OR REPLACE FUNCTION public.insert_User(
 AS $BODY$
 DECLARE tempid int;
 begin
-	insert into Users(Login,Password,Employee_ID) 
+	insert into Users(Login,Password, Employee_ID) 
 	values (p_Login,p_Password,p_Employee_ID) returning id_user into tempid;
 	return tempid;
 end;

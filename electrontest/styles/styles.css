@@ -32,7 +32,6 @@ body{
 .card {
     background-color: transparent;
     background-clip: border-box;
-    z-index: 0;
     width: 100%;
     margin: 5px;
     display: block;

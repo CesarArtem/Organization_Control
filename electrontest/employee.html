@@ -4,18 +4,132 @@
     <meta charset="UTF-8">
     <title>Сотрудники</title>
     <link rel="stylesheet" href="styles/menu.css">
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/lte/adminlte.min.css">
     <link rel="stylesheet" href="styles/combobox.css">
+    <link rel="stylesheet" href="styles/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="styles/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="styles/bootstrap/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+    <link rel="stylesheet" href="styles/bootstrap/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="styles/bootstrap/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="styles/bootstrap/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="styles/styles.css">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+    <script>
+        $(window).load(function () {
+            $(".se-pre-con").fadeOut("slow");
+        });
+    </script>
 </head>
 <body>
 
+<div class="se-pre-con"></div>
+<div class="content">
+    <div class="cardforcontent">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Сотрудник</h3>
+            </div>
+            <form style="display: flex" id="formemployee">
+                <div class="card-body" style="width: 50%">
+                    <div class="form-group">
+                        <label for="NameEmployee">Имя</label>
+                        <input type="text" maxlength="250" minlength="5" class="form-control" id="NameEmployee"
+                               placeholder="Имя">
+                    </div>
+                    <div class="form-group">
+                        <label for="SurnameEmployee">Фамилия</label>
+                        <input type="text" maxlength="250" minlength="5" class="form-control"
+                               style="list-style-type: none; overflow-scrolling: touch;" id="SurnameEmployee"
+                               placeholder="Фамилия">
+                    </div>
+                    <div class="form-group">
+                        <label for="SecondNameEmployee">Отчество</label>
+                        <input type="text" maxlength="250" minlength="0" class="form-control" id="SecondNameEmployee"
+                               placeholder="Отчество">
+                    </div>
+                    <div class="form-group">
+                        <label>Дата рождения:</label>
+                        <input type="date" class="form-control" id="DateEmployee" placeholder="Дата рождения"/>
+                    </div>
+                </div>
+                <div class="card-body" style="width: 50%">
+                    <div class="form-group">
+                        <label for="SeriaEmployee">Серия паспорта</label>
+                        <input type="number" min="0" minlength="4" maxlength="4" class="form-control"
+                               style="list-style-type: none; overflow-scrolling: touch;" id="SeriaEmployee"
+                               placeholder="Серия паспорта">
+                    </div>
+                    <div class="form-group">
+                        <label for="NumberEmployee">Номер паспорта</label>
+                        <input type="number" min="0" minlength="6" maxlength="6" class="form-control"
+                               style="list-style-type: none; overflow-scrolling: touch;" id="NumberEmployee"
+                               placeholder="Номер паспорта">
+                    </div>
+                    <div class="form-group">
+                        <label for="MailEmployee">Почта</label>
+                        <input type="email" class="form-control" id="MailEmployee"
+                               placeholder="Почта">
+                    </div>
+                    <div class="form-group">
+                        <label>Отдел</label>
+                        <div class="select" tabindex="1">
+                            
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Сотрудники</h3>
+        </div>
 
+        <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped">
+
+            </table>
+        </div>
+
+    </div>
+</div>
+
+</body>
+<script src="scripts/loadfiles.js"></script>
+<script src="scripts/models.js"></script>
+<script src="tablegenerator.js"></script>
+<script src="styles/bootstrap/jquery/jquery.min.js"></script>
+<script src="scripts/employee.js"></script>
 <script type="text/javascript" src="templates/styles.js"></script>
-<script type="text/javascript" src="templates/combobox.js"></script>
 <script type="text/javascript" src="templates/menu.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
-</body>
+
+<script>
+    setTimeout(function () {
+        var link1 = document.getElementsByClassName('col-sm-12 col-md-7')[0];
+        var link2 = document.getElementsByClassName('col-sm-12 col-md-6')[1];
+
+        link1.addEventListener('click', clickhandler)
+        link2.addEventListener('click', clickhandler)
+    }, 500)
+    function clickhandler(){
+        try {
+            console.log('click')
+            var table = document.getElementById("example1");
+            var rows = table.getElementsByTagName("tr");
+            selectedindex = 0
+            for (i = 0; i < rows.length; i++) {
+                var currentRow = table.rows[i];
+                currentRow.style.backgroundColor = ""
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
+</script>
 </html>
