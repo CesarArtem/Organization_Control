@@ -73,9 +73,9 @@ func (r *EmployeePostgres) Update(id int, employee models.Employee, iddep int) (
 
 	query := fmt.Sprintf("SELECT update_employee($1, $2, $3, $4, $5, $6, $7, $8, $9)")
 
-	_, err := r.db.Exec(query, id, employee.Surname, employee.Name, employee.SecondName, employee.Date_Birth, employee.SeriaPasp, employee.NumberPasp, employee.Email, iddep)
+	_, err := r.db.Exec(query, id, employee.Surname, employee.Name, employee.SecondName, employee.Date_Birth, employee.SeriaPasp, employee.NumberPasp, employee.Email, employee.Department_ID)
 
-	empl, _ = r.GetById(id, iddep)
+	empl, _ = r.GetById(id, employee.Department_ID)
 
 	return empl, err
 }

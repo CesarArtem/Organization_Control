@@ -161,7 +161,6 @@ async function getStratygies() {
                 var strat
                 for (var i in data.data) {
                     strategyIDS.push(data.data[i].id_strategy)
-                    delete data.data[i].id_strategy
                     delete data.data[i].organization_id
                     strat = Object.assign(data.data[i]);
                     strat.date_start = strat.date_start.toString().substring(0, strat.date_start.toString().length - 10);

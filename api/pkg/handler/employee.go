@@ -91,12 +91,12 @@ func (h *Handler) updateEmployee(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	id, err := strconv.Atoi(c.Param("post_id"))
+	id, err := strconv.Atoi(c.Param("employee_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	_, err = h.services.Post.GetById(id, iddep, idorg)
+	_, err = h.services.Employee.GetById(id, iddep, idorg)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

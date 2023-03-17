@@ -8,11 +8,12 @@
     <link rel="stylesheet" href="styles/combobox.css">
     <link rel="stylesheet" href="styles/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="styles/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-    <link rel="stylesheet" href="styles/bootstrap/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
     <link rel="stylesheet" href="styles/bootstrap/datatables-bs4/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="styles/bootstrap/datatables-responsive/css/responsive.bootstrap4.min.css">
     <link rel="stylesheet" href="styles/bootstrap/datatables-buttons/css/buttons.bootstrap4.min.css">
     <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/bootstrap/select2/css/select2.min.css">
+    <link rel="stylesheet" href="styles/bootstrap/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
@@ -53,6 +54,25 @@
                         <label>Дата рождения:</label>
                         <input type="date" class="form-control" id="DateEmployee" placeholder="Дата рождения"/>
                     </div>
+                    <div class="form-group">
+                        <label>Multiple</label>
+                        <select class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
+                            <option>Alabama</option>
+                            <option>Alaska</option>
+                            <option>California</option>
+                            <option>Delaware</option>
+                            <option>Tennessee</option>
+                            <option>Texas</option>
+                            <option>Washington</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div class="card-footer" style="padding: 0; background: transparent;">
+                            <button type="button" onclick="AddEmployee()" class="btn btn-primary"
+                                    style="background-color: #399E5A">Добавить
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body" style="width: 50%">
                     <div class="form-group">
@@ -75,7 +95,14 @@
                     <div class="form-group">
                         <label>Отдел</label>
                         <div class="select" tabindex="1">
-                            
+
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 3.31rem">
+                        <div class="card-footer" style="padding: 0; background: transparent;">
+                            <button type="button" onclick="EditEmployee()" class="btn btn-primary"
+                                    style="background-color: #399E5A">Изменить
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -117,7 +144,8 @@
         link1.addEventListener('click', clickhandler)
         link2.addEventListener('click', clickhandler)
     }, 500)
-    function clickhandler(){
+
+    function clickhandler() {
         try {
             console.log('click')
             var table = document.getElementById("example1");

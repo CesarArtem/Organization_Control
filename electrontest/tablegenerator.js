@@ -2,11 +2,13 @@ function generateTableHead(table, data) {
     let thead = table.createTHead();
     let row = thead.insertRow();
     for (let key of data) {
-        let th = document.createElement("th");
-        key=FillHeaders(key)
-        let text = document.createTextNode(key);
-        th.appendChild(text);
-        row.appendChild(th);
+        if (!key.startsWith('id_')) {
+            let th = document.createElement("th");
+            key = FillHeaders(key)
+            let text = document.createTextNode(key);
+            th.appendChild(text);
+            row.appendChild(th);
+        }
     }
     let th = document.createElement("th");
     let text = document.createTextNode("Действия");
@@ -18,29 +20,31 @@ function generateTable(table, data, IDS) {
     let thead = table.createTBody();
     index = 0;
     for (let element of data) {
-        let IDstrategy = IDS[index]
+        let IDs = IDS[index]
         let row = thead.insertRow();
-        row.id = IDstrategy
+        row.id = IDs
         for (key in element) {
-            let cell = row.insertCell();
-            let text;
-            if (key === 'done') {
-                if (element[key] === true)
-                    text = '<input type="checkbox" class="form-control" checked name="done" onclick="return false;">' +
-                        '<div>Выполнено</div>'
-                else
-                    text = '<input type="checkbox" class="form-control" onclick="return false;"/>' +
-                        '<div>Не выполнено</div>'
-                var temp = document.createElement('div');
-                temp.innerHTML = text;
-                cell.appendChild(temp);
-            } else {
-                text = document.createTextNode(element[key]);
-                cell.appendChild(text);
+            if (!key.toString().startsWith('id_')) {
+                let cell = row.insertCell();
+                let text;
+                if (key === 'done') {
+                    if (element[key] === true)
+                        text = '<input type="checkbox" class="form-control" checked name="done" onclick="return false;">' +
+                            '<div>Выполнено</div>'
+                    else
+                        text = '<input type="checkbox" class="form-control" onclick="return false;"/>' +
+                            '<div>Не выполнено</div>'
+                    var temp = document.createElement('div');
+                    temp.innerHTML = text;
+                    cell.appendChild(temp);
+                } else {
+                    text = document.createTextNode(element[key]);
+                    cell.appendChild(text);
+                }
             }
         }
         let cell = row.insertCell();
-        let text = '<button type="submit" class="deletebtns" onclick="DeleteRow(' + IDstrategy + ')" style="background-color: #e5383b">Удалить</button>'
+        let text = '<button type="submit" class="deletebtns" onclick="DeleteRow(' + IDs + ')" style="background-color: #e5383b">Удалить</button>'
         var temp = document.createElement('div');
         temp.innerHTML = text;
         cell.appendChild(temp);
@@ -50,6 +54,8 @@ function generateTable(table, data, IDS) {
 }
 
 let selectedindex = 0;
+let lastfidselected=0;
+var prevrow;
 
 function addRowHandlers() {
     var table = document.getElementById("example1");
@@ -62,31 +68,23 @@ function addRowHandlers() {
                     const parentWithClass = row.closest('tbody');
                     if (parentWithClass !== null) {
                         if (selectedindex === row.id) {
-                            selectedindex = 0
-                            row.style.backgroundColor = ""
-                        } else {
-                            if (selectedindex !== 0) {
-                                prevrow = document.getElementById(selectedindex)
-                                selectedindex = row.id
-                                prevrow.style.backgroundColor = ""
+                                    selectedindex = 0
+                                    row.style.backgroundColor = ""
+                                } else {
+                            for (j = 0; j < rows.length; j++) {
+                                var currentRow2 = table.rows[j];
+                                currentRow2.style.backgroundColor = ""
                             }
                             row.style.backgroundColor = "#399E5A";
                             selectedindex = row.id;
                             SelectedRow(row)
                         }
-                    } else {
-                        selectedindex = 0
-                        for (i = 0; i < rows.length; i++) {
-                            var currentRow = table.rows[i];
-                            currentRow.style.backgroundColor = ""
-                        }
                     }
                 } catch (e) {
-                    console.log(window.name)
                     console.log(e)
                     for (i = 0; i < rows.length; i++) {
-                        var currentRow = table.rows[i];
-                        currentRow.style.backgroundColor = ""
+                        var currentRow2 = table.rows[i];
+                        currentRow2.style.backgroundColor = ""
                     }
                     row.style.backgroundColor = "#399E5A";
                     selectedindex = row.id;
@@ -102,43 +100,62 @@ function addRowHandlers() {
 
 function SelectedRow(row) {
     if (location.href.endsWith('organization.html')) {
-        var name = row.getElementsByTagName("td")[0];
-        var desc = row.getElementsByTagName("td")[1];
-        var datestart = row.getElementsByTagName("td")[2];
-        var dateend = row.getElementsByTagName("td")[3];
-        var div = row.getElementsByTagName("td")[4];
-        var check = div.getElementsByTagName("input")[0];
+        var desc, name, datestart, dateend, check;
+        for (let i = 0; i < strategy.length; i++) {
+            if (row.id.toString() === strategy[i].id_strategy.toString()) {
+                name = strategy[i].name;
+                desc = strategy[i].description;
+                datestart = strategy[i].date_start;
+                dateend = strategy[i].date_end;
+                check = strategy[i].done;
+            }
+        }
 
-        document.getElementById("NameStrategy").value = name.innerHTML;
-        document.getElementById("DescriptionStrategy").value = desc.innerHTML;
-        document.getElementById("DateStartStrategy").value = datestart.innerHTML;
-        document.getElementById("DateEndStrategy").value = dateend.innerHTML;
-        document.getElementById("DoneStrategy").checked = check.checked;
-    }
-    else if (location.href.endsWith('employee.html')) {
-        var surname = row.getElementsByTagName("td")[0];
-        var name = row.getElementsByTagName("td")[1];
-        var secondname = row.getElementsByTagName("td")[2];
-        var date_birth = row.getElementsByTagName("td")[3];
-        var email = row.getElementsByTagName("td")[4];
-        var department = row.getElementsByTagName("td")[5];
-        var serapasp = row.getElementsByTagName("td")[6];
-        var numberpasp = row.getElementsByTagName("td")[7];
+        document.getElementById("NameStrategy").value = name;
+        document.getElementById("DescriptionStrategy").value = desc;
+        document.getElementById("DateStartStrategy").value = datestart;
+        document.getElementById("DateEndStrategy").value = dateend;
+        document.getElementById("DoneStrategy").checked = check;
+    } else if (location.href.endsWith('employee.html')) {
+        var surname, name, secondname, date_birth, serapasp, numberpasp, email, department;
+        for (let i = 0; i < employees.length; i++) {
+            if (row.id.toString() === employees[i].id_employee.toString()) {
+                surname = employees[i].surname;
+                name = employees[i].name;
+                secondname = employees[i].secondname;
+                date_birth = employees[i].date_birth;
+                serapasp = employees[i].seriapasp;
+                numberpasp = employees[i].numberpasp;
+                email = employees[i].email;
+                department = employees[i].department_id;
 
-        document.getElementById("NameEmployee").value = name.innerHTML;
-        document.getElementById("SurnameEmployee").value = surname.innerHTML;
-        document.getElementById("SecondNameEmployee").value = secondname.innerHTML;
-        document.getElementById("DateEmployee").value = date_birth.innerHTML;
-        document.getElementById("MailEmployee").value = email.innerHTML;
-        document.getElementById("SeriaEmployee").value = serapasp.innerHTML;
-        document.getElementById("NumberEmployee").value = numberpasp.innerHTML;
+            }
+        }
 
-        //сделать поиск по комбобоксу нужного элемента
-        document.getElementById("sumCB").checked = department;
+        document.getElementById("NameEmployee").value = name;
+        document.getElementById("SurnameEmployee").value = surname
+        document.getElementById("SecondNameEmployee").value = secondname;
+        document.getElementById("DateEmployee").value = date_birth;
+        document.getElementById("MailEmployee").value = email;
+        document.getElementById("SeriaEmployee").value = serapasp;
+        document.getElementById("NumberEmployee").value = numberpasp;
+
+        for (let i = 0; i < departs.length; i++) {
+            if (departs[i].name.toString() === department.toString()) {
+                let options = document.getElementsByClassName('input-combobox');
+                for (let j = 0; j < options.length; j++) {
+                    if (options[j].id.toString().substring(3, options[j].id.length) === departs[i].id_department.toString()) {
+                        options[j].checked = true
+                        selectedindexcombobox=options[j].id.toString().substring(3, options[j].id.length);
+                        lastfidselected=options[j].id.toString().substring(3, options[j].id.length);
+                    }
+                }
+            }
+        }
     }
 }
 
-function FillHeaders(key){
+function FillHeaders(key) {
     if (location.href.endsWith('organization.html')) {
         switch (key) {
             case 'name':
@@ -157,8 +174,7 @@ function FillHeaders(key){
                 key = 'Статус выполнения'
                 break;
         }
-    }
-    else if (location.href.endsWith('employee.html')) {
+    } else if (location.href.endsWith('employee.html')) {
         switch (key) {
             case 'name':
                 key = 'Имя'

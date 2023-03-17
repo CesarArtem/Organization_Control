@@ -70,8 +70,10 @@ ipcMain.on('openDialog', (sender, event, url) => {
         case "DeleteStrat":
             tools.DeleteStr(url,"Вы действительно хотите удалить эту стратегию?", win)
             break;
+            case "DeleteEmployee":
+            tools.DeleteEmployee(url,"Вы действительно хотите удалить этого сотрудника?", win)
+            break;
     }
-    console.log("dasdwd")
 })
 
 app.on('ready', ()=>{
