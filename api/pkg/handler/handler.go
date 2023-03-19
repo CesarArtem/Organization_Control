@@ -123,8 +123,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 						empl_post.POST("/", h.createEmployee_Post)
 						empl_post.GET("/", h.getAllEmployee_Post)
 						empl_post.GET("/:emplpost_id", h.getEmployee_Post)
-						empl_post.PUT("/:emplpost_id", h.updateEmployee_Post)
-						empl_post.DELETE("/:emplpost_id", h.deleteEmployee_Post)
+						empl_post.DELETE("/", h.deleteEmployee_Post)
 					}
 				}
 			}

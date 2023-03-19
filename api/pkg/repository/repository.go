@@ -63,8 +63,7 @@ type Empl_post interface {
 	Create(emplpost models.Employee_Post, idpost int) (models.Employee_Post, error)
 	GetAll(idpost int) ([]models.Employee_Post, error)
 	GetById(id int, idpost int) (models.Employee_Post, error)
-	Delete(id int, idpost int) error
-	Update(id int, emplpost models.Employee_Post, idpost int) (models.Employee_Post, error)
+	Delete(idempl int) error
 }
 
 type Employee interface {

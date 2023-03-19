@@ -41,20 +41,11 @@ func (s *Empl_postService) GetById(id int, idempl int, iddep int) (models.Employ
 	return s.repo.GetById(id, idempl)
 }
 
-func (s *Empl_postService) Delete(id int, idempl int, iddep int) error {
+func (s *Empl_postService) Delete(idempl int, iddep int) error {
 	_, err := s.empl.GetById(idempl, iddep)
 	if err != nil {
 		return err
 	}
 
-	return s.repo.Delete(id, idempl)
-}
-
-func (s *Empl_postService) Update(id int, Employee_Post models.Employee_Post, idempl int, iddep int) (models.Employee_Post, error) {
-	_, err := s.empl.GetById(idempl, iddep)
-	if err != nil {
-		return models.Employee_Post{}, err
-	}
-
-	return s.repo.Update(id, Employee_Post, idempl)
+	return s.repo.Delete(idempl)
 }

@@ -55,15 +55,8 @@
                         <input type="date" class="form-control" id="DateEmployee" placeholder="Дата рождения"/>
                     </div>
                     <div class="form-group">
-                        <label>Multiple</label>
-                        <select class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
-                            <option>Alabama</option>
-                            <option>Alaska</option>
-                            <option>California</option>
-                            <option>Delaware</option>
-                            <option>Tennessee</option>
-                            <option>Texas</option>
-                            <option>Washington</option>
+                        <label>Должность</label>
+                        <select class="select2" multiple="multiple" data-placeholder="Должность" style="width: 100%;">
                         </select>
                     </div>
                     <div class="form-group">
@@ -78,13 +71,13 @@
                     <div class="form-group">
                         <label for="SeriaEmployee">Серия паспорта</label>
                         <input type="number" min="0" minlength="4" maxlength="4" class="form-control"
-                               style="list-style-type: none; overflow-scrolling: touch;" id="SeriaEmployee"
+                               style="list-style-type: none; overflow-scrolling: touch;" oninput="CheckLengthForPass(this)" id="SeriaEmployee"
                                placeholder="Серия паспорта">
                     </div>
                     <div class="form-group">
                         <label for="NumberEmployee">Номер паспорта</label>
                         <input type="number" min="0" minlength="6" maxlength="6" class="form-control"
-                               style="list-style-type: none; overflow-scrolling: touch;" id="NumberEmployee"
+                               style="list-style-type: none; overflow-scrolling: touch;" oninput="CheckLengthForPass(this)" id="NumberEmployee"
                                placeholder="Номер паспорта">
                     </div>
                     <div class="form-group">

@@ -80,46 +80,6 @@ func (h *Handler) getEmployee_Post(c *gin.Context) {
 	c.JSON(http.StatusOK, org)
 }
 
-func (h *Handler) updateEmployee_Post(c *gin.Context) {
-	iddep, err := strconv.Atoi(c.Param("department_id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
-	}
-
-	idempl, err := strconv.Atoi(c.Param("employee_id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
-	}
-
-	id, err := strconv.Atoi(c.Param("emplpost_id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
-	}
-
-	_, err = h.services.EmplPost.GetById(id, idempl, iddep)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	var input models.Employee_Post
-	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, err.Error())
-		return
-	}
-
-	org, err := h.services.EmplPost.Update(id, input, idempl, iddep)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	c.JSON(http.StatusOK, getEmplPostAndmessage{
-		Message: "Успешное изменение данных",
-		Data:    org,
-	})
-}
-
 func (h *Handler) deleteEmployee_Post(c *gin.Context) {
 	iddep, err := strconv.Atoi(c.Param("department_id"))
 	if err != nil {
@@ -131,18 +91,13 @@ func (h *Handler) deleteEmployee_Post(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	id, err := strconv.Atoi(c.Param("user_id"))
-	if err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
-	}
-
-	org, err := h.services.EmplPost.GetById(id, idempl, iddep)
-	if err != nil {
-		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+	var input models.Employee_Post
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	err = h.services.EmplPost.Delete(id, idempl, iddep)
+	err = h.services.EmplPost.Delete(idempl, iddep)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -150,6 +105,6 @@ func (h *Handler) deleteEmployee_Post(c *gin.Context) {
 
 	c.JSON(http.StatusOK, getEmplPostAndmessage{
 		Message: "Успешное удаление данных",
-		Data:    org,
+		Data:    models.Employee_Post{},
 	})
 }

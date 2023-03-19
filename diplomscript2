@@ -93,11 +93,11 @@ CREATE TABLE Employee_Post
  Post_ID          int NOT NULL,
  Employee_ID      int NOT NULL,
  CONSTRAINT PK_4 PRIMARY KEY ( ID_Employee_Post ),
- CONSTRAINT FK_6 FOREIGN KEY ( Post_ID ) REFERENCES Post ( ID_Post ),
+ CONSTRAINT FK_66 FOREIGN KEY ( Post_ID ) REFERENCES Post ( ID_Post ),
  CONSTRAINT FK_7 FOREIGN KEY ( Employee_ID ) REFERENCES Employee ( ID_Employee )
 );
 
-CREATE INDEX FK_9 ON Employee_Post
+CREATE INDEX FK_66 ON Employee_Post
 (
  Post_ID
 );
@@ -390,18 +390,15 @@ $BODY$;
 
 
 CREATE OR REPLACE FUNCTION public.update_Employee_Post(
-	p_id int,
 	p_Post_ID int,
 	p_Employee_ID int)
     RETURNS boolean
     LANGUAGE 'plpgsql'
 AS $BODY$
 begin
-	update Employee_Post
-	set
-	Post_ID = $2,
-	Employee_ID = $3
-	where ID_Employee_Post = $1;
+	delete from Employee_Post where Employee_ID = p_Employee_ID AND Post_ID=p_Post_ID;
+	insert into Employee_Post(Post_ID,Employee_ID) 
+	values (p_Post_ID,p_Employee_ID);
 	return true;
 end;
 $BODY$;
@@ -508,6 +505,19 @@ AS $BODY$
 begin
 	execute format('delete from %s where %s = $1', tablename, table_colname)
 	using col_value;
+	return 'deleted';
+end;
+$BODY$;
+
+CREATE OR REPLACE FUNCTION public.delete_EmplPost(
+	p_Employee_ID int)
+    RETURNS character
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+begin
+	delete from Employee_post where Employee_ID=p_Employee_ID;
 	return 'deleted';
 end;
 $BODY$;
@@ -620,3 +630,80 @@ SELECT insert_SGT('testttttt','desc', '20/01/1233', '21/01/2999', false, 2, 'org
 DROP FUNCTION insert_Employee(character varying,character varying,character varying,date,character varying,character varying,character varying,integer)
 
 DROP FUNCTION update_employee(integer,character varying,character varying,character varying,date,character varying,character varying,character varying,integer)
+
+
+alter table public.strategy
+drop constraint FK_1,
+add constraint organization_id
+   foreign key (organization_id)
+   references organization (id_organization)
+   on delete cascade;
+   
+alter table public.finances_operations
+drop constraint FK_2,
+add constraint organization_id
+   foreign key (organization_id)
+   references organization (id_organization)
+   on delete cascade;
+   
+alter table public.department
+drop constraint FK_123,
+add constraint organization_id
+   foreign key (organization_id)
+   references organization (id_organization)
+   on delete cascade;
+   
+   
+alter table public.goal
+drop constraint FK_4,
+add constraint department_id
+   foreign key (department_id)
+   references department (id_department)
+   on delete cascade;
+   
+   
+alter table public.post
+drop constraint FK_5,
+add constraint department_id
+   foreign key (department_id)
+   references department (id_department)
+   on delete cascade;
+   
+   
+alter table public.employee
+drop constraint FK_25,
+add constraint department_id
+   foreign key (department_id)
+   references department (id_department)
+   on delete cascade;
+
+
+alter table public.task
+drop constraint FK_8,
+add constraint employee_id
+   foreign key (employee_id)
+   references employee (id_employee)
+   on delete cascade;
+   
+
+alter table "User"
+drop constraint FK_23,
+add constraint employee_id
+   foreign key (employee_id)
+   references employee (id_employee)
+   on delete cascade;
+   
+   
+alter table public.employee_post
+drop constraint FK_7,
+add constraint employee_id
+   foreign key (employee_id)
+   references employee (id_employee)
+   on delete cascade;
+   
+alter table public.employee_post
+drop constraint FK_66,
+add constraint post_id
+   foreign key (post_id)
+   references post (id_post)
+   on delete cascade;

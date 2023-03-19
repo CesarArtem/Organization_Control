@@ -59,23 +59,10 @@ func (r *Employee_PostPostgres) GetById(id int, idempl int) (models.Employee_Pos
 	return Employee_Post, err
 }
 
-func (r *Employee_PostPostgres) Delete(id int, idempl int) error {
-	idemplpost := "id_Employee_Post"
-	query := fmt.Sprintf("SELECT delete_row($1, $2, $3)")
+func (r *Employee_PostPostgres) Delete(idempl int) error {
+	query := fmt.Sprintf("SELECT delete_EmplPost($1)")
 
-	_, err := r.db.Exec(query, apiEmplPostTable, idemplpost, id)
+	_, err := r.db.Exec(query, idempl)
 
 	return err
-}
-
-func (r *Employee_PostPostgres) Update(id int, Employee_Post models.Employee_Post, idempl int) (models.Employee_Post, error) {
-	var emplpost models.Employee_Post
-
-	query := fmt.Sprintf("SELECT update_Employee_Post($1, $2, $3, $4, $5)")
-
-	_, err := r.db.Exec(query, id, Employee_Post.Post_ID, idempl)
-
-	emplpost, _ = r.GetById(id, idempl)
-
-	return emplpost, err
 }

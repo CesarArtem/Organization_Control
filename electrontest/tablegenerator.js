@@ -80,6 +80,13 @@ function addRowHandlers() {
                             SelectedRow(row)
                         }
                     }
+                    else
+                    {
+                        for (i = 0; i < rows.length; i++) {
+                            var currentRow2 = table.rows[i];
+                            currentRow2.style.backgroundColor = ""
+                        }
+                    }
                 } catch (e) {
                     console.log(e)
                     for (i = 0; i < rows.length; i++) {
@@ -148,6 +155,7 @@ function SelectedRow(row) {
                         options[j].checked = true
                         selectedindexcombobox=options[j].id.toString().substring(3, options[j].id.length);
                         lastfidselected=options[j].id.toString().substring(3, options[j].id.length);
+                        LoadPostsForSelectedDep()
                     }
                 }
             }
