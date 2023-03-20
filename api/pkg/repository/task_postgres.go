@@ -46,7 +46,7 @@ func (r *TaskPostgres) Create(Task models.Task, idorg int) (models.Task, error) 
 
 func (r *TaskPostgres) GetAll(idorg int) ([]models.Task, error) {
 	var Tasks []models.Task
-	query := fmt.Sprintf("SELECT * FROM %s WHERE employeee_id=$1", apiTaskTable)
+	query := fmt.Sprintf("SELECT * FROM %s WHERE employee_id=$1", apiTaskTable)
 
 	err := r.db.Select(&Tasks, query, idorg)
 
@@ -55,7 +55,7 @@ func (r *TaskPostgres) GetAll(idorg int) ([]models.Task, error) {
 
 func (r *TaskPostgres) GetById(id int, idorg int) (models.Task, error) {
 	var org models.Task
-	query := fmt.Sprintf("SELECT * FROM %s WHERE id_Goal=$1 AND employeee_id=$2", apiTaskTable)
+	query := fmt.Sprintf("SELECT * FROM %s WHERE id_Task=$1 AND employee_id=$2", apiTaskTable)
 
 	err := r.db.Get(&org, query, id, idorg)
 

@@ -91,12 +91,12 @@ func (h *Handler) updateTask(c *gin.Context) {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	id, err := strconv.Atoi(c.Param("Task_id"))
+	id, err := strconv.Atoi(c.Param("task_id"))
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "Неверный ключ")
 	}
 
-	_, err = h.services.Goal.GetById(id, idempl, iddep)
+	_, err = h.services.Task.GetById(id, idempl, iddep)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

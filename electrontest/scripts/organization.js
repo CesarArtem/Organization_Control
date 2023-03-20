@@ -172,7 +172,7 @@ async function getStratygies() {
                 let header = Object.keys(strategy[0]);
                 generateTableHead(table, header);
                 generateTable(table, strategy, strategyIDS);
-                addRowHandlers();
+                addRowHandlers(table);
                 resolve();
             })
             .catch(error => console.log(error))

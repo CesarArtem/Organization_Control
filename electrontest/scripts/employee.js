@@ -1,10 +1,12 @@
 let ID
-let employeesIDS = []
-let employees = []
-let departs = []
-let posts = []
+let employeesIDS = [];
+let employees = [];
+let departs = [];
+let posts = [];
 let selectedindexcombobox = 1;
-let emplposts = []
+let emplposts = [];
+let tasks=[];
+let tasksIDS=[];
 
 let selectedposts = [];
 
@@ -32,7 +34,7 @@ async function getDeparts() {
                     delete data.data[i].organization_id
                     department = Object.assign(data.data[i])
 
-                    let htmlinput = `<input class="input-combobox" name="combo" type="radio" id="dep` + department.id_department + `" checked="false">
+                    let htmlinput = `<input class="input-combobox" name="combo" type="radio" id="dep` + department.id_department + `" onchange="LoadPostsForSelectedDep()" checked="false">
                             <label for="dep` + department.id_department + `" id="deplabel` + department.id_department + `" class="option">` + department.name + `</label>`
                     let sum = document.getElementsByClassName('select')[0]
                     sum.insertAdjacentHTML('afterbegin', htmlinput);
@@ -92,15 +94,8 @@ async function getEmployees(departments) {
     })
 }
 
-function addRows(employeesdata, emplIDS) {
-    return new Promise((resolve, reject) => {
-        let table = document.querySelector("table");
-        let header = Object.keys(employeesdata[0]);
-        generateTableHead(table, header);
-        generateTable(table, employeesdata, emplIDS);
-        addRowHandlers()
-        resolve()
-    }).then(function () {
+function LoadFiles(){
+    return new Promise(resolve => {
         loadScript("styles/bootstrap/datatables/jquery.dataTables.min.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
@@ -108,6 +103,7 @@ function addRows(employeesdata, emplIDS) {
             .catch(err => {
                 console.error(err);
             });
+        resolve()
     }).then(function () {
         loadScript("styles/bootstrap/datatables-bs4/js/dataTables.bootstrap4.min.js")
             .then(data => {
@@ -189,19 +185,40 @@ function addRows(employeesdata, emplIDS) {
                 console.error(err);
             });
     }).then(function () {
-        var combo = document.getElementsByClassName('option');
-
-        for (var i = 0; i < combo.length; i++) {
-            combo[i].addEventListener('click', function () {
-                selectedindexcombobox = this.id.toString().substring(8, this.id.length)
+        loadScript("scripts/ClickHandlersForTable.js")
+            .then(data => {
+                console.log("Script loaded successfully", data);
             })
-        }
-
-        LoadPostsForSelectedDep()
-    }).then(function () {
-        getEmployeePosts();
+            .catch(err => {
+                console.error(err);
+            });
     })
 }
+
+function addRows(employeesdata, emplIDS) {
+    return new Promise((resolve, reject) => {
+        let table = document.getElementById("example1");
+        let header = Object.keys(employeesdata[0]);
+        generateTableHead(table, header);
+        generateTable(table, employeesdata, emplIDS);
+        addRowHandlers(table)
+        resolve()
+    }).then(function (){
+        getTasks().then(function (){
+            var combo = document.getElementsByClassName('option');
+
+            for (var i = 0; i < combo.length; i++) {
+                combo[i].addEventListener('click', function () {
+                    selectedindexcombobox = this.id.toString().substring(8, this.id.length)
+                })
+            }
+
+            LoadPostsForSelectedDep().then(function () {
+            getEmployeePosts();
+        })
+    })
+})
+};
 
 function AddEmployee() {
     try {
@@ -312,6 +329,7 @@ function getPosts(departments) {
                     console.log(error)
                 })
         }
+        console.log(posts)
         resolve()
     })
 }
@@ -341,6 +359,49 @@ function getEmployeePosts() {
             })
     }
 }
+function AddRowsToTask(tasksForTable, tasksIDSForTable){
+    let table = document.getElementById("table1");
+    let header = Object.keys(tasksForTable[0]);
+    generateTableHead(table, header);
+    generateTable(table, tasksForTable, tasksIDSForTable);
+    addRowHandlers(table)
+}
+function getTasks(){
+    return new Promise(resolve => {
+        let index = 0
+        for (let i = 0; i < employees.length; i++) {
+            var department=departs.find(dep=>dep.name.toString()===employees[i].department_id.toString());
+            fetch(url + 'organization/' + ID + '/department/' + department.id_department.toString() + '/employee/' + employees[i].id_employee.toString() + '/task/', {
+                method: "GET",
+                mode: 'cors'
+            })
+                .then(res => {
+                    return res.json()
+                })
+                .then(data => {
+                    var task;
+                    for (var j in data.data) {
+                        task = Object.assign(data.data[j]);
+                        tasksIDS.push(task.id_task)
+                        task.date_start = task.date_start.toString().substring(0, task.date_start.toString().length - 10);
+                        task.date_end = task.date_end.toString().substring(0, task.date_end.toString().length - 10);
+                        var curempl=employees.find(empl=>empl.id_employee.toString()===task.employee_id.toString());
+                        task.employee_id=curempl.surname.toString()+' '+curempl.name.toString().substring(0,1)+'.'+curempl.secondname.toString().substring(0,1)+'.';
+                        tasks.push(task);
+                    }
+                    if (index===employees.length-1)
+                    {
+                        AddRowsToTask(tasks, tasksIDS)
+                        resolve()
+                    }
+                    index++
+                })
+        }
+    }).then(function (){
+        LoadFiles();
+    })
+
+}
 
 function LoadPostsForSelectedDep() {
     return new Promise(resolve => {
@@ -356,6 +417,7 @@ function LoadPostsForSelectedDep() {
             }
         }
     }).then(function () {
+        console.log(selectedindex)
         if (selectedindex !== 0) {
             for (let i = 0; i < emplposts.length; i++) {
                 if (emplposts[i].employee_id.toString() === selectedindex.toString()) {
@@ -370,6 +432,7 @@ function LoadPostsForSelectedDep() {
                 }
             }
         }
+        console.log(emplposts)
     }).then(function () {
         loadScript("styles/bootstrap/select2/js/select2.full.min.js")
             .then(data => {
@@ -432,12 +495,12 @@ function EditPostsToEmployee(url) {
             })
             .then(data => {
                 console.log(data.message)
+            }).catch(error=>console.log(error))
 
-            })
+
         for (var i = 0; i < selectedposts.length; i++) {
             var post_empl = new Employee_Post(null, parseInt(selectedposts[i].toString()), parseInt(selectedindex), null);
             body = JSON.stringify(post_empl)
-            console.log(url + '/emplpost/')
             fetch(url + '/emplpost/', {
                 method: "POST",
                 mode: 'cors',
@@ -455,6 +518,67 @@ function EditPostsToEmployee(url) {
     } catch (error) {
         console.log(error)
     }
+}
+
+function AddTask(){
+    nametask = document.getElementById("NameTask").value
+    descrtask = document.getElementById("DescriptionTask").value
+    datestarttask = document.getElementById("DateStartTask").value
+    dateendtask = document.getElementById("DateEndTask").value
+    donetask = document.getElementById("DoneTask").checked
+
+    taskpost = new Task(null, descrtask, nametask,  dateendtask, dateendtask, donetask, null)
+    body = JSON.stringify(taskpost)
+
+    if (nametask !== "" && descrtask !== "" && dateendtask !== "" && dateendtask !== ""&&selectedindex!==0) {
+        var department=employees.find(element=>element.id_employee.toString()===selectedindex.toString());
+        fetch(url + 'organization/' + ID + '/department/'+departs.find(depart=>depart.name===department.department_id.toString()).id_department+'/employee/'+selectedindex+'/task', {
+            method: "POST",
+            mode: 'cors',
+            body: body
+        })
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                console.log(data)
+                if (data.message === undefined)
+                    window.location = window.location
+            })
+            .catch(error => alert(error))
+    } else
+        alert("Заполните поля для добавления")
+}
+
+function EditTask() {
+    nametask = document.getElementById("NameTask").value
+    descrtask = document.getElementById("DescriptionTask").value
+    datestarttask = document.getElementById("DateStartTask").value
+    dateendtask = document.getElementById("DateEndTask").value
+    donetask = document.getElementById("DoneTask").checked
+
+    taskpost = new Task(null, descrtask, nametask,  dateendtask, dateendtask, donetask, parseInt(selectedindex))
+    body = JSON.stringify(taskpost)
+
+    if (nametask !== "" && descrtask !== "" && dateendtask !== "" && dateendtask !== ""&&selectedindex!==0&&selectedtask!==0) {
+        var department=employees.find(element=>element.id_employee.toString()===selectedindex.toString());
+        console.log(url + 'organization/' + ID + '/department/'+departs.find(depart=>depart.name===department.department_id.toString()).id_department+'/employee/'+selectedindex.toString()+'/task/'+selectedtask.toString())
+        fetch(url + 'organization/' + ID + '/department/'+departs.find(depart=>depart.name===department.department_id.toString()).id_department+'/employee/'+selectedindex.toString()+'/task/'+selectedtask.toString(), {
+            method: "PUT",
+            mode: 'cors',
+            body: body
+        })
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                console.log(data)
+                if (data.message === undefined)
+                    window.location = window.location
+            })
+            .catch(error => alert(error))
+    } else
+        alert("Заполните поля для изменения")
 }
 
 function DeleteRow(no) {

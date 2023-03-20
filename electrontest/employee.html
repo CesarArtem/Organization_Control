@@ -112,7 +112,65 @@
 
             </table>
         </div>
+    </div>
 
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Задача</h3>
+        </div>
+        <form style="display: flex" id="form2">
+            <div class="card-body" style="width: 50%">
+                <div class="form-group">
+                    <label for="NameTask">Название</label>
+                    <input type="text" maxlength="250" minlength="5" class="form-control" id="NameTask"
+                           placeholder="Название">
+                </div>
+                <div class="form-group">
+                    <label for="DescriptionTask">Описание</label>
+                    <input type="text" maxlength="250" minlength="5" style="text-wrap: normal" class="form-control"
+                           id="DescriptionTask"
+                           placeholder="Описание">
+                </div>
+                <div class="card-footer" style="padding: 0; background: transparent;">
+                    <button type="button" onclick="AddTask()" class="btn btn-primary"
+                            style="background-color: #399E5A">Добавить
+                    </button>
+                </div>
+            </div>
+            <div class="card-body" style="width: 50%">
+                <div class="form-group">
+                    <label>Дата начала:</label>
+                    <input type="date" class="form-control" id="DateStartTask" placeholder="Дата начала"/>
+                </div>
+                <div class="form-group">
+                    <label>Дата конца:</label>
+                    <input type="date" class="form-control" id="DateEndTask" placeholder="Дата конца"/>
+                </div>
+                <div class="card-footer" style="padding: 0; background: transparent;">
+                    <button type="button" onclick="EditTask()" class="btn btn-primary"
+                            style="background-color: #399E5A">Изменить
+                    </button>
+                </div>
+            </div>
+            <div class="card-body" style="width: 50%">
+                <div class="form-group">
+                    <label>Выполнено:</label>
+                    <input type="checkbox" class="form-control" id="DoneTask"/>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Задачи</h3>
+        </div>
+
+        <div class="card-body">
+            <table id="table1" class="table table-bordered table-striped">
+
+            </table>
+        </div>
     </div>
 </div>
 
@@ -129,28 +187,5 @@
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
 
-<script>
-    setTimeout(function () {
-        var link1 = document.getElementsByClassName('col-sm-12 col-md-7')[0];
-        var link2 = document.getElementsByClassName('col-sm-12 col-md-6')[1];
-
-        link1.addEventListener('click', clickhandler)
-        link2.addEventListener('click', clickhandler)
-    }, 500)
-
-    function clickhandler() {
-        try {
-            console.log('click')
-            var table = document.getElementById("example1");
-            var rows = table.getElementsByTagName("tr");
-            selectedindex = 0
-            for (i = 0; i < rows.length; i++) {
-                var currentRow = table.rows[i];
-                currentRow.style.backgroundColor = ""
-            }
-        } catch (e) {
-            console.log(e)
-        }
-    }
 </script>
 </html>

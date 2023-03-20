@@ -1,10 +1,14 @@
+let selectedindex = 0;
+let selectedtask = 0;
+let lastfidselected = 0;
+
 function generateTableHead(table, data) {
     let thead = table.createTHead();
     let row = thead.insertRow();
     for (let key of data) {
         if (!key.startsWith('id_')) {
             let th = document.createElement("th");
-            key = FillHeaders(key)
+            key = FillHeaders(key, table)
             let text = document.createTextNode(key);
             th.appendChild(text);
             row.appendChild(th);
@@ -53,12 +57,7 @@ function generateTable(table, data, IDS) {
     table.insertRow(thead);
 }
 
-let selectedindex = 0;
-let lastfidselected=0;
-var prevrow;
-
-function addRowHandlers() {
-    var table = document.getElementById("example1");
+function addRowHandlers(table) {
     var rows = table.getElementsByTagName("tr");
     for (i = 0; i < rows.length; i++) {
         var currentRow = table.rows[i];
@@ -67,21 +66,42 @@ function addRowHandlers() {
                 try {
                     const parentWithClass = row.closest('tbody');
                     if (parentWithClass !== null) {
-                        if (selectedindex === row.id) {
-                                    selectedindex = 0
-                                    row.style.backgroundColor = ""
-                                } else {
-                            for (j = 0; j < rows.length; j++) {
-                                var currentRow2 = table.rows[j];
-                                currentRow2.style.backgroundColor = ""
+                        if (table.id !== 'table1') {
+                            if (selectedindex === row.id) {
+                                selectedindex = 0
+                                selectedtask = 0
+                                row.style.backgroundColor = ""
+                                let table = document.getElementById("table1");
+                                table.innerHTML = '';
+                                let header = Object.keys(tasks[0]);
+                                generateTableHead(table, header);
+                                generateTable(table, tasks, tasksIDS);
+                                addRowHandlers(table)
+                            } else {
+                                for (j = 0; j < rows.length; j++) {
+                                    var currentRow2 = table.rows[j];
+                                    currentRow2.style.backgroundColor = ""
+                                }
+                                row.style.backgroundColor = "#399E5A";
+                                selectedindex = row.id;
+                                selectedtask = 0
+                                SelectedRow(row, table)
                             }
-                            row.style.backgroundColor = "#399E5A";
-                            selectedindex = row.id;
-                            SelectedRow(row)
+                        } else {
+                            if (selectedtask === row.id) {
+                                selectedtask = 0
+                                row.style.backgroundColor = ""
+                            } else {
+                                for (j = 0; j < rows.length; j++) {
+                                    var currentRow2 = table.rows[j];
+                                    currentRow2.style.backgroundColor = ""
+                                }
+                                row.style.backgroundColor = "#399E5A";
+                                selectedtask = row.id;
+                                SelectedRow(row, table)
+                            }
                         }
-                    }
-                    else
-                    {
+                    } else {
                         for (i = 0; i < rows.length; i++) {
                             var currentRow2 = table.rows[i];
                             currentRow2.style.backgroundColor = ""
@@ -95,7 +115,7 @@ function addRowHandlers() {
                     }
                     row.style.backgroundColor = "#399E5A";
                     selectedindex = row.id;
-                    SelectedRow(row)
+                    SelectedRow(row, table)
                 }
 
             };
@@ -105,7 +125,7 @@ function addRowHandlers() {
     }
 }
 
-function SelectedRow(row) {
+function SelectedRow(row, table) {
     if (location.href.endsWith('organization.html')) {
         var desc, name, datestart, dateend, check;
         for (let i = 0; i < strategy.length; i++) {
@@ -124,46 +144,67 @@ function SelectedRow(row) {
         document.getElementById("DateEndStrategy").value = dateend;
         document.getElementById("DoneStrategy").checked = check;
     } else if (location.href.endsWith('employee.html')) {
-        var surname, name, secondname, date_birth, serapasp, numberpasp, email, department;
-        for (let i = 0; i < employees.length; i++) {
-            if (row.id.toString() === employees[i].id_employee.toString()) {
-                surname = employees[i].surname;
-                name = employees[i].name;
-                secondname = employees[i].secondname;
-                date_birth = employees[i].date_birth;
-                serapasp = employees[i].seriapasp;
-                numberpasp = employees[i].numberpasp;
-                email = employees[i].email;
-                department = employees[i].department_id;
+        if (table.id === 'example1') {
+            var surname, name, secondname, date_birth, serapasp, numberpasp, email, department;
+            for (let i = 0; i < employees.length; i++) {
+                if (row.id.toString() === employees[i].id_employee.toString()) {
+                    surname = employees[i].surname;
+                    name = employees[i].name;
+                    secondname = employees[i].secondname;
+                    date_birth = employees[i].date_birth;
+                    serapasp = employees[i].seriapasp;
+                    numberpasp = employees[i].numberpasp;
+                    email = employees[i].email;
+                    department = employees[i].department_id;
 
+                }
             }
-        }
 
-        document.getElementById("NameEmployee").value = name;
-        document.getElementById("SurnameEmployee").value = surname
-        document.getElementById("SecondNameEmployee").value = secondname;
-        document.getElementById("DateEmployee").value = date_birth;
-        document.getElementById("MailEmployee").value = email;
-        document.getElementById("SeriaEmployee").value = serapasp;
-        document.getElementById("NumberEmployee").value = numberpasp;
+            document.getElementById("NameEmployee").value = name;
+            document.getElementById("SurnameEmployee").value = surname
+            document.getElementById("SecondNameEmployee").value = secondname;
+            document.getElementById("DateEmployee").value = date_birth;
+            document.getElementById("MailEmployee").value = email;
+            document.getElementById("SeriaEmployee").value = serapasp;
+            document.getElementById("NumberEmployee").value = numberpasp;
 
-        for (let i = 0; i < departs.length; i++) {
-            if (departs[i].name.toString() === department.toString()) {
-                let options = document.getElementsByClassName('input-combobox');
-                for (let j = 0; j < options.length; j++) {
-                    if (options[j].id.toString().substring(3, options[j].id.length) === departs[i].id_department.toString()) {
-                        options[j].checked = true
-                        selectedindexcombobox=options[j].id.toString().substring(3, options[j].id.length);
-                        lastfidselected=options[j].id.toString().substring(3, options[j].id.length);
-                        LoadPostsForSelectedDep()
+            for (let i = 0; i < departs.length; i++) {
+                if (departs[i].name.toString() === department.toString()) {
+                    let options = document.getElementsByClassName('input-combobox');
+                    for (let j = 0; j < options.length; j++) {
+                        if (options[j].id.toString().substring(3, options[j].id.length) === departs[i].id_department.toString()) {
+                            options[j].checked = true
+                            selectedindexcombobox = options[j].id.toString().substring(3, options[j].id.length);
+                            lastfidselected = options[j].id.toString().substring(3, options[j].id.length);
+                            LoadPostsForSelectedDep().then(function () {
+                                FilterTaskTable(selectedtask)
+                            })
+                        }
                     }
                 }
             }
+        } else {
+            var desc, name, datestart, dateend, check;
+            for (let i = 0; i < tasks.length; i++) {
+                if (row.id.toString() === tasks[i].id_task.toString()) {
+                    name = tasks[i].name;
+                    desc = tasks[i].description;
+                    datestart = tasks[i].date_start;
+                    dateend = tasks[i].date_end;
+                    check = tasks[i].done;
+                }
+            }
+
+            document.getElementById("NameTask").value = name;
+            document.getElementById("DescriptionTask").value = desc;
+            document.getElementById("DateStartTask").value = datestart;
+            document.getElementById("DateEndTask").value = dateend;
+            document.getElementById("DoneTask").checked = check;
         }
     }
 }
 
-function FillHeaders(key) {
+function FillHeaders(key, table) {
     if (location.href.endsWith('organization.html')) {
         switch (key) {
             case 'name':
@@ -185,7 +226,10 @@ function FillHeaders(key) {
     } else if (location.href.endsWith('employee.html')) {
         switch (key) {
             case 'name':
-                key = 'Имя'
+                if (table.id === 'example1')
+                    key = 'Имя'
+                else
+                    key = 'Наименование'
                 break;
             case 'surname':
                 key = 'Фамилия'
@@ -208,7 +252,32 @@ function FillHeaders(key) {
             case 'department_id':
                 key = 'Отдел'
                 break;
+            case 'description':
+                key = 'Описание'
+                break;
+            case 'date_start':
+                key = 'Дата начала'
+                break;
+            case 'date_end':
+                key = 'Дата окончания'
+                break;
+            case 'done':
+                key = 'Статус выполнения'
+                break;
+            case 'employee_id':
+                key = 'Сотрудник'
+                break;
         }
     }
     return key
+}
+
+function FilterTaskTable(task_id) {
+    let table = document.getElementById("table1");
+    var rows = Array.from(table.getElementsByTagName("tr"));
+    var currrow = rows.find((tr, i) => {
+        if (tr.id.toString() !== task_id.toString()) {
+            table.deleteRow(i)
+        }
+    })
 }
