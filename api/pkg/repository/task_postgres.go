@@ -63,7 +63,7 @@ func (r *TaskPostgres) GetById(id int, idorg int) (models.Task, error) {
 }
 
 func (r *TaskPostgres) Delete(id int, idorg int) error {
-	idstr := "id_Goal"
+	idstr := "id_Task"
 	query := fmt.Sprintf("SELECT delete_row($1, $2, $3)")
 
 	_, err := r.db.Exec(query, apiTaskTable, idstr, id)

@@ -20,10 +20,11 @@ function generateTableHead(table, data) {
     row.appendChild(th);
 }
 
-function generateTable(table, data, IDS) {
+function generateTable(table, data, IDS, fkey) {
     let thead = table.createTBody();
     index = 0;
-    for (let element of data) {
+    for (i = 0; i < data.length; i++) {
+        let element = data[i]
         let IDs = IDS[index]
         let row = thead.insertRow();
         row.id = IDs
@@ -42,13 +43,23 @@ function generateTable(table, data, IDS) {
                     temp.innerHTML = text;
                     cell.appendChild(temp);
                 } else {
-                    text = document.createTextNode(element[key]);
+                    if (key.toString().endsWith('_id')) {
+                        if (fkey !== null) {
+                            let foreignelement = fkey[i]
+                            text = document.createTextNode(foreignelement.toString());
+                        }
+                    } else
+                        text = document.createTextNode(element[key]);
                     cell.appendChild(text);
                 }
             }
         }
         let cell = row.insertCell();
-        let text = '<button type="submit" class="deletebtns" onclick="DeleteRow(' + IDs + ')" style="background-color: #e5383b">Удалить</button>'
+        let text;
+        if (table.id !== 'table1')
+            text = '<button type="submit" class="deletebtns" onclick="DeleteRow(' + IDs + ')" style="background-color: #e5383b; padding: 2rm">Удалить</button>'
+        else
+            text = '<button type="submit" class="deletebtns" onclick="DeleteTask(' + IDs + ')" style="background-color: #e5383b; padding: 2rm">Удалить</button>'
         var temp = document.createElement('div');
         temp.innerHTML = text;
         cell.appendChild(temp);
@@ -71,12 +82,12 @@ function addRowHandlers(table) {
                                 selectedindex = 0
                                 selectedtask = 0
                                 row.style.backgroundColor = ""
-                                let table = document.getElementById("table1");
-                                table.innerHTML = '';
-                                let header = Object.keys(tasks[0]);
-                                generateTableHead(table, header);
-                                generateTable(table, tasks, tasksIDS);
-                                addRowHandlers(table)
+                                let table1 = document.getElementById("table1");
+                                var rows1 = table1.getElementsByTagName("tr");
+                                for (j = 0; j < rows1.length; j++) {
+                                    var currentRow2 = table1.rows[j];
+                                    currentRow2.style.backgroundColor = ""
+                                }
                             } else {
                                 for (j = 0; j < rows.length; j++) {
                                     var currentRow2 = table.rows[j];
@@ -85,6 +96,12 @@ function addRowHandlers(table) {
                                 row.style.backgroundColor = "#399E5A";
                                 selectedindex = row.id;
                                 selectedtask = 0
+                                let table1 = document.getElementById("table1");
+                                var rows1 = table1.getElementsByTagName("tr");
+                                for (j = 0; j < rows1.length; j++) {
+                                    var currentRow2 = table1.rows[j];
+                                    currentRow2.style.backgroundColor = ""
+                                }
                                 SelectedRow(row, table)
                             }
                         } else {
@@ -145,20 +162,15 @@ function SelectedRow(row, table) {
         document.getElementById("DoneStrategy").checked = check;
     } else if (location.href.endsWith('employee.html')) {
         if (table.id === 'example1') {
-            var surname, name, secondname, date_birth, serapasp, numberpasp, email, department;
-            for (let i = 0; i < employees.length; i++) {
-                if (row.id.toString() === employees[i].id_employee.toString()) {
-                    surname = employees[i].surname;
-                    name = employees[i].name;
-                    secondname = employees[i].secondname;
-                    date_birth = employees[i].date_birth;
-                    serapasp = employees[i].seriapasp;
-                    numberpasp = employees[i].numberpasp;
-                    email = employees[i].email;
-                    department = employees[i].department_id;
-
-                }
-            }
+            var selemployee = employees.find(empl => empl.id_employee.toString() === row.id.toString())
+            var surname = selemployee.surname;
+            var name = selemployee.name;
+            var secondname = selemployee.secondname;
+            var date_birth = selemployee.date_birth;
+            var serapasp = selemployee.seriapasp;
+            var numberpasp = selemployee.numberpasp;
+            var email = selemployee.email;
+            var department = selemployee.department_id;
 
             document.getElementById("NameEmployee").value = name;
             document.getElementById("SurnameEmployee").value = surname
@@ -168,32 +180,22 @@ function SelectedRow(row, table) {
             document.getElementById("SeriaEmployee").value = serapasp;
             document.getElementById("NumberEmployee").value = numberpasp;
 
-            for (let i = 0; i < departs.length; i++) {
-                if (departs[i].name.toString() === department.toString()) {
-                    let options = document.getElementsByClassName('input-combobox');
-                    for (let j = 0; j < options.length; j++) {
-                        if (options[j].id.toString().substring(3, options[j].id.length) === departs[i].id_department.toString()) {
-                            options[j].checked = true
-                            selectedindexcombobox = options[j].id.toString().substring(3, options[j].id.length);
-                            lastfidselected = options[j].id.toString().substring(3, options[j].id.length);
-                            LoadPostsForSelectedDep().then(function () {
-                                FilterTaskTable(selectedtask)
-                            })
-                        }
-                    }
+            let options = document.getElementsByClassName('input-combobox');
+            for (let j = 0; j < options.length; j++) {
+                if (options[j].id.toString().substring(3, options[j].id.length) === department.toString()) {
+                    options[j].checked = true
+                    selectedindexcombobox = options[j].id.toString().substring(3, options[j].id.length);
+                    lastfidselected = options[j].id.toString().substring(3, options[j].id.length);
+                    LoadPostsForSelectedDep()
                 }
             }
         } else {
-            var desc, name, datestart, dateend, check;
-            for (let i = 0; i < tasks.length; i++) {
-                if (row.id.toString() === tasks[i].id_task.toString()) {
-                    name = tasks[i].name;
-                    desc = tasks[i].description;
-                    datestart = tasks[i].date_start;
-                    dateend = tasks[i].date_end;
-                    check = tasks[i].done;
-                }
-            }
+            var task=tasks.find(t=>t.id_task.toString()===row.id.toString())
+            var name = task.name;
+            var desc = task.description;
+            var datestart = task.date_start;
+            var dateend = task.date_end;
+            var check = task.done;
 
             document.getElementById("NameTask").value = name;
             document.getElementById("DescriptionTask").value = desc;
@@ -272,12 +274,12 @@ function FillHeaders(key, table) {
     return key
 }
 
-function FilterTaskTable(task_id) {
-    let table = document.getElementById("table1");
-    var rows = Array.from(table.getElementsByTagName("tr"));
-    var currrow = rows.find((tr, i) => {
-        if (tr.id.toString() !== task_id.toString()) {
-            table.deleteRow(i)
-        }
-    })
-}
+// function FilterTaskTable(task_id) {
+//     let table = document.getElementById("table1");
+//     var rows = Array.from(table.getElementsByTagName("tr"));
+//     var currrow = rows.find((tr, i) => {
+//         if (tr.id.toString() !== task_id.toString()) {
+//             table.deleteRow(i)
+//         }
+//     })
+// }
