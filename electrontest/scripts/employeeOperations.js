@@ -36,7 +36,7 @@ async function getDeparts() {
                 getPosts(departs)
                 resolve()
             }).then(function () {
-            loadScript("styles/bootstrap/select2/js/select2.full.min.js")
+            loadScript("../styles/bootstrap/select2/js/select2.full.min.js")
                 .then(data => {
                     console.log("Script loaded successfully", data);
                 })
@@ -313,7 +313,7 @@ function EditPostsToEmployee(url) {
                     return res.json()
                 })
                 .then(data => {
-                   
+
                 }).then(function (){
                 if (index === selectedposts.length -1)
                     window.location = window.location
@@ -335,7 +335,7 @@ function AddTask(){
     taskpost = new Task(null, descrtask, nametask,  dateendtask, dateendtask, donetask, null)
     body = JSON.stringify(taskpost)
 
-    if (nametask !== "" && descrtask !== "" && dateendtask !== "" && dateendtask !== ""&&selectedindex!==0) {
+    if (nametask !== "" && descrtask !== "" && datestarttask !== "" && dateendtask !== ""&&selectedindex!==0) {
         var employee=employees.find(element=>element.id_employee.toString()===selectedindex.toString());
         fetch(url + 'organization/' + ID + '/department/'+departs.find(depart=>depart.id_department.toString()===employee.department_id.toString()).id_department+'/employee/'+selectedindex+'/task', {
             method: "POST",
@@ -362,13 +362,24 @@ function EditTask() {
     dateendtask = document.getElementById("DateEndTask").value
     donetask = document.getElementById("DoneTask").checked
 
-    taskpost = new Task(null, descrtask, nametask,  dateendtask, dateendtask, donetask, parseInt(selectedindex))
-    body = JSON.stringify(taskpost)
+    if (nametask !== "" && descrtask !== "" && dateendtask !== "" && dateendtask !== ""&&selectedindex2!==0) {
+        var emplID,empl, urlcomplete;
+        if (selectedindex===0) {
+            emplID = tasks.find(t => t.id_task.toString() === selectedindex2.toString()).employee_id
+            empl=employees.find(element=>element.id_employee.toString()===emplID.toString());
+            urlcomplete=url + 'organization/' + ID + '/department/'+empl.department_id.toString()+'/employee/'+empl.id_employee.toString()+'/task/'+selectedindex2.toString();
+        }
+        else {
+            emplID = selectedindex;
+            var seltask=tasks.find(t=>t.id_task.toString()===selectedindex2.toString()).employee_id
+            empl=employees.find(element=>element.id_employee.toString()===seltask.toString());
+        }
+        console.log(empl, emplID)
 
-    if (nametask !== "" && descrtask !== "" && dateendtask !== "" && dateendtask !== ""&&selectedindex!==0&&selectedtask!==0) {
-        var department=employees.find(element=>element.id_employee.toString()===selectedindex.toString());
-        console.log(url + 'organization/' + ID + '/department/'+departs.find(depart=>depart.name===department.department_id.toString()).id_department+'/employee/'+selectedindex.toString()+'/task/'+selectedtask.toString())
-        fetch(url + 'organization/' + ID + '/department/'+departs.find(depart=>depart.name===department.department_id.toString()).id_department+'/employee/'+selectedindex.toString()+'/task/'+selectedtask.toString(), {
+        taskpost = new Task(null, descrtask, nametask,  dateendtask, dateendtask, donetask, parseInt(emplID))
+        body = JSON.stringify(taskpost)
+        console.log(url + 'organization/' + ID + '/department/'+empl.department_id.toString()+'/employee/'+empl.id_employee.toString()+'/task/'+selectedindex2.toString())
+        fetch(urlcomplete, {
             method: "PUT",
             mode: 'cors',
             body: body
@@ -378,7 +389,7 @@ function EditTask() {
             })
             .then(data => {
                 console.log(data)
-                if (data.message === undefined)
+                if (data.message === 'Успешное изменение данных')
                     window.location = window.location
             })
             .catch(error => alert(error))

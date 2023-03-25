@@ -81,6 +81,11 @@ section {
     min-width: 100%;
 }
 
+.menu-div.last-item{
+    position: fixed;
+    bottom: 5px;
+}
+
 
 .menu-a {
     position: relative;

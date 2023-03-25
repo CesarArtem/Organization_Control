@@ -1,5 +1,6 @@
 let selectedindex = 0;
-let selectedtask = 0;
+let selectedindex2 = 0;
+let selectedindex3 = 0;
 let lastfidselected = 0;
 
 function generateTableHead(table, data) {
@@ -43,13 +44,23 @@ function generateTable(table, data, IDS, fkey) {
                     temp.innerHTML = text;
                     cell.appendChild(temp);
                 } else {
-                    if (key.toString().endsWith('_id')) {
-                        if (fkey !== null) {
-                            let foreignelement = fkey[i]
-                            text = document.createTextNode(foreignelement.toString());
-                        }
-                    } else
-                        text = document.createTextNode(element[key]);
+                    if (window.location.href.endsWith('department.html')) {
+                        if (key.toString().endsWith('_id')) {
+                            if (fkey !== null) {
+                                let foreignelement = departs.find(dep => dep.id_department.toString() === fkey[i].toString()).name.toString();
+                                text = document.createTextNode(foreignelement.toString());
+                            }
+                        } else
+                            text = document.createTextNode(element[key]);
+                    } else {
+                        if (key.toString().endsWith('_id')) {
+                            if (fkey !== null) {
+                                let foreignelement = fkey[i].toString();
+                                text = document.createTextNode(foreignelement.toString());
+                            }
+                        } else
+                            text = document.createTextNode(element[key]);
+                    }
                     cell.appendChild(text);
                 }
             }
@@ -80,14 +91,7 @@ function addRowHandlers(table) {
                         if (table.id !== 'table1') {
                             if (selectedindex === row.id) {
                                 selectedindex = 0
-                                selectedtask = 0
                                 row.style.backgroundColor = ""
-                                let table1 = document.getElementById("table1");
-                                var rows1 = table1.getElementsByTagName("tr");
-                                for (j = 0; j < rows1.length; j++) {
-                                    var currentRow2 = table1.rows[j];
-                                    currentRow2.style.backgroundColor = ""
-                                }
                             } else {
                                 for (j = 0; j < rows.length; j++) {
                                     var currentRow2 = table.rows[j];
@@ -95,18 +99,11 @@ function addRowHandlers(table) {
                                 }
                                 row.style.backgroundColor = "#399E5A";
                                 selectedindex = row.id;
-                                selectedtask = 0
-                                let table1 = document.getElementById("table1");
-                                var rows1 = table1.getElementsByTagName("tr");
-                                for (j = 0; j < rows1.length; j++) {
-                                    var currentRow2 = table1.rows[j];
-                                    currentRow2.style.backgroundColor = ""
-                                }
                                 SelectedRow(row, table)
                             }
-                        } else {
-                            if (selectedtask === row.id) {
-                                selectedtask = 0
+                        } else if (table.id !== 'example1'){
+                            if (selectedindex2 === row.id) {
+                                selectedindex2 = 0
                                 row.style.backgroundColor = ""
                             } else {
                                 for (j = 0; j < rows.length; j++) {
@@ -114,7 +111,21 @@ function addRowHandlers(table) {
                                     currentRow2.style.backgroundColor = ""
                                 }
                                 row.style.backgroundColor = "#399E5A";
-                                selectedtask = row.id;
+                                selectedindex2 = row.id;
+                                SelectedRow(row, table)
+                            }
+                        }else
+                        {
+                            if (selectedindex3 === row.id) {
+                                selectedindex3 = 0
+                                row.style.backgroundColor = ""
+                            } else {
+                                for (j = 0; j < rows.length; j++) {
+                                    var currentRow3 = table.rows[j];
+                                    currentRow3.style.backgroundColor = ""
+                                }
+                                row.style.backgroundColor = "#399E5A";
+                                selectedindex3 = row.id;
                                 SelectedRow(row, table)
                             }
                         }
@@ -180,17 +191,10 @@ function SelectedRow(row, table) {
             document.getElementById("SeriaEmployee").value = serapasp;
             document.getElementById("NumberEmployee").value = numberpasp;
 
-            let options = document.getElementsByClassName('input-combobox');
-            for (let j = 0; j < options.length; j++) {
-                if (options[j].id.toString().substring(3, options[j].id.length) === department.toString()) {
-                    options[j].checked = true
-                    selectedindexcombobox = options[j].id.toString().substring(3, options[j].id.length);
-                    lastfidselected = options[j].id.toString().substring(3, options[j].id.length);
-                    LoadPostsForSelectedDep()
-                }
-            }
+            setcomboboxForDepartment(department.toString())
+            LoadPostsForSelectedDep()
         } else {
-            var task=tasks.find(t=>t.id_task.toString()===row.id.toString())
+            var task = tasks.find(t => t.id_task.toString() === row.id.toString())
             var name = task.name;
             var desc = task.description;
             var datestart = task.date_start;
@@ -202,6 +206,50 @@ function SelectedRow(row, table) {
             document.getElementById("DateStartTask").value = datestart;
             document.getElementById("DateEndTask").value = dateend;
             document.getElementById("DoneTask").checked = check;
+        }
+    } else if (location.href.endsWith('department.html')) {
+        if (table.id === 'example1') {
+            var seldep = departs.find(dep => dep.id_department.toString() === row.id.toString())
+            var name = seldep.name;
+            var desc = seldep.description
+
+            document.getElementById("NameDepartment").value = name;
+            document.getElementById("DescriptionDepartment").value = desc;
+        } else if (table.id === 'table1'){
+            var goal = goals.find(g => g.id_goal.toString() === row.id.toString())
+            var name = goal.name;
+            var desc = goal.description;
+            var datestart = goal.date_start;
+            var dateend = goal.date_end;
+            var check = goal.done;
+
+            document.getElementById("NameGoal").value = name;
+            document.getElementById("DescriptionGoal").value = desc;
+            document.getElementById("DateStartGoal").value = datestart;
+            document.getElementById("DateEndGoal").value = dateend;
+            document.getElementById("DoneGoal").checked = check;
+
+            setcomboboxForDepartment(goal.department_id.toString())
+        }else{
+            var post = posts.find(g => g.id_post.toString() === row.id.toString())
+            var name = post.name;
+            var salary = post.salary;
+
+            document.getElementById("NamePost").value = name;
+            document.getElementById("SalaryPost").value = salary;
+
+            setcomboboxForDepartment(post.department_id.toString())
+        }
+    }
+}
+
+function setcomboboxForDepartment(depid){
+    let options = document.getElementsByClassName('input-combobox');
+    for (let j = 0; j < options.length; j++) {
+        if (options[j].id.toString().substring(3, options[j].id.length) === depid.toString()) {
+            options[j].checked = true
+            selecteddepartmentforgoals = options[j].id.toString().substring(3, options[j].id.length);
+            lastfidselected = options[j].id.toString().substring(3, options[j].id.length);
         }
     }
 }
@@ -268,6 +316,30 @@ function FillHeaders(key, table) {
                 break;
             case 'employee_id':
                 key = 'Сотрудник'
+                break;
+        }
+    } else if (location.href.endsWith('department.html')) {
+        switch (key) {
+            case 'name':
+                key = 'Наименование'
+                break;
+            case 'description':
+                key = 'Описание'
+                break;
+            case 'date_start':
+                key = 'Дата начала'
+                break;
+            case 'date_end':
+                key = 'Дата окончания'
+                break;
+            case 'done':
+                key = 'Статус выполнения'
+                break;
+            case 'department_id':
+                key = 'Отдел'
+                break;
+            case 'salary':
+                key = 'Зарплата'
                 break;
         }
     }

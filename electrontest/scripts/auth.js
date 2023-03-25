@@ -55,7 +55,7 @@ function Create(){
 function SaveData(ID){
     window.Bridge.saveData(ID)
     console.log(window.Bridge.getData())
-    window.location="./index.html"
+    window.location="../pages/index.html"
 }
 
 function GetOrg(){

@@ -1,33 +1,35 @@
 var headerText = `<div class="menu" name="nav" id="nav" onmouseout="HideNavigation(nav)" onmouseover="ShowNavigation(nav)">
-        <img class="imgformenu" src="styles/main-menu.png" align="right">
+        <img class="imgformenu" src="../images/main-menu.png" align="right">
         <nav class="menu-list">
             <div class="menu-div">
-                <a href="index.html" style="--clr:#39FF14" class="menu-a"><span>Главная</span><i></i></a>
-                    <img class="menu-img" src="styles/home.png" align="right">
+                <a href="../pages/index.html" style="--clr:#39FF14" class="menu-a"><span>Главная</span><i></i></a>
+                    <img class="menu-img" src="../images/home.png" align="right">
             </div>
             <div class="menu-div">
-                <a href="finances.html" style="--clr:#39FF14" class="menu-a"><span>Финансы</span><i></i></a>
-                <img class="menu-img" src="styles/stats.png" align="right">
+                <a href="../pages/finances.html" style="--clr:#39FF14" class="menu-a"><span>Финансы</span><i></i></a>
+                <img class="menu-img" src="../images/stats.png" align="right">
             </div>
             <div class="menu-div">
-                <a href="department.html" style="--clr:#39FF14" class="menu-a"><span>Отделы</span><i></i></a>
-                <img class="menu-img" src="styles/it-department.png" align="right">
+                <a href="../pages/department.html" style="--clr:#39FF14" class="menu-a"><span>Отделы</span><i></i></a>
+                <img class="menu-img" src="../images/it-department.png" align="right">
             </div>
             <div class="menu-div">
-                <a href="employee.html" style="--clr:#39FF14" class="menu-a"><span>Сотрудники</span><i></i></a>
-                <img class="menu-img" src="styles/employees.png" align="right">
+                <a href="../pages/employee.html" style="--clr:#39FF14" class="menu-a"><span>Сотрудники</span><i></i></a>
+                <img class="menu-img" src="../images/employees.png" align="right">
             </a>
             </div>
             <div class="menu-div">
-                <a href="organization.html" style="--clr:#39FF14" class="menu-a"><span>Организация</span><i></i></a>
-                <img class="menu-img" src="styles/strategy.png" align="right"/>
+                <a href="../pages/organization.html" style="--clr:#39FF14" class="menu-a"><span>Организация</span><i></i></a>
+                <img class="menu-img" src="../images/strategy.png" align="right"/>
+            </div>
+             <div class="menu-div" style="position: absolute;
+  bottom: 5px;">
+                <a href="../pages/settings.html" style="--clr:#39FF14" class="menu-a"><span>Настройки</span><i></i></a>
+                <img class="menu-img" src="../images/settings.png" align="right"/>
             </div>
         </nav>
     </div>`;
 
-function setHeader() {
-    document.getElementById('headdiv').innerHTML = headerText;
-}
 function create(htmlStr) {
     var frag = document.createDocumentFragment(),
         temp = document.createElement('div');
@@ -39,7 +41,4 @@ function create(htmlStr) {
 }
 
 var fragment = create(headerText);
-// You can use native DOM methods to insert the fragment:
 document.body.insertBefore(fragment, document.body.childNodes[0]);
-
-// setHeader();

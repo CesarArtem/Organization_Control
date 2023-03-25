@@ -40,9 +40,9 @@ function createWindow() {
     console.log(res)
     if (!res) {
         storage.set("id-org", 0)
-        win.loadFile('./auth.html')
+        win.loadFile('./pages/auth.html')
     } else
-        win.loadFile('./index.html')
+        win.loadFile('./pages/index.html')
     return win
 }
 

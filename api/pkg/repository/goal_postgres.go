@@ -27,7 +27,7 @@ func (r *GoalPostgres) Create(Goal models.Goal, idorg int) (models.Goal, error) 
 	var GoalId int
 	query := fmt.Sprintf("SELECT insert_SGT($1, $2, $3, $4, $5, $6, $7, $8, $9)")
 
-	row := tx.QueryRow(query, Goal.Name, Goal.Description, Goal.Date_start, Goal.Date_end, Goal.Done, idorg, foreignkeyGoal, apiGoalTable, primarykeyGoal)
+	row := tx.QueryRow(query, Goal.Name, Goal.Description, Goal.Date_start, Goal.Date_end, Goal.Done, Goal.Department_ID, foreignkeyGoal, apiGoalTable, primarykeyGoal)
 
 	err = row.Scan(&GoalId)
 	if err != nil {
@@ -36,7 +36,7 @@ func (r *GoalPostgres) Create(Goal models.Goal, idorg int) (models.Goal, error) 
 	}
 	tx.Commit()
 
-	org, err = r.GetById(GoalId, idorg)
+	org, err = r.GetById(Goal.Department_ID, idorg)
 	if err != nil {
 		return models.Goal{}, err
 	}
@@ -76,9 +76,9 @@ func (r *GoalPostgres) Update(id int, Goal models.Goal, idorg int) (models.Goal,
 
 	query := fmt.Sprintf("SELECT update_SGT($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)")
 
-	_, err := r.db.Exec(query, id, Goal.Name, Goal.Description, Goal.Date_start, Goal.Date_end, Goal.Done, idorg, foreignkeyGoal, apiGoalTable, primarykeyGoal)
+	_, err := r.db.Exec(query, id, Goal.Name, Goal.Description, Goal.Date_start, Goal.Date_end, Goal.Done, Goal.Department_ID, foreignkeyGoal, apiGoalTable, primarykeyGoal)
 
-	org, _ = r.GetById(id, idorg)
+	org, _ = r.GetById(Goal.Department_ID, idorg)
 
 	return org, err
 }

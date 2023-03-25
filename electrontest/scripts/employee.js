@@ -9,7 +9,7 @@ getDeparts()
 
 function LoadFiles(){
     return new Promise(resolve => {
-        loadScript("styles/bootstrap/datatables/jquery.dataTables.min.js")
+        loadScript("../styles/bootstrap/datatables/jquery.dataTables.min.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
             })
@@ -18,7 +18,7 @@ function LoadFiles(){
             });
         resolve()
     }).then(function () {
-        loadScript("styles/bootstrap/datatables-bs4/js/dataTables.bootstrap4.min.js")
+        loadScript("../styles/bootstrap/datatables-bs4/js/dataTables.bootstrap4.min.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
             })
@@ -26,7 +26,7 @@ function LoadFiles(){
                 console.error(err);
             });
     }).then(function () {
-        loadScript("styles/bootstrap/datatables-responsive/js/dataTables.responsive.min.js")
+        loadScript("../styles/bootstrap/datatables-responsive/js/dataTables.responsive.min.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
             })
@@ -34,7 +34,7 @@ function LoadFiles(){
                 console.error(err);
             });
     }).then(function () {
-        loadScript("styles/bootstrap/datatables-responsive/js/responsive.bootstrap4.min.js")
+        loadScript("../styles/bootstrap/datatables-responsive/js/responsive.bootstrap4.min.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
             })
@@ -42,7 +42,7 @@ function LoadFiles(){
                 console.error(err);
             });
     }).then(function () {
-        loadScript("styles/bootstrap/datatables-buttons/js/dataTables.buttons.min.js")
+        loadScript("../styles/bootstrap/datatables-buttons/js/dataTables.buttons.min.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
             })
@@ -50,7 +50,7 @@ function LoadFiles(){
                 console.error(err);
             });
     }).then(function () {
-        loadScript("styles/bootstrap/datatables-buttons/js/buttons.bootstrap4.min.js")
+        loadScript("../styles/bootstrap/datatables-buttons/js/buttons.bootstrap4.min.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
             })
@@ -58,7 +58,7 @@ function LoadFiles(){
                 console.error(err);
             });
     }).then(function () {
-        loadScript("styles/bootstrap/datatables-buttons/js/buttons.html5.min.js")
+        loadScript("../styles/bootstrap/datatables-buttons/js/buttons.html5.min.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
             })
@@ -66,7 +66,7 @@ function LoadFiles(){
                 console.error(err);
             });
     }).then(function () {
-        loadScript("styles/bootstrap/datatables-buttons/js/buttons.print.min.js")
+        loadScript("../styles/bootstrap/datatables-buttons/js/buttons.print.min.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
             })
@@ -74,7 +74,7 @@ function LoadFiles(){
                 console.error(err);
             });
     }).then(function () {
-        loadScript("styles/bootstrap/datatables-buttons/js/buttons.colVis.min.js")
+        loadScript("../styles/bootstrap/datatables-buttons/js/buttons.colVis.min.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
             })
@@ -82,7 +82,7 @@ function LoadFiles(){
                 console.error(err);
             });
     }).then(function () {
-        loadScript("styles/bootstrap/select2/js/select2.full.min.js")
+        loadScript("../styles/bootstrap/select2/js/select2.full.min.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
             })
@@ -90,7 +90,7 @@ function LoadFiles(){
                 console.error(err);
             });
     }).then(function () {
-        loadScript("styles/datatablescript.js")
+        loadScript("../scripts/datatablescript.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
             })
@@ -98,7 +98,7 @@ function LoadFiles(){
                 console.error(err);
             });
     }).then(function () {
-        loadScript("scripts/ClickHandlersForTable.js")
+        loadScript("../scripts/ClickHandlersForTable.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
             })
@@ -171,7 +171,7 @@ function LoadPostsForSelectedDep() {
             }
         }
     }).then(function () {
-        loadScript("styles/bootstrap/select2/js/select2.full.min.js")
+        loadScript("../styles/bootstrap/select2/js/select2.full.min.js")
             .then(data => {
                 console.log("Script loaded successfully", data);
             })

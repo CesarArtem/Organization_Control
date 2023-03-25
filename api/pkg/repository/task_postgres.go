@@ -27,7 +27,7 @@ func (r *TaskPostgres) Create(Task models.Task, idorg int) (models.Task, error) 
 	var TaskId int
 	query := fmt.Sprintf("SELECT insert_SGT($1, $2, $3, $4, $5, $6, $7, $8, $9)")
 
-	row := tx.QueryRow(query, Task.Name, Task.Description, Task.Date_start, Task.Date_end, Task.Done, idorg, foreignkeyTask, apiTaskTable, primarykeyTask)
+	row := tx.QueryRow(query, Task.Name, Task.Description, Task.Date_start, Task.Date_end, Task.Done, Task.Employee_ID, foreignkeyTask, apiTaskTable, primarykeyTask)
 
 	err = row.Scan(&TaskId)
 	if err != nil {
@@ -36,7 +36,7 @@ func (r *TaskPostgres) Create(Task models.Task, idorg int) (models.Task, error) 
 	}
 	tx.Commit()
 
-	org, err = r.GetById(TaskId, idorg)
+	org, err = r.GetById(Task.Employee_ID, idorg)
 	if err != nil {
 		return models.Task{}, err
 	}
@@ -76,9 +76,9 @@ func (r *TaskPostgres) Update(id int, Task models.Task, idorg int) (models.Task,
 
 	query := fmt.Sprintf("SELECT update_SGT($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)")
 
-	_, err := r.db.Exec(query, id, Task.Name, Task.Description, Task.Date_start, Task.Date_end, Task.Done, idorg, foreignkeyTask, apiTaskTable, primarykeyTask)
+	_, err := r.db.Exec(query, id, Task.Name, Task.Description, Task.Date_start, Task.Date_end, Task.Done, Task.Employee_ID, foreignkeyTask, apiTaskTable, primarykeyTask)
 
-	org, _ = r.GetById(id, idorg)
+	org, _ = r.GetById(Task.Employee_ID, idorg)
 
 	return org, err
 }

@@ -1,4 +1,7 @@
 let ID
+let strategy = [];
+let strategyIDS=[];
+let orgsaved
 
 function GetData() {
     ID = window.Bridge.getData();
@@ -10,7 +13,7 @@ GetData()
 getOrganization(ID)
 HideFromStart()
 getStratygies(ID).then(function () {
-    loadScript("styles/bootstrap/datatables/jquery.dataTables.min.js")
+    loadScript("../styles/bootstrap/datatables/jquery.dataTables.min.js")
         .then(data => {
             console.log("Script loaded successfully", data);
         })
@@ -18,7 +21,7 @@ getStratygies(ID).then(function () {
             console.error(err);
         });
 }).then(function () {
-    loadScript("styles/bootstrap/datatables-bs4/js/dataTables.bootstrap4.min.js")
+    loadScript("../styles/bootstrap/datatables-bs4/js/dataTables.bootstrap4.min.js")
         .then(data => {
             console.log("Script loaded successfully", data);
         })
@@ -26,7 +29,7 @@ getStratygies(ID).then(function () {
             console.error(err);
         });
 }).then(function () {
-    loadScript("styles/bootstrap/datatables-responsive/js/dataTables.responsive.min.js")
+    loadScript("../styles/bootstrap/datatables-responsive/js/dataTables.responsive.min.js")
         .then(data => {
             console.log("Script loaded successfully", data);
         })
@@ -34,7 +37,7 @@ getStratygies(ID).then(function () {
             console.error(err);
         });
 }).then(function () {
-    loadScript("styles/bootstrap/datatables-responsive/js/responsive.bootstrap4.min.js")
+    loadScript("../styles/bootstrap/datatables-responsive/js/responsive.bootstrap4.min.js")
         .then(data => {
             console.log("Script loaded successfully", data);
         })
@@ -42,7 +45,7 @@ getStratygies(ID).then(function () {
             console.error(err);
         });
 }).then(function () {
-    loadScript("styles/bootstrap/datatables-buttons/js/dataTables.buttons.min.js")
+    loadScript("../styles/bootstrap/datatables-buttons/js/dataTables.buttons.min.js")
         .then(data => {
             console.log("Script loaded successfully", data);
         })
@@ -50,7 +53,7 @@ getStratygies(ID).then(function () {
             console.error(err);
         });
 }).then(function () {
-    loadScript("styles/bootstrap/datatables-buttons/js/buttons.bootstrap4.min.js")
+    loadScript("../styles/bootstrap/datatables-buttons/js/buttons.bootstrap4.min.js")
         .then(data => {
             console.log("Script loaded successfully", data);
         })
@@ -58,7 +61,7 @@ getStratygies(ID).then(function () {
             console.error(err);
         });
 }).then(function () {
-    loadScript("styles/bootstrap/datatables-buttons/js/buttons.html5.min.js")
+    loadScript("../styles/bootstrap/datatables-buttons/js/buttons.html5.min.js")
         .then(data => {
             console.log("Script loaded successfully", data);
         })
@@ -66,7 +69,7 @@ getStratygies(ID).then(function () {
             console.error(err);
         });
 }).then(function () {
-    loadScript("styles/bootstrap/datatables-buttons/js/buttons.print.min.js")
+    loadScript("../styles/bootstrap/datatables-buttons/js/buttons.print.min.js")
         .then(data => {
             console.log("Script loaded successfully", data);
         })
@@ -74,7 +77,7 @@ getStratygies(ID).then(function () {
             console.error(err);
         });
 }).then(function () {
-    loadScript("styles/bootstrap/datatables-buttons/js/buttons.colVis.min.js")
+    loadScript("../styles/bootstrap/datatables-buttons/js/buttons.colVis.min.js")
         .then(data => {
             console.log("Script loaded successfully", data);
         })
@@ -82,7 +85,7 @@ getStratygies(ID).then(function () {
             console.error(err);
         });
 }).then(function () {
-    loadScript("styles/datatablescript.js")
+    loadScript("../scripts/datatablescript.js")
         .then(data => {
             console.log("Script loaded successfully", data);
         })
@@ -90,9 +93,6 @@ getStratygies(ID).then(function () {
             console.error(err);
         });
 })
-
-
-let orgsaved
 
 function getOrganization(ID) {
     fetch(url + 'organization/' + ID, {
@@ -144,9 +144,6 @@ function SaveOrg() {
             .catch(error => console.log(error))
     }
 }
-
-let strategy = [];
-let strategyIDS=[];
 
 async function getStratygies() {
     return new Promise((resolve) => {
