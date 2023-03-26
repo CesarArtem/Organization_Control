@@ -23,12 +23,14 @@ async function getDeparts() {
                 for (var i in data.data) {
                     delete data.data[i].organization_id
                     department = Object.assign(data.data[i])
-                    let htmlinput = `<input class="input-combobox" name="combo" type="radio" id="dep` + department.id_department + `" checked="false">
-                            <label for="dep` + department.id_department + `" id="deplabel` + department.id_department + `" class="option">` + department.name + `</label>`
+                    let htmlinput = `<input class="input-combobox" name="combo1" type="radio" id="dep1` + department.id_department + `" checked="false">
+                            <label for="dep1` + department.id_department + `" id="deplabel1` + department.id_department + `" class="option">` + department.name + `</label>`
                     let sum = document.getElementsByClassName('select')[0]
                     sum.insertAdjacentHTML('afterbegin', htmlinput);
+                    let htmlinput2 = `<input class="input-combobox" name="combo2" type="radio" id="dep2` + department.id_department + `" checked="false">
+                            <label for="dep2` + department.id_department + `" id="deplabel2` + department.id_department + `" class="option">` + department.name + `</label>`
                     sum = document.getElementsByClassName('select')[1]
-                    sum.insertAdjacentHTML('afterbegin', htmlinput);
+                    sum.insertAdjacentHTML('afterbegin', htmlinput2);
                     selecteddepartmentforpost = department.id_department;
                     selecteddepartmentforgoals = department.id_department;
                     departsIDS.push(data.data[i].id_department)
@@ -153,10 +155,10 @@ function AddGoal() {
     var dateendGoal = document.getElementById("DateEndGoal").value
     var doneGoal = document.getElementById("DoneGoal").checked
 
-    Goalpost = new Goal(null, descrGoal, nameGoal, dateendGoal, dateendGoal, doneGoal, null)
+    Goalpost = new Goal(null, descrGoal, nameGoal, dateendGoal, dateendGoal, doneGoal, parseInt(selecteddepartmentforgoals.toString()))
     body = JSON.stringify(Goalpost)
 
-    if (nameGoal !== "" && descrGoal !== "" && datestartGoal !== "" && dateendGoal !== "" && selectedindex !== 0) {
+    if (nameGoal !== "" && descrGoal !== "" && datestartGoal !== "" && dateendGoal !== "") {
         fetch(url + 'organization/' + ID + '/department/' + selecteddepartmentforgoals.toString() + '/goal/', {
             method: "POST",
             mode: 'cors',
@@ -245,6 +247,7 @@ function AddPost() {
     Postpost = new Post(null, namePost, salaryPost, null)
     body = JSON.stringify(Postpost)
 
+    console.log(selecteddepartmentforpost)
     if (namePost !== "" && salaryPost !== "" && selecteddepartmentforpost !== 0) {
         fetch(url + 'organization/' + ID + '/department/' + selecteddepartmentforpost.toString() + '/post/', {
             method: "POST",
@@ -273,6 +276,7 @@ function EditPost() {
 
     if (namePost !== "" && salaryPost !== "" && selecteddepartmentforpost !== 0) {
         var selpost=posts.find(p=>p.id_post.toString()===selectedindex3.toString())
+        console.log(selecteddepartmentforpost.toString())
         fetch(url + 'organization/' + ID + '/department/' + selpost.department_id.toString() + '/post/' + selectedindex3.toString(), {
             method: "PUT",
             mode: 'cors',
@@ -292,11 +296,17 @@ function EditPost() {
 }
 
 function DeleteRow(no) {
-    window.Bridge.openDialog(url + 'organization/' + ID + '/department/' + no.toString(), "DeleteDepartment")
+    window.Bridge.openDialog(url + 'organization/' + ID + '/department/' + no.toString(), "DeleteDep", './pages/department.html')
 }
 
 function DeleteTask(no) {
     let selectedGoal = goals.find(t => t.id_goal.toString() === no.toString());
 
-    window.Bridge.openDialog(url + 'organization/' + ID + '/department/' + selectedGoal.department_id.toString() + '/goal/' + no.toString(), "DeleteDepartment")
+    window.Bridge.openDialog(url + 'organization/' + ID + '/department/' + selectedGoal.department_id.toString() + '/goal/' + no.toString(), "DeleteGoal", './pages/department.html')
+}
+
+function DeletePost(no) {
+    let selectedPost = posts.find(t => t.id_post.toString() === no.toString());
+
+    window.Bridge.openDialog(url + 'organization/' + ID + '/department/' + selectedPost.department_id.toString() + '/post/' + no.toString(), "DeletePost", './pages/department.html')
 }

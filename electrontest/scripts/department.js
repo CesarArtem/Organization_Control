@@ -1,13 +1,24 @@
 
 GetData()
 getDeparts().then(function (){
-        var combo = document.getElementsByClassName('option');
+        var select1=document.getElementsByClassName('select')[0];
+        var combo = select1.getElementsByClassName('option');
 
         for (var i = 0; i < combo.length; i++) {
             combo[i].addEventListener('click', function () {
-                selectedindexcombobox = this.id.toString().substring(8, this.id.length)
+                selecteddepartmentforpost = this.id.toString().substring(9, this.id.length)
             })
         }
+
+    var select2=document.getElementsByClassName('select')[1];
+    var combo2 = select2.getElementsByClassName('option');
+    console.log(select2)
+    console.log(select1)
+    for (var i = 0; i < combo2.length; i++) {
+        combo2[i].addEventListener('click', function () {
+            selecteddepartmentforgoals = this.id.toString().substring(9, this.id.length)
+        })
+    }
 })
 
 function GetData() {

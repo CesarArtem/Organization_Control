@@ -139,7 +139,7 @@ function SaveOrg() {
             .then(data => {
                 orgsaved = Object.assign(new Organization(), data.data);
                 orgsaved.date_foundation = document.getElementById("DateOrg").value
-                alert(data.message)
+                window.location=window.location
             })
             .catch(error => console.log(error))
     }
@@ -237,5 +237,5 @@ function EditStrategy() {
 }
 
 function DeleteRow(no) {
-    window.Bridge.openDialog(url + 'organization/' + ID + '/strategy/' + no, "DeleteStrat")
+    window.Bridge.openDialog(url + 'organization/' + ID + '/strategy/' + no, "DeleteStrat", './pages/organization.html')
 }

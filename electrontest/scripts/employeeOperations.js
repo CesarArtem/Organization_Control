@@ -400,7 +400,7 @@ function EditTask() {
 function DeleteRow(no) {
     var selempl=employees.find(empl=>empl.id_employee.toString()===no.toString());
     var depid=departs.find(dep=>dep.id_department.toString()===selempl.department_id.toString())
-    window.Bridge.openDialog(url + 'organization/' + ID + '/department/' + depid.id_department.toString() + '/employee/' + no.toString(), "DeleteEmployee")
+    window.Bridge.openDialog(url + 'organization/' + ID + '/department/' + depid.id_department.toString() + '/employee/' + no.toString(), "DeleteEmployee", './pages/employee.html')
 }
 
 function DeleteTask(no) {
@@ -412,5 +412,5 @@ function DeleteTask(no) {
     console.log(selecteddep)
 
     console.log(url + 'organization/' + ID + '/department/' + selecteddep.id_department.toString() + '/employee/' + selectedempl.id_employee.toString()+'/task/'+no.toString())
-    window.Bridge.openDialog(url + 'organization/' + ID + '/department/' + selecteddep.id_department.toString() + '/employee/' + selectedempl.id_employee.toString()+'/task/'+no.toString(), "DeleteTask")
+    window.Bridge.openDialog(url + 'organization/' + ID + '/department/' + selecteddep.id_department.toString() + '/employee/' + selectedempl.id_employee.toString()+'/task/'+no.toString(), "DeleteTask", './pages/employee.html')
 }

@@ -63,16 +63,31 @@ ipcMain.on("getData", (sender) => {
     let ID = getIDOrg()
 })
 
-ipcMain.on('openDialog', (sender, event, url) => {
+ipcMain.on('openDialog', (sender, event, url, loadfile) => {
     switch (event) {
         case "DeleteStrat":
-            tools.DeleteStr(url, "Вы действительно хотите удалить эту стратегию?", win)
+            tools.DeleteData(url, "Вы действительно хотите удалить эту стратегию?", win, loadfile)
             break;
         case "DeleteEmployee":
-            tools.DeleteEmployee(url, "Вы действительно хотите удалить этого сотрудника?", win)
+            tools.DeleteData(url, "Вы действительно хотите удалить этого сотрудника?", win, loadfile)
             break;
         case "DeleteTask":
-            tools.DeleteTask(url, "Вы действительно хотите удалить эту задачу?", win)
+            tools.DeleteData(url, "Вы действительно хотите удалить эту задачу?", win, loadfile)
+            break;
+        case "DeleteDep":
+            tools.DeleteData(url, "Вы действительно хотите удалить этот отдел (при удалении отдела, все данные связанные с этим отделом автоматически удалятся с ним)?", win, loadfile)
+            break;
+        case "DeletePost":
+            tools.DeleteData(url, "Вы действительно хотите удалить эту должность?", win, loadfile)
+            break;
+        case "DeleteGoal":
+            tools.DeleteData(url, "Вы действительно хотите удалить эту цель?", win, loadfile)
+            break;
+        case "DeleteOperation":
+            tools.DeleteData(url, "Вы действительно хотите удалить эту операцию?", win, loadfile)
+            break;
+        case "Exit":
+            tools.Exit(url, "Вы действительно хотите выйти из профиля?", win, loadfile)
             break;
     }
 })

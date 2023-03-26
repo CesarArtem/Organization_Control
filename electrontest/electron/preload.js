@@ -38,8 +38,8 @@ let saveData = (ID) => {
     ipcRenderer.send("saveData", ID);
 };
 
-let openDialog = (url,event) => {
-    return ipcRenderer.send("openDialog", event, url);
+let openDialog = (url,event, loadfile) => {
+    return ipcRenderer.send("openDialog", event, url, loadfile);
 };
 
 let bridge = {

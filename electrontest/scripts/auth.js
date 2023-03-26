@@ -25,10 +25,9 @@ function Create(){
     nameorg=document.getElementById("OrgName").value
     addresorg=document.getElementById("AddressOrg").value
     dateorg=document.getElementById("DateOrg").value
-    budgetorg=document.getElementById("BudgetOrg").value
     innorg=document.getElementById("INNOrg").value
 
-    org=new Organization(nameorg, null, budgetorg, dateorg, addresorg, innorg)
+    org=new Organization(nameorg, null, 0, dateorg, addresorg, innorg)
     body=JSON.stringify(org)
     fetch(url+'organization', {
         method: "POST",

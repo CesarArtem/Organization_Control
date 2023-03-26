@@ -8,12 +8,13 @@ setTimeout(function () {
 
     link1.addEventListener('click', clickhandlerEmployees);
     link2.addEventListener('click', clickhandlerEmployees);
-    link3.addEventListener('click', clickhandlerTable1);
-    link4.addEventListener('click', clickhandlerTable1);
     try {
+        link3.addEventListener('click', clickhandlerTable1);
+        link4.addEventListener('click', clickhandlerTable1);
         link5.addEventListener('click', clickhandlerTable2);
         link6.addEventListener('click', clickhandlerTable2);
-    } catch (e) {}
+    } catch (e) {
+    }
 }, 500)
 
 function clickhandlerEmployees() {

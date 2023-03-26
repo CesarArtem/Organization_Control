@@ -67,10 +67,12 @@ function generateTable(table, data, IDS, fkey) {
         }
         let cell = row.insertCell();
         let text;
-        if (table.id !== 'table1')
-            text = '<button type="submit" class="deletebtns" onclick="DeleteRow(' + IDs + ')" style="background-color: #e5383b; padding: 2rm">Удалить</button>'
+        if (table.id === 'example1')
+            text = '<button type="submit" class="deletebtns" onclick="DeleteRow(' + IDs + ')" style="background-color: #e5383b;">Удалить</button>'
+        else if (table.id === 'table1')
+            text = '<button type="submit" class="deletebtns" onclick="DeleteTask(' + IDs + ')" style="background-color: #e5383b;">Удалить</button>'
         else
-            text = '<button type="submit" class="deletebtns" onclick="DeleteTask(' + IDs + ')" style="background-color: #e5383b; padding: 2rm">Удалить</button>'
+            text = '<button type="submit" class="deletebtns" onclick="DeletePost(' + IDs + ')" style="background-color: #e5383b;">Удалить</button>'
         var temp = document.createElement('div');
         temp.innerHTML = text;
         cell.appendChild(temp);
@@ -88,7 +90,7 @@ function addRowHandlers(table) {
                 try {
                     const parentWithClass = row.closest('tbody');
                     if (parentWithClass !== null) {
-                        if (table.id !== 'table1') {
+                        if (table.id === 'example1') {
                             if (selectedindex === row.id) {
                                 selectedindex = 0
                                 row.style.backgroundColor = ""
@@ -101,7 +103,7 @@ function addRowHandlers(table) {
                                 selectedindex = row.id;
                                 SelectedRow(row, table)
                             }
-                        } else if (table.id !== 'example1'){
+                        } else if (table.id === 'table1'){
                             if (selectedindex2 === row.id) {
                                 selectedindex2 = 0
                                 row.style.backgroundColor = ""
@@ -229,7 +231,7 @@ function SelectedRow(row, table) {
             document.getElementById("DateEndGoal").value = dateend;
             document.getElementById("DoneGoal").checked = check;
 
-            setcomboboxForDepartment(goal.department_id.toString())
+            setcomboboxForDepartment(goal.department_id.toString(), 'goal')
         }else{
             var post = posts.find(g => g.id_post.toString() === row.id.toString())
             var name = post.name;
@@ -238,17 +240,33 @@ function SelectedRow(row, table) {
             document.getElementById("NamePost").value = name;
             document.getElementById("SalaryPost").value = salary;
 
-            setcomboboxForDepartment(post.department_id.toString())
+            setcomboboxForDepartment(post.department_id.toString(), 'post')
         }
+    }else if (location.href.endsWith('finances.html')) {
+        var desc, summ, dateoper;
+        for (let i = 0; i < finances.length; i++) {
+            if (row.id.toString() === finances[i].id_operations.toString()) {
+                summ = finances[i].summ;
+                desc = finances[i].description;
+                dateoper = finances[i].date_operation;
+            }
+        }
+
+        document.getElementById("DescriptionFinances").value = desc;
+        document.getElementById("SummFinance").value = summ;
+        document.getElementById("DateFinance").value = dateoper;
     }
 }
 
-function setcomboboxForDepartment(depid){
+function setcomboboxForDepartment(depid, table){
     let options = document.getElementsByClassName('input-combobox');
     for (let j = 0; j < options.length; j++) {
-        if (options[j].id.toString().substring(3, options[j].id.length) === depid.toString()) {
+        if (options[j].id.toString().substring(4, options[j].id.length) === depid.toString()) {
             options[j].checked = true
-            selecteddepartmentforgoals = options[j].id.toString().substring(3, options[j].id.length);
+            if (table==='goal')
+                selecteddepartmentforgoals = options[j].id.toString().substring(4, options[j].id.length);
+            else
+                selecteddepartmentforpost=options[j].id.toString().substring(4, options[j].id.length);
             lastfidselected = options[j].id.toString().substring(3, options[j].id.length);
         }
     }
@@ -342,16 +360,18 @@ function FillHeaders(key, table) {
                 key = 'Зарплата'
                 break;
         }
+    } else if (location.href.endsWith('finances.html')) {
+        switch (key) {
+            case 'summ':
+                key = 'Сумма операции'
+                break;
+            case 'description':
+                key = 'Описание'
+                break;
+            case 'date_operation':
+                key = 'Дата операции'
+                break;
+        }
     }
     return key
 }
-
-// function FilterTaskTable(task_id) {
-//     let table = document.getElementById("table1");
-//     var rows = Array.from(table.getElementsByTagName("tr"));
-//     var currrow = rows.find((tr, i) => {
-//         if (tr.id.toString() !== task_id.toString()) {
-//             table.deleteRow(i)
-//         }
-//     })
-// }

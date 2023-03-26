@@ -18,9 +18,34 @@ function Strategy(name, id_strategy, description, date_start, date_end, done){
     this.done = done;
 }
 
+function BarData(year,January, February, March, April, May, June, July, August, September, October, November, December)
+{
+    this.year=year;
+    this.January=January;
+    this.February=February;
+    this.March=March;
+    this.April=April;
+    this.May=May;
+    this.June=June;
+    this.July=July;
+    this.August=August;
+    this.September=September;
+    this.October=October;
+    this.November=November;
+    this.December=December;
+}
+
 function Department(id_department, name, description, organization_id){
     this.name = name;
     this.id_department = id_department;
+    this.description = description;
+    this.organization_id = organization_id;
+}
+
+function Finance(id_operations, summ, date_operation, description, organization_id){
+    this.id_operations = id_operations;
+    this.summ = summ;
+    this.date_operation = date_operation;
     this.description = description;
     this.organization_id = organization_id;
 }

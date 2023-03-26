@@ -29,6 +29,7 @@ function CheckBoxClick(check, form) {
     if (check.checked) {
         element = form.getElementsByClassName("form-control")
         for (var i = 0; i < element.length; i++) {
+            if (element[i].id!=='BudgetOrg')
             element[i].disabled = false;
         }
     } else {

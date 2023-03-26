@@ -70,8 +70,13 @@ function SaveOrg() {
             .then(data => {
                 orgsaved = Object.assign(new Organization(), data.data);
                 orgsaved.date_foundation = document.getElementById("DateOrg").value
+                window.location=window.location
                 alert(data.message)
             })
             .catch(error => console.log(error))
     }
+}
+
+function Exit(){
+    window.Bridge.openDialog('', "Exit", './pages/auth.html')
 }
