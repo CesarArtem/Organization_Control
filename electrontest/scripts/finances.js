@@ -1,6 +1,7 @@
 var chart;
 var profits = [];
 var losses = [];
+var salaries = [];
 const MONTHS = [
     'Январь',
     'Февраль',
@@ -57,7 +58,9 @@ getFinances().then(function () {
         buildLine();
     }
     getOrganization(ID)
-})
+}).then(function (){
+    getDeparts()
+});
 
 function LoadFiles() {
     return new Promise(resolve => {
@@ -165,9 +168,10 @@ function addRows(data, IDS, tablename) {
 }
 
 function buildDonut() {
-    var profit, loss;
+    var profit, loss, salary;
     profit = profits.reduce(add, 0);
     loss = losses.reduce(add, 0);
+    salary=salaries.reduce(add, 0);
     const ctxrem = document.getElementById('donutchart');
     ctxrem.remove();
     var htmlchart = `<canvas id="donutchart"></canvas>`
@@ -179,12 +183,14 @@ function buildDonut() {
             labels: [
                 'Доходы',
                 'Расходы',
+                'Зарплата'
             ],
             datasets: [{
-                data: [profit, loss],
+                data: [profit, loss, salary],
                 backgroundColor: [
                     'rgb(120, 255, 124)',
-                    'rgb(255, 99, 132)'
+                    'rgb(255, 99, 132)',
+                    'rgb(214, 65, 11)'
                 ],
                 hoverOffset: 4
             }]
@@ -201,11 +207,14 @@ function buildBar() {
 
     profits = bardataprofit.find(b => b.year.toString() === selectedyear.toString());
     losses = bardataloss.find(b => b.year.toString() === selectedyear.toString());
+    salaries = bardatasalary.find(b => b.year.toString() === selectedyear.toString());
 
     profits = Object.values(profits);
     losses = Object.values(losses);
+    salaries = Object.values(salaries);
     profits.shift()
     losses.shift()
+    salaries.shift()
 
     let delayed;
     new Chart(ctx, {
@@ -222,6 +231,11 @@ function buildBar() {
                     label: 'Убыток',
                     data: losses,
                     backgroundColor: 'rgb(255, 99, 132)',
+                },
+                {
+                    label: 'Зарплата',
+                    data: salaries,
+                    backgroundColor: 'rgb(214, 65, 11)',
                 },]
         },
         options: {
@@ -292,6 +306,7 @@ function buildLine() {
 function buildAllTime() {
     profits.splice(0, profits.length);
     losses.splice(0, losses.length);
+    salaries.splice(0, salaries.length);
     var ctxrem = document.getElementById('donutchart');
     ctxrem.remove();
     var htmlchart = `<canvas id="donutchart"></canvas>`
@@ -303,12 +318,14 @@ function buildAllTime() {
             labels: [
                 'Доходы',
                 'Расходы',
+                'Зарплаты'
             ],
             datasets: [{
-                data: [profitsumm, losssumm],
+                data: [profitsumm, losssumm, salarysumm],
                 backgroundColor: [
                     'rgb(120, 255, 124)',
-                    'rgb(255, 99, 132)'
+                    'rgb(255, 99, 132)',
+                    'rgb(214, 65, 11)'
                 ],
                 hoverOffset: 4
             }]
@@ -326,14 +343,18 @@ function buildAllTime() {
         temp.shift();
         var summ = temp.reduce(add, 0);
         profits.push(summ);
+
         temp = Object.values(bardataloss[i]);
         temp.shift();
         var summ = temp.reduce(add, 0);
         losses.push(summ);
+
+        temp = Object.values(bardatasalary[i]);
+        temp.shift();
+        var summ = temp.reduce(add, 0);
+        salaries.push(summ);
     }
 
-    console.log(profits)
-    console.log(losses)
     chart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -348,6 +369,11 @@ function buildAllTime() {
                     label: 'Убыток',
                     data: losses,
                     backgroundColor: 'rgb(255, 99, 132)',
+                },
+                {
+                    label: 'Зарплата',
+                    data: salaries,
+                    backgroundColor: 'rgb(214, 65, 11)',
                 },]
         },
         options: {

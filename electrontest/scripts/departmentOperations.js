@@ -8,6 +8,9 @@ let posts = [];
 let postsIDS = [];
 let selecteddepartmentforpost = 0;
 let selecteddepartmentforgoals = 0;
+let employees = [];
+let employeesdepartmentsumms = [];
+let emplposts = [];
 
 async function getDeparts() {
     return new Promise((resolve) => {
@@ -37,11 +40,10 @@ async function getDeparts() {
                     departs.push(department);
                 }
                 fkeyarray.splice(0, fkeyarray.length);
-                getPosts().then(function (){
+                getPosts().then(function () {
                     fkeyarray.splice(0, fkeyarray.length);
                     getGoals();
-                });
-                console.log(departs)
+                })
                 addRows(departs, departsIDS, "example1")
                 resolve()
             })
@@ -134,7 +136,6 @@ function getGoals() {
                             goals.push(goal);
                         }
                         if (index === departs.length - 1) {
-                            console.log(goals)
                             addRows(goals, goalsIDS, "table1")
                             resolve()
                         }
@@ -187,7 +188,7 @@ function EditGoal() {
     if (nameGoal !== "" && descrGoal !== "" && datestartGoal !== "" && dateendGoal !== "" && selectedindex2 !== 0) {
         Goalpost = new Goal(null, descrGoal, nameGoal, dateendGoal, dateendGoal, doneGoal, parseInt(selecteddepartmentforgoals))
         body = JSON.stringify(Goalpost)
-        var selgoal=goals.find(g=>g.id_goal.toString()===selectedindex2.toString())
+        var selgoal = goals.find(g => g.id_goal.toString() === selectedindex2.toString())
         fetch(url + 'organization/' + ID + '/department/' + selgoal.department_id.toString() + '/goal/' + selectedindex2.toString(), {
             method: "PUT",
             mode: 'cors',
@@ -230,7 +231,6 @@ function getPosts() {
                         }
                     }
                     if (index === departs.length - 1) {
-                        console.log(posts);
                         addRows(posts, postsIDS, "post1")
                         resolve()
                     }
@@ -247,7 +247,6 @@ function AddPost() {
     Postpost = new Post(null, namePost, salaryPost, null)
     body = JSON.stringify(Postpost)
 
-    console.log(selecteddepartmentforpost)
     if (namePost !== "" && salaryPost !== "" && selecteddepartmentforpost !== 0) {
         fetch(url + 'organization/' + ID + '/department/' + selecteddepartmentforpost.toString() + '/post/', {
             method: "POST",
@@ -275,8 +274,27 @@ function EditPost() {
     body = JSON.stringify(Postpost)
 
     if (namePost !== "" && salaryPost !== "" && selecteddepartmentforpost !== 0) {
-        var selpost=posts.find(p=>p.id_post.toString()===selectedindex3.toString())
-        console.log(selecteddepartmentforpost.toString())
+        var selpost = posts.find(p => p.id_post.toString() === selectedindex3.toString())
+        var filtered = emplposts.filter(empls => empls.post_id.toString() === selectedindex3.toString())
+        for (i = 0; i < filtered.length; i++) {
+            var employee = employees.find(em => em.id_employee.toString() === filtered[i].employee_id.toString());
+            var emplbody = new Employee(null, employee.surname, employee.name, employee.secondname,
+                employee.date_birth, employee.seriapasp, employee.numberpasp, employee.email,
+                parseInt(selecteddepartmentforpost.toString()));
+            body2 = JSON.stringify(emplbody)
+            fetch(url + 'organization/' + ID + '/department/' + selpost.department_id.toString() + '/employee/' + employee.id_employee.toString(), {
+                method: "PUT",
+                mode: 'cors',
+                body: body2
+            })
+                .then(res => {
+                    return res.json()
+                })
+                .then(data => {
+                    console.log(data)
+                })
+                .catch(error => alert(error))
+        }
         fetch(url + 'organization/' + ID + '/department/' + selpost.department_id.toString() + '/post/' + selectedindex3.toString(), {
             method: "PUT",
             mode: 'cors',
@@ -293,6 +311,58 @@ function EditPost() {
             .catch(error => alert(error))
     } else
         alert("Заполните поля для изменения")
+}
+
+function getEmployees() {
+    let index = 0
+    console.log(departs);
+    for (i = 0; i < departs.length; i++) {
+        fetch(url + 'organization/' + ID + '/department/' + departs[i].id_department + '/employee/', {
+            method: 'GET',
+            mode: 'cors'
+        })
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                var employee
+                for (var j in data.data) {
+                    employee = Object.assign(data.data[j])
+                    employee.date_birth = employee.date_birth.toString().substring(0, employee.date_birth.toString().length - 10);
+                    employees.push(employee);
+                }
+                if (index === departs.length - 1) {
+                    getEmployeePosts();
+                    buildPolar();
+                }
+                index += 1;
+            })
+            .catch(error => function () {
+                console.log(error)
+            })
+    }
+}
+
+
+function getEmployeePosts() {
+    for (let i = 0; i < employees.length; i++) {
+        var department = departs.find(dep => dep.id_department.toString() === employees[i].department_id.toString()).id_department
+
+        fetch(url + 'organization/' + ID + '/department/' + department.toString() + '/employee/' + employees[i].id_employee.toString() + '/emplpost/', {
+            method: "GET",
+            mode: 'cors'
+        })
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                var posts;
+                for (var i in data.data) {
+                    posts = Object.assign(data.data[i]);
+                    emplposts.push(posts);
+                }
+            })
+    }
 }
 
 function DeleteRow(no) {

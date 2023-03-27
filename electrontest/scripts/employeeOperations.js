@@ -71,7 +71,7 @@ async function getEmployees(departments) {
                         employees.push(employee);
                     }
                     if (index === departments.length - 1) {
-                        addRows(employees, employeesIDS)
+                        addRows(employees, employeesIDS, 'example1')
                     }
                     index++
                 })
@@ -130,7 +130,7 @@ function AddEmployee() {
 }
 
 function EditEmployee() {
-    if (selectedindex !== null && selectedindex !== 0 && lastfidselected !== 0) {
+    if (selectedindex !== null && selectedindex !== 0) {
         nameempl = document.getElementById("NameEmployee").value
         surnempl = document.getElementById("SurnameEmployee").value
         secondempl = document.getElementById("SecondNameEmployee").value
@@ -147,12 +147,12 @@ function EditEmployee() {
                 selectedposts.push(postoptions[i].id.toString().substring(8, postoptions[i].id.toString().length));
             }
         }
-
+        var department=employees.find(em=>em.id_employee.toString()===selectedindex.toString()).department_id;
         employeepost = new Employee(null, surnempl, nameempl, secondempl, dateempl, seriaempl, numberempl, mailempl, parseInt(selectedindexcombobox))
         body = JSON.stringify(employeepost)
 
         if (surnempl !== "" && nameempl !== "" && secondempl !== "" && dateempl !== "" && seriaempl !== "" && numberempl !== "" && mailempl !== "") {
-            fetch(url + 'organization/' + ID + '/department/' + lastfidselected.toString() + '/employee/' + selectedindex.toString(), {
+            fetch(url + 'organization/' + ID + '/department/' + department.toString() + '/employee/' + selectedindex.toString(), {
                 method: "PUT",
                 mode: 'cors',
                 body: body
@@ -244,7 +244,7 @@ function getTasks(){
                     }
                     if (index===employees.length-1)
                     {
-                        AddRowsToTask(tasks, tasksIDS)
+                        AddRowsToTask(tasks, tasksIDS, 'table1')
                         resolve()
                     }
                     index++

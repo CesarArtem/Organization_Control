@@ -108,9 +108,9 @@ function LoadFiles(){
     })
 }
 
-function addRows(employeesdata, emplIDS) {
+function addRows(employeesdata, emplIDS, tablename) {
     return new Promise((resolve, reject) => {
-        let table = document.getElementById("example1");
+        let table = document.getElementById(tablename);
         let header = Object.keys(employeesdata[0]);
         generateTableHead(table, header);
         generateTable(table, employeesdata, emplIDS, fkeyarray);
@@ -123,6 +123,7 @@ function addRows(employeesdata, emplIDS) {
             for (var i = 0; i < combo.length; i++) {
                 combo[i].addEventListener('click', function () {
                     selectedindexcombobox = this.id.toString().substring(8, this.id.length)
+                    console.log(selectedindexcombobox)
                 })
             }
 
@@ -133,8 +134,8 @@ function addRows(employeesdata, emplIDS) {
 })
 };
 
-function AddRowsToTask(tasksForTable, tasksIDSForTable){
-    let table = document.getElementById("table1");
+function AddRowsToTask(tasksForTable, tasksIDSForTable, tablename){
+    let table = document.getElementById(tablename);
     let header = Object.keys(tasksForTable[0]);
     generateTableHead(table, header);
     generateTable(table, tasksForTable, tasksIDSForTable, fkeyarray);
@@ -163,6 +164,7 @@ function LoadPostsForSelectedDep() {
                     let options = sum.getElementsByTagName('option')
                     for (let j = 0; j < options.length; j++) {
                         if (options[j].id.toString().substring(8, options[j].id.toString().length) === emplposts[i].post_id.toString()) {
+                            console.log(options[j].id.toString().substring(8, options[j].id.toString().length));
                             options[j].selected = true;
                             break;
                         }

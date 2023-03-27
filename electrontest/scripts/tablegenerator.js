@@ -1,7 +1,6 @@
 let selectedindex = 0;
 let selectedindex2 = 0;
 let selectedindex3 = 0;
-let lastfidselected = 0;
 
 function generateTableHead(table, data) {
     let thead = table.createTHead();
@@ -103,7 +102,7 @@ function addRowHandlers(table) {
                                 selectedindex = row.id;
                                 SelectedRow(row, table)
                             }
-                        } else if (table.id === 'table1'){
+                        } else if (table.id === 'table1') {
                             if (selectedindex2 === row.id) {
                                 selectedindex2 = 0
                                 row.style.backgroundColor = ""
@@ -116,8 +115,7 @@ function addRowHandlers(table) {
                                 selectedindex2 = row.id;
                                 SelectedRow(row, table)
                             }
-                        }else
-                        {
+                        } else {
                             if (selectedindex3 === row.id) {
                                 selectedindex3 = 0
                                 row.style.backgroundColor = ""
@@ -193,7 +191,7 @@ function SelectedRow(row, table) {
             document.getElementById("SeriaEmployee").value = serapasp;
             document.getElementById("NumberEmployee").value = numberpasp;
 
-            setcomboboxForDepartment(department.toString())
+            setcomboboxForDepartment(department.toString(), 'example1')
             LoadPostsForSelectedDep()
         } else {
             var task = tasks.find(t => t.id_task.toString() === row.id.toString())
@@ -217,7 +215,7 @@ function SelectedRow(row, table) {
 
             document.getElementById("NameDepartment").value = name;
             document.getElementById("DescriptionDepartment").value = desc;
-        } else if (table.id === 'table1'){
+        } else if (table.id === 'table1') {
             var goal = goals.find(g => g.id_goal.toString() === row.id.toString())
             var name = goal.name;
             var desc = goal.description;
@@ -232,7 +230,7 @@ function SelectedRow(row, table) {
             document.getElementById("DoneGoal").checked = check;
 
             setcomboboxForDepartment(goal.department_id.toString(), 'goal')
-        }else{
+        } else {
             var post = posts.find(g => g.id_post.toString() === row.id.toString())
             var name = post.name;
             var salary = post.salary;
@@ -242,7 +240,7 @@ function SelectedRow(row, table) {
 
             setcomboboxForDepartment(post.department_id.toString(), 'post')
         }
-    }else if (location.href.endsWith('finances.html')) {
+    } else if (location.href.endsWith('finances.html')) {
         var desc, summ, dateoper;
         for (let i = 0; i < finances.length; i++) {
             if (row.id.toString() === finances[i].id_operations.toString()) {
@@ -258,16 +256,23 @@ function SelectedRow(row, table) {
     }
 }
 
-function setcomboboxForDepartment(depid, table){
+function setcomboboxForDepartment(depid, table) {
     let options = document.getElementsByClassName('input-combobox');
     for (let j = 0; j < options.length; j++) {
-        if (options[j].id.toString().substring(4, options[j].id.length) === depid.toString()) {
-            options[j].checked = true
-            if (table==='goal')
-                selecteddepartmentforgoals = options[j].id.toString().substring(4, options[j].id.length);
-            else
-                selecteddepartmentforpost=options[j].id.toString().substring(4, options[j].id.length);
-            lastfidselected = options[j].id.toString().substring(3, options[j].id.length);
+        if (location.href.endsWith('department.html')) {
+            if (options[j].id.toString().substring(4, options[j].id.length) === depid.toString()) {
+                options[j].checked = true
+                if (table === 'goal')
+                    selecteddepartmentforgoals = options[j].id.toString().substring(4, options[j].id.length);
+                else
+                    selecteddepartmentforpost = options[j].id.toString().substring(4, options[j].id.length);
+            }
+        } else {
+            if (options[j].id.toString().substring(3, options[j].id.length) === depid.toString()) {
+                options[j].checked = true
+                selectedindexcombobox = options[j].id.toString().substring(3, options[j].id.length);
+                console.log(selectedindexcombobox)
+            }
         }
     }
 }
