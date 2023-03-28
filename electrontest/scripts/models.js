@@ -1,4 +1,4 @@
-const url='http://127.0.0.1:8000/api/'
+const url='http://127.0.0.1:3210/api/'
 
 function Organization(name, id_organization, budget, date_foundation, addres, inn){
     this.name = name;

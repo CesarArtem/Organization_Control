@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  api:
+    restart: always
+    build: ./api
+    expose:
+      - "3210"
+    ports:
+      - "3210:3210"
+    depends_on:
+      - postgres
+  
+  postgres:
+    restart: always
+    expose:
+      - "5433"
+    ports:
+      - "5433:5433"
+    command: -p 5433
+    build: ./postgres
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: password1234
+        POSTGRES_DB: OrganizationControl
+    
+  adminer:
+    restart: always
+    image: adminer
+    ports:
+      - 8888:8080
+
+volumes:
+  postgres_data:

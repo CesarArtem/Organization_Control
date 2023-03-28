@@ -1,6 +1,6 @@
-let ID;
-window.orgBridge.value((event, value)=>{
-    ID=value
-})
+GetData();
+function GetData() {
+    ID = window.Bridge.getData();
 
-console.log(ID);
+    console.log(ID)
+}

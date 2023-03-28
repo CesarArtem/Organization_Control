@@ -3,69 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link rel="stylesheet" href="../styles/menu.css">
-    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/lte/adminlte.min.css">
     <link rel="stylesheet" href="../styles/combobox.css">
+    <link rel="stylesheet" href="../styles/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="../styles/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+    <link rel="stylesheet" href="../styles/bootstrap/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="../styles/bootstrap/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="../styles/bootstrap/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/bootstrap/select2/css/select2.min.css">
+    <link rel="stylesheet" href="../styles/bootstrap/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+    <script>
+        $(window).load(function () {
+            $(".se-pre-con").fadeOut("slow");
+        });
+    </script>
 </head>
 <body>
+<div id="headdiv">
+</div>
 <div class="content">
-    <div id="headdiv">
+
+    <div style="height: 49%; width: 100%">
+        <div style="display: flex; width: 100%; height: 100%">
+            <div class="card card-primary" style="width: 50%;">
+                <div class="card-header">
+                    <h3 class="card-title">Статистика</h3>
+                </div>
+                <div class="select" tabindex="2" style="width: 100%">
+                    <input class="input-combobox" name="combo" type="radio" id="FinancesDognut" checked="false">
+                    <label for="FinancesDognut" id="labelFinancesDognut" class="option">Круговая диаграмма финансов
+                        (за
+                        год)</label>
+                    <input class="input-combobox" name="combo" type="radio" id="FinancesBar" checked="false">
+                    <label for="FinancesBar" id="labelFinancesBar" class="option">Гистограмма финансов (за
+                        год)</label>
+                    <input class="input-combobox" name="combo" type="radio" id="FinancesLine" checked="false">
+                    <label for="FinancesLine" id="labelFinancesLine" class="option">Линейный график финансов (за
+                        год)</label>
+                    <input class="input-combobox" name="combo" type="radio" id="PolarEmployee" checked="false">
+                    <label for="PolarEmployee" id="labelPolarEmployee" class="option">Полярная диаграмма
+                        сотрудников</label>
+                    <input class="input-combobox" name="combo" type="radio" id="Strategies" checked="false">
+                    <label for="Strategies" id="labelStrategies" class="option">Стратегии</label>
+                    <input class="input-combobox" name="combo" type="radio" id="Goals" checked="false">
+                    <label for="Goals" id="labelGoals" class="option">Цели</label>
+                    <input class="input-combobox" name="combo" type="radio" id="Tasks" checked="false">
+                    <label for="Tasks" id="labelTasks" class="option">Задачи</label>
+                    <input class="input-combobox" name="combo" type="radio" id="Employees" checked="false">
+                    <label for="Employees" id="labelEmployees" class="option">Сотрудники</label>
+                    <input class="input-combobox" name="combo" type="radio" id="Operations" checked="false">
+                    <label for="Operations" id="labelOperations" class="option">Финансовые операции</label>
+                </div>
+            </div>
+            <div class="card card-primary" style="width: 50%">
+                <div class="card-header">
+                    <h3 class="card-title">Статистика</h3>
+                </div>
+                <div class="select" tabindex="2" style="width: 100%">
+                    <input class="input-combobox" name="combo2" type="radio" id="FinancesDognut2" checked="false">
+                    <label for="FinancesDognut2" id="labelFinancesDognut2" class="option">Круговая диаграмма финансов
+                        (за
+                        год)</label>
+                    <input class="input-combobox" name="combo2" type="radio" id="FinancesBar2" checked="false">
+                    <label for="FinancesBar2" id="labelFinancesBar2" class="option">Гистограмма финансов (за
+                        год)</label>
+                    <input class="input-combobox" name="combo2" type="radio" id="FinancesLine2" checked="false">
+                    <label for="FinancesLine2" id="labelFinancesLine2" class="option">Линейный график финансов (за
+                        год)</label>
+                    <input class="input-combobox" name="combo2" type="radio" id="PolarEmployee2" checked="false">
+                    <label for="PolarEmployee2" id="labelPolarEmployee2" class="option">Полярная диаграмма
+                        сотрудников</label>
+                    <input class="input-combobox" name="combo2" type="radio" id="Strategies2" checked="false">
+                    <label for="Strategies2" id="labelStrategies2" class="option">Стратегии</label>
+                    <input class="input-combobox" name="combo2" type="radio" id="Goals2" checked="false">
+                    <label for="Goals2" id="labelGoals2" class="option">Цели</label>
+                    <input class="input-combobox" name="combo2" type="radio" id="Tasks2" checked="false">
+                    <label for="Tasks2" id="labelTasks2" class="option">Задачи</label>
+                    <input class="input-combobox" name="combo2" type="radio" id="Employees2" checked="false">
+                    <label for="Employees2" id="labelEmployees2" class="option">Сотрудники</label>
+                    <input class="input-combobox" name="combo2" type="radio" id="Operations2" checked="false">
+                    <label for="Operations2" id="labelOperations2" class="option">Финансовые операции</label>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="cardforcontent">
-    <div class="cardindex">
-        Content1
-        <div class="divlist">
-            <details>
-                <summary class="radios">
-                    <input type="radio" name="item" id="default" title="-" style="font-weight: bold" checked>
-                    <input type="radio" name="item" id="item1" title="Сотрудники">
-                    <input type="radio" name="item" id="item2" title="Отделы">
-                    <input type="radio" name="item" id="item3" title="Финансы">
-                    <input type="radio" name="item" id="item4" title="Задачи">
-                    <input type="radio" name="item" id="item5" title="Цели">
-                    <input type="radio" name="item" id="item6" title="Стратегии">
-                </summary>
-                <ul class="list">
-                    <li onmouseover="PaintItemCombobox(this)" onmouseout="UnPaintItemCombobox(this)">
-                        <label for="item1">Сотрудники</label>
-                    </li>
-                    <li onmouseover="PaintItemCombobox(this)" onmouseout="UnPaintItemCombobox(this)">
-                        <label for="item2">Отделы</label>
-                    </li>
-                    <li onmouseover="PaintItemCombobox(this)" onmouseout="UnPaintItemCombobox(this)">
-                        <label for="item3">Финансы</label>
-                    </li>
-                    <li onmouseover="PaintItemCombobox(this)" onmouseout="UnPaintItemCombobox(this)">
-                        <label for="item4">Задачи</label>
-                    </li>
-                    <li onmouseover="PaintItemCombobox(this)" onmouseout="UnPaintItemCombobox(this)">
-                        <label for="item5">Цели</label>
-                    </li>
-                    <li onmouseover="PaintItemCombobox(this)" onmouseout="UnPaintItemCombobox(this)">
-                        <label for="item6">Стратегии</label>
-                    </li>
-                </ul>
-            </details>
+    <div class="card card-primary" style="width: 99%; height: 49%">
+        <div class="card-header">
+            <h3 class="card-title">Статистика</h3>
         </div>
-    </div>
-        <div style="width: 49%; margin: 5px" class="cardindex">
-            Content2
+        <div class="select" tabindex="2" style="width: 100%">
+            <input class="input-combobox" name="combo3" type="radio" id="FinancesDognut3" checked="false">
+            <label for="FinancesDognut3" id="labelFinancesDognut3" class="option">Круговая диаграмма финансов
+                (за
+                год)</label>
+            <input class="input-combobox" name="combo3" type="radio" id="FinancesBar3" checked="false">
+            <label for="FinancesBar3" id="labelFinancesBar3" class="option">Гистограмма финансов (за
+                год)</label>
+            <input class="input-combobox" name="combo3" type="radio" id="FinancesLine3" checked="false">
+            <label for="FinancesLine3" id="labelFinancesLine3" class="option">Линейный график финансов (за
+                год)</label>
+            <input class="input-combobox" name="combo3" type="radio" id="PolarEmployee3" checked="false">
+            <label for="PolarEmployee3" id="labelPolarEmployee3" class="option">Полярная диаграмма
+                сотрудников</label>
+            <input class="input-combobox" name="combo3" type="radio" id="Strategies3" checked="false">
+            <label for="Strategies3" id="labelStrategies3" class="option">Стратегии</label>
+            <input class="input-combobox" name="combo3" type="radio" id="Goals3" checked="false">
+            <label for="Goals3" id="labelGoals3" class="option">Цели</label>
+            <input class="input-combobox" name="combo3" type="radio" id="Tasks3" checked="false">
+            <label for="Tasks3" id="labelTasks3" class="option">Задачи</label>
+            <input class="input-combobox" name="combo3" type="radio" id="Employees3" checked="false">
+            <label for="Employees3" id="labelEmployees3" class="option">Сотрудники</label>
+            <input class="input-combobox" name="combo3" type="radio" id="Operations3" checked="false">
+            <label for="Operations3" id="labelOperations3" class="option">Финансовые операции</label>
         </div>
-    </div>
-    <div style="height: 50%; width: 98.5%; margin: 5px" class="card">
-        Content3
     </div>
 </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript" src="../templates/menu.js"></script>
-    <script type="text/javascript" src="../templates/styles.js"></script>
-    <script type="text/javascript" src="../scripts/index.js"></script>
+<script src="../scripts/loadfiles.js"></script>
+<script src="../scripts/models.js"></script>
+<script src="../scripts/tablegenerator.js"></script>
+<script src="../styles/bootstrap/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../templates/styles.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-            crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
 </body>
 </html>
